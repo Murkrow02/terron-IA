@@ -5,7 +5,7 @@ python3.11 -m venv venv
 CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES=arm64" pip install --upgrade --verbose --force-reinstall --no-cache-dir instructlab
 
 # Download default model
-ilab model download --hf-token=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
+ilab model download --hf-token=
 
 # Serve chat model
 ilab model serve --model-path ./models/granite-7b-lab-Q4_K_M.gguf
