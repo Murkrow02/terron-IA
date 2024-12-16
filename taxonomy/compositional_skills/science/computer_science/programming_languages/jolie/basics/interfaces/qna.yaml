@@ -1,0 +1,64 @@
+version: 2
+task_description: 'Understanding Interfaces in Jolie.'
+created_by: murkrow
+seed_examples:
+  - context: |
+      Jolie defines two types of operations:
+      - one-way operations, which receive a message.
+      - request-response operations, which reply or receive a message and send back a response.
+      An interface in Jolie is a collection of operation types, a list of One-Way and Request-Response operation declarations. The basic declaration of an interface includes the names of its operations, grouped by type.
+      Here is the syntax for an interface declaration:
+      interface identifier {
+          OneWay:
+              ow_name1( t1 ),
+              ow_name2( t2 ),
+              //...,
+              ow_nameN( tN )
+          RequestResponse:
+              rr_name1( tk1 )( tk2 ),
+              rr_name2( tk3 )( tk4 ),
+              //...
+              rr_nameN( tkN )( tkN+1 )
+      }
+      One-way operations require only one message type, while request-responses define both request (left argument) and response (right argument) types.
+    question: What are the two types of operations in Jolie interfaces?
+    answer: The two types of operations in Jolie interfaces are one-way operations and request-response operations.
+
+  - context: |
+      Here's an example of an interface declaration for SumInterface:
+      interface SumInterface {
+          RequestResponse:
+              sum( SumRequest )( int )
+      }
+      SumInterface defines a request-response operation sum. It takes a SumRequest as input and returns an int as output. This interface is used in the declaration of SumInput and SumServ in the ports section.
+    question: What does the SumInterface in Jolie define?
+    answer: SumInterface defines a request-response operation sum, which takes a SumRequest as input and returns an int as output.
+
+  - context: |
+      In Jolie, operations of type RequestResponse can reply with a fault instead of the response message. To specify this behavior, you use the throws statement to declare that a request-response operation can raise a fault.
+      Here is the syntax for declaring faults in an interface:
+      interface IfaceName {
+          RequestResponse:
+              Op1( ReqType1 )( ResType1 ) throws ErrX( MsgTypeX ) ... ErrY( MsgTypeY )
+              //...
+              OpN( ReqTypeN )( ResTypeN ) throws ErrW( MsgTypeW ) ... ErrZ( MsgTypeZ )
+      }
+      In this declaration, ErrX, ErrY, etc., are the fault names, and MsgTypeX, etc., are the types of the messages associated with those faults.
+    question: How are faults declared in Jolie interfaces?
+    answer: Faults in Jolie interfaces are declared using the throws statement, followed by the fault names and message types for each operation.
+
+  - context: |
+      One-way operations in Jolie are used to send a message but do not expect a response. These are useful for scenarios where a service is simply receiving a command or data but does not need to reply back. The syntax is as follows:
+      interface MyInterface {
+          OneWay:
+              operation1( MessageType1 ),
+              operation2( MessageType2 )
+      }
+      In this case, operation1 and operation2 are one-way operations that each take a specific message type as input.
+    question: What is the purpose of one-way operations in Jolie?
+    answer: One-way operations in Jolie are used to send a message without expecting a response, typically for commands or data reception.
+
+  - context: |
+      In Jolie, interfaces provide a way to define the operations a service exposes, and the operations are grouped into one-way and request-response categories. The interface syntax allows for clear separation of different types of operations, making the code more organized and easier to understand.
+    question: Why is it important to categorize operations in Jolie interfaces?
+    answer: Categorizing operations in Jolie interfaces helps organize the code and distinguishes between operations that require responses and those that do not, making the service more structured and understandable.

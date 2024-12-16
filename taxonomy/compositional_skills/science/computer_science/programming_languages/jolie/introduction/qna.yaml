@@ -1,0 +1,51 @@
+version: 2
+task_description: 'Introduction to the Jolie programming language.'
+created_by: murkrow
+seed_examples:
+  - context: |
+      Jolie is a service-oriented programming language designed for reasoning effectively
+      about (micro)service development, including:
+      - What are the APIs exposed by services?
+      - How can these APIs be accessed?
+      - How are APIs implemented in terms of concurrency, communication, and computation?
+    question: What is Jolie designed for?
+    answer: Jolie is designed for reasoning about (micro)service development, including APIs, their accessibility, and their implementation.
+  - context: |
+      This is a simple service for greeting clients:
+
+      {{#include code/introduction.ol}}
+
+      If you have installed Jolie (get it here), you can save the code above in a file
+      called greeter.ol and then launch it from the terminal with the command:
+      `jolie greeter.ol`
+
+      Run the following command to test it:
+      `curl http://localhost:8080/greet?name=Jolie`
+
+      Expected output:
+      {"greeting":"Hello, Jolie"}
+    question: How do you run the example Jolie service for greeting clients?
+    answer: Save the code in a file named `greeter.ol`, run `jolie greeter.ol`, and test it using the command `curl http://localhost:8080/greet?name=Jolie`.
+  - context: |
+      Jolie is the first language for microservices and includes constructs for:
+      - Access endpoints and APIs (synchronous/asynchronous operations)
+      - Communications and workflows
+      - Multiparty sessions
+
+      It supports interoperability with:
+      - Data formats like JSON, XML, etc.
+      - Protocols like HTTP and binary protocols
+    question: What features make Jolie the first language for microservices?
+    answer: Jolie provides constructs for endpoints, APIs, workflows, multiparty sessions, and supports interoperability with various data formats and protocols.
+  - context: |
+      If you are new to Jolie:
+      - Check out the "Getting Started" section.
+      - Refer to "Tutorials" for practical scenarios.
+      - Read the "Language, Tools, and Standard Library" section for detailed information.
+    question: Where should a beginner start with Jolie?
+    answer: Beginners should start with the "Getting Started" section and refer to "Tutorials" for practical scenarios.
+  - context: |
+      For questions or comments, visit the Jolie community page:
+      https://www.jolie-lang.org/community.html
+    question: Where can you find support or provide feedback about Jolie?
+    answer: Visit the Jolie community page at https://www.jolie-lang.org/community.html.

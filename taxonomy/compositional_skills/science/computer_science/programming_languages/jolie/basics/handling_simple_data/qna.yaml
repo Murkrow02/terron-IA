@@ -1,0 +1,103 @@
+version: 2
+task_description: |
+    This skill provides the ability to work with basic data types, casting, runtime type checking, strings, undefined variables, and dynamic arrays in the Jolie programming language.
+created_by: murkrow
+seed_examples:
+  - context: |
+      a = 5
+      a = "Hello"
+    question: |
+      Can a variable hold values of different types in Jolie?
+    answer: |
+      Yes, in Jolie, a variable can hold values of different types. For example, the variable `a` can hold an integer and a string at different times.
+  - context: |
+      a = 5
+      b = 10
+      n = a + b/2
+      n++
+    question: |
+      What is the result of the expression `n = a + b/2` and how does the post-increment operator work in Jolie?
+    answer: |
+      The result of the expression `n = a + b/2` is `3`. The post-increment operator `n++` then increases `n` to `4`.
+  - context: |
+      s = "10";
+      n = 5 + int(s);
+    question: |
+      How do you convert a string to an integer in Jolie?
+    answer: |
+      In Jolie, you can convert a string to an integer using the `int()` function. For example, `int("10")` would convert the string `"10"` to the integer `10`.
+  - context: |
+      s = "Hello"
+      n = s instanceof string
+    question: |
+      How can you check if a variable is of a specific type in Jolie?
+    answer: |
+      You can use the `instanceof` operator to check if a variable is of a specific type. For example, `s instanceof string` would return `true` if `s` is a string.
+  - context: |
+      a = 5
+      undef(a)
+      c1 = is_defined(a)
+    question: |
+      How can you check if a variable is defined in Jolie?
+    answer: |
+      You can use the `is_defined()` function to check if a variable is defined. For example, `is_defined(a)` will return `true` if `a` is defined and `false` otherwise.
+  - context: |
+      a[0] = 0
+      a[1] = 5
+      a[2] = "Hello"
+      a[3] = 2.5
+    question: |
+      How do you define an array in Jolie?
+    answer: |
+      In Jolie, arrays are dynamic and can be defined using the `[]` operator. For example, `a[0] = 0` defines an array with a value of `0` at index `0`.
+  - context: |
+      a[0] = 0
+      a[1] = 1
+      a[2] = 2
+      a[3] = 3
+      println@Console(#a)()
+    question: |
+      How do you get the size of an array in Jolie?
+    answer: |
+      You can get the size of an array in Jolie using the `#` operator. For example, `#a` will return the number of elements in the array `a`.
+  - context: |
+      s = "This is a string\n"
+      s = "This is " + "a string\n"
+    question: |
+      How do you concatenate strings in Jolie?
+    answer: |
+      In Jolie, strings are concatenated using the `+` operator. For example, `"This is " + "a string"` would result in `"This is a string"`.
+  - context: |
+      s = "This is a string\n"
+    question: |
+      How do you insert a newline character in a string in Jolie?
+    answer: |
+      You can insert a newline character in a string in Jolie by using `\n`. For example, `"This is a string\n"` would include a newline at the end.
+  - context: |
+      matrix = [[1, 2], [3, 4]]
+      matrix._[0]._[1]
+    question: |
+      How can you work with nested arrays in Jolie?
+    answer: |
+      Jolie does not directly support nested arrays, but you can work with them by using the `_`-named children nodes. For example, `matrix._[0]._[1]` accesses the element at index `[0][1]` in the nested array.
+  - context: |
+      s = "Hello"
+      s = s + " World"
+    question: |
+      What does the `+` operator do when used with strings in Jolie?
+    answer: |
+      In Jolie, the `+` operator is used to concatenate strings. For example, `"Hello" + " World"` results in the string `"Hello World"`.
+  - context: |
+      a = 10
+      a = int(a)
+    question: |
+      What is the purpose of casting in Jolie?
+    answer: |
+      Casting in Jolie is used to convert one data type to another. For example, `int(a)` converts the variable `a` to an integer.
+  - context: |
+      s = "Hello"
+      n = s instanceof string
+    question: |
+      Can `instanceof` be used with custom types in Jolie?
+    answer: |
+      Yes, `instanceof` can be used with both native types and custom types in Jolie to check if a variable is of a particular type.

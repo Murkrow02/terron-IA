@@ -1,0 +1,55 @@
+version: 2
+task_description: "Understanding Jolie Data Structures"
+created_by: murkrow
+seed_examples:
+  - question: "How do you create a simple tree structure in Jolie?"
+    answer: |
+      To create a simple tree structure in Jolie, you can define a root node and add children as arrays or nested objects. For example, the following code creates a root node named 'animals' with 'pet' and 'wild' as children arrays:
+      ```jolie
+      main
+      {
+          animals.pet[0].name = "cat";
+          animals.pet[1].name = "dog";
+          animals.wild[0].name = "tiger";
+          animals.wild[1].name = "lion"
+      }
+      ```
+  - context: |
+      You have a tree structure with nested elements, and you want to access an individual element.
+    question: "How do you access the first pet's name in Jolie?"
+    answer: |
+      You can access the first pet's name by navigating the tree structure using the `.` operator. Here's the code:
+      ```jolie
+      println@Console(animals.pet[0].name)()
+      ```
+      This will print `cat`, as it accesses the first element in the `pet` array.
+  - question: "What is dynamic look-up in Jolie?"
+    answer: |
+      Dynamic look-up allows you to reference elements in the structure by using a string expression at runtime. For instance:
+      ```jolie
+      a = "pe";
+      println@Console(animals.(a + "t")[0].name)()
+      ```
+      This code dynamically evaluates `"pet"` by concatenating `"pe"` and `"t"`, and prints `cat`.
+  - context: |
+      You have a tree structure and want to loop through the elements, performing an operation on each.
+    question: "How can you use the `foreach` statement in Jolie?"
+    answer: |
+      The `foreach` statement allows you to iterate through the child nodes of a structure. For example:
+      ```jolie
+      foreach(kind : animals) {
+          for(i = 0, i < #animals.(kind), i++) {
+              println@Console("animals." + kind + "[" + i + "].name=" + animals.(kind)[i].name)()
+          }
+      }
+      ```
+      This will print the names of all animals in both the `pet` and `wild` categories.
+  - question: "How do you use aliases in Jolie?"
+    answer: |
+      Aliases are created with the `->` operator, allowing you to refer to a variable path indirectly. For example:
+      ```jolie
+      myPets -> animals.pet;
+      println@Console(myPets[1].name)();  // Prints 'dog'
+      myPets[0].name = "bird";  // Replaces the first pet's name with 'bird'
+      println@Console(animals.pet[0].name)()  // Prints 'bird'
+      ```

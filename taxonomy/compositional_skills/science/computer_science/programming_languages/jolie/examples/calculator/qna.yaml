@@ -1,0 +1,62 @@
+version: 2
+task_description: |
+    This skill shows how to write Jolie code by creating a basic calculator service. The service includes defining interfaces, message types, service definitions, and handling different HTTP operations like sum, subtraction, multiplication, and division.
+created_by: murkrow
+seed_examples:
+  - question: |
+      How do you define an interface in Jolie with operations for sum, subtraction, multiplication, and division?
+    answer: |
+      To define an interface in Jolie with operations for sum, subtraction, multiplication, and division, use the following syntax:
+      ```jolie
+      interface CalculatorInterface {
+          RequestResponse:
+              sum,
+              sub,
+              mul,
+              div
+      }
+      ```
+  - question: |
+      How do you define a message type for the sum operation in Jolie?
+    answer: |
+      To define a message type for the sum operation in Jolie, use the following code:
+      ```jolie
+      type SumRequest: void {
+          term[1,*]: int
+      }
+      ```
+  - context: |
+      You need to create a calculator service that listens for HTTP requests. How do you define an input port for the service that listens on localhost:8000 with JSON format?
+    question: |
+      How do you define an input port for a service that listens on localhost:8000 with HTTP and JSON format?
+    answer: |
+      To define an input port for a service that listens on localhost:8000 with HTTP and JSON format, use the following code:
+      ```jolie
+      inputPort CalculatorPort {
+          location: "socket://localhost:8000"
+          protocol: http { format = "json" }
+          interfaces: CalculatorInterface
+      }
+      ```
+  - context: |
+      You need to implement the behavior for the sum operation in the calculator service, where the response is the sum of all terms in the request. How do you implement this behavior?
+    question: |
+      How do you implement the behavior for the sum operation in Jolie?
+    answer: |
+      To implement the behavior for the sum operation in Jolie, use the following code:
+      ```jolie
+      [ sum( request )( response ) {
+          for( t in request.term ) {
+              response = response + t
+          }
+      }]
+      ```
+  - context: |
+      After defining the service and input port, you need to run the service to start listening for requests. How do you run the service in Jolie?
+    question: |
+      How do you run a Jolie service from the terminal?
+    answer: |
+      To run a Jolie service from the terminal, use the following command:
+      ```bash
+      jolie CalculatorService.ol
+      ```

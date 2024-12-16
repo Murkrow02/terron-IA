@@ -1,0 +1,77 @@
+version: 2
+task_description: 'Introduction to Jolie Data Types, including basic and custom data types.'
+created_by: murkrow
+seed_examples:
+  - context: |
+      In Jolie, messages exchanged through operations are data trees. A data type defines the structure of these data trees, the type of content in each node, and the allowed number of occurrences of each node.
+    question: What is the purpose of data types in Jolie?
+    answer: Data types in Jolie define the structure of data trees, the type of content in each node, and the allowed number of occurrences of each node.
+  - context: |
+      The basic data types in Jolie are: `void`, `bool`, `int`, `long`, `double`, `string`, `raw`, and `any`. These are the simplest data types and can be used directly in interface definitions.
+      Example:
+      interface MyInterface {
+          RequestResponse: myOperation( int )( string )
+      }
+    question: What are the basic data types in Jolie and how are they used?
+    answer: The basic data types in Jolie include `void`, `bool`, `int`, `long`, `double`, `string`, `raw`, and `any`. They are used to define the structure of operations in an interface, such as the example of `myOperation( int )( string )`.
+  - context: |
+      Jolie allows for refining basic data types to restrict valid values. For example, the `string` type can be refined with `length`, `regex`, or `enum` to specify valid string values.
+      Example for `length` refinement:
+      type MyType {
+          my_refined_string_field: string( length( [2,5] ) )
+      }
+    question: How can basic data types be refined in Jolie?
+    answer: Basic data types in Jolie can be refined to restrict valid values. For example, the `string` type can use refinements like `length`, `regex`, or `enum` to set specific value constraints.
+  - context: |
+      The `length` refinement specifies the minimum and maximum length of a string. For example, a field with a `string( length([2,5]) )` allows strings of length between 2 and 5 characters.
+    question: How does the `length` refinement work for strings in Jolie?
+    answer: The `length` refinement specifies a range of allowed string lengths. For example, `string( length([2,5]) )` allows strings with lengths between 2 and 5 characters.
+  - context: |
+      Jolie also supports the `regex` refinement to enforce a regular expression pattern on strings. For instance, a string can be restricted to an email format using the `regex` refinement:
+      type MyType {
+          email: string( regex(".*@.*\\..*") )
+      }
+    question: What is the purpose of the `regex` refinement in Jolie?
+    answer: The `regex` refinement in Jolie allows you to specify a regular expression that the string must match, such as enforcing an email format with `regex(".*@.*\\..*")`.
+  - context: |
+      The `enum` refinement restricts a string to a predefined set of values. For example:
+      type MyType {
+          name: string( enum(["paul","homer","mark"]))
+      }
+    question: How does the `enum` refinement work in Jolie?
+    answer: The `enum` refinement in Jolie restricts a string to a predefined list of values, such as `["paul", "homer", "mark"]`.
+  - context: |
+      Jolie also supports refining numeric types like `int`, `long`, and `double` using the `ranges` refinement. This allows you to specify valid intervals for numeric values.
+      Example:
+      type MyType {
+          f1: int( ranges( [-*,-1], [1,4], [10,20], [100,200], [300, *]) )
+      }
+    question: What is the `ranges` refinement in Jolie and how is it used?
+    answer: The `ranges` refinement in Jolie specifies valid intervals for numeric types like `int`, `long`, and `double`. For example, `int( ranges([1,4], [10,20]))` allows integer values within specific intervals.
+  - context: |
+      In Jolie, you can define custom data types using basic types or other custom types. Custom types can include nested data types, such as:
+      type Coordinates {
+          lat: double
+          lng: double
+      }
+    question: How are custom data types defined in Jolie?
+    answer: Custom data types in Jolie are defined by combining basic types or other custom types. They can include nested data types using the dot syntax to define subnodes.
+  - context: |
+      You can also define custom types with nested subnodes. For example, a `ShoppingList` type can include a `fruits` subnode, which is another custom type:
+      type Fruits {
+          bananas: int
+          apples: int
+      }
+      type ShoppingList {
+          fruits: Fruits
+          notes: string
+      }
+    question: How can nested custom data types be defined in Jolie?
+    answer: Nested custom data types in Jolie are defined by using the dot syntax. For example, the `ShoppingList` type includes a nested `fruits` type that defines `bananas` and `apples`.
+  - context: |
+      Jolie supports specifying cardinality for nodes in a custom type. Cardinality defines the number of occurrences a node can have. For example, you can specify a node that must appear between 1 and 5 times using:
+      type CustomType {
+          aSubNode[1,5]: T
+      }
+    question: What is cardinality in Jolie, and how is it used in custom types?
+    answer: Cardinality in Jolie specifies the minimum and maximum number of occurrences for a node in a custom type. It is expressed as `[min, max]` or using shortcuts like `*` for any number of occurrences.
