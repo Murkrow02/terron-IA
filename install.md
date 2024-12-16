@@ -1,7 +1,7 @@
 # Create env with PYTHON3.11 IMPORTANT!
 python3.11 -m venv venv
 
-# Ma che cazzo ne so porcodio fai cosi e basta che a me si rompeva
+# Ma che cazzo ne so fai cosi e basta che a me si rompeva
 CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES=arm64" pip install --upgrade --verbose --force-reinstall --no-cache-dir instructlab
 
 # Download default model
