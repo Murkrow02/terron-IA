@@ -4,6 +4,9 @@ python3.11 -m venv venv
 # Ma che cazzo ne so fai cosi e basta che a me si rompeva
 CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES=arm64" pip install --upgrade --verbose --force-reinstall --no-cache-dir instructlab
 
+# Init ilab
+ilab config init
+
 # Download default model
 ilab model download --hf-token=
 
