@@ -6,3 +6,4 @@ logs
 models
 phased
 venv
+.DS_STORE
