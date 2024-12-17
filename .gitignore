@@ -8,3 +8,5 @@ phased
 venv
 .DS_STORE
 HF_TOKEN
+
+taxonomy/.github/
