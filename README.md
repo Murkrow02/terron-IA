@@ -49,8 +49,10 @@ ilab model convert --model-dir /Users/murkrow/.local/share/instructlab/checkpoin
 
 ### Serve the newly created model
 ```bash
+ilab model serve --model-path ./jolie-trained/jolie-Q4_K_M.gguf
 ```
 
 ### Chat with the model and enjoy!
 ```bash
+ilab model chat
 ```
