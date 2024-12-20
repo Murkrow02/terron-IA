@@ -2,7 +2,7 @@
 A simple LLM create using IBM InstructLab
 
 ## Instructions
-### Create env with PYTHON3.11
+### Create env with PYTHON3.11 (brew install python@3.11)
 Make sure to use exactly this python version as it's a requirement of ilab
 ```bash
 python3.11 -m venv venv
