@@ -14,14 +14,8 @@ CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES=arm64" pip install --upgrade --verbose --f
 
 ### Init ilab
 *Important!* do not edit the standard configuration as in beta it may break
-Do not clone the standard taxonomy as we are going to use the current repo one
 ```bash
 ilab config init
-```
-
-### Remove the standard taxonomy compositional skills
-```bash
-rm -rf ~/.local/share/instructlab/taxonomy/compositional-skills
 ```
 
 ### Clone the repo
@@ -31,7 +25,12 @@ git clone https://github.com/Murkrow02/terron-IA/
 
 ### Link the current repo taxonomy to the ilab one
 ```bash
-ln -s ~/Desktop/ai/ilab/terron-IA/taxonomy ~/.local/share/instructlab/taxonomy
+cp -r ./terron-IA/taxonomy/computer_science ~/.local/share/instructlab/taxonomy/compositional_skills/science
+```
+
+### Check that taxonomy copied is valid
+```bash
+ilab taxonomy diff
 ```
 
 ### Download default model
