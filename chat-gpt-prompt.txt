@@ -20,6 +20,8 @@ seed_examples:
 The yaml QnA file has to have at least 5 items and not include special characters except from code snippets.
 It is important that no trailing spaces or new lines are included in context, answer or question.
 Try to add as many items as possible but keep them relevant to the topic
+If there are specific file names or stuff that can be made more general, change it in a more generic way. 
+An example would be if you find a Jolie file with a specific name, make it so it doesnt depend on the name itself.
 Try to make the prompts generic so that an AI model can learn from those
 
 Im going to give you two examples, given by the documentation of this tool:
@@ -81,4 +83,3 @@ seed_examples:
       The blueberry is blue, small, and has no peel.
 
 Given all of this, this is the markdown on which you have to work:
-
