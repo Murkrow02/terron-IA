@@ -1,27 +1,46 @@
-Help me to create taxonomy for this XXXXXXXXX
+You are an AI expert and you are going to help me create a QnA yaml file starting from Markdown text. The markdown talks about a programming language documentation. 
+You are going to help us train an AI model with this files.Im going to explain now the concept of "Taxonomy", which is composed by different QnA yaml files.
 
-A taxonomy is a yaml file of this form:
-version: 2
-task_description: <string>
-created_by: murkrow
+A QnA yaml file is structured this way: 
+
+version: 2 
+task_description: <you can write there a simple description you understand from the markdown text> 
+created_by: just keep this blank
 seed_examples:
-  - question: <string>
+  - question: <you can write there a question based on the knowledge you understand from the markdown text> 
     answer: |
-      <multi-line string>
+      <you have to write there the answer to the question you just wrote, based on the knowledge you understand from the markdown text>
   - context: |
-      <multi-line string>
-    question: <string>
+      <you have to write the question and answer context, understading the context based on the knowledge you understand from the markdown text>
+    question: <you can write there a question based on the knowledge you understand from the markdown text> 
     answer: |
-      <multi-line string>
+        <you have to write there the answer to the question you just wrote, based on the knowledge you understand from the markdown text>
   ...
 
-- That needs to have at least 5 items and not includes special characters except from code snippets.
-- It is important that no trailing spaces or new lines are included in context, answer or question.
-- Try to add as many items as possible but keep them relevant to the topic
-- Try to make the prompts generic so that the AI can learn from those
+The yaml QnA file has to have at least 5 items and not include special characters except from code snippets.
+It is important that no trailing spaces or new lines are included in context, answer or question.
+Try to add as many items as possible but keep them relevant to the topic
+Try to make the prompts generic so that an AI model can learn from those
 
-This is an example:
+Im going to give you two examples, given by the documentation of this tool:
 
+First example:
+version: 2
+task_description: 'Teach the model how to rhyme.'
+created_by: juliadenham
+seed_examples:
+  - question: What are 5 words that rhyme with horn?
+    answer: warn, torn, born, thorn, and corn.
+  - question: What are 5 words that rhyme with cat?
+    answer: bat, gnat, rat, vat, and mat.
+  - question: What are 5 words that rhyme with poor?
+    answer: door, shore, core, bore, and tore.
+  - question: What are 5 words that rhyme with bank?
+    answer: tank, rank, prank, sank, and drank.
+  - question: What are 5 words that rhyme with bake?
+    answer: wake, lake, steak, make, and quake.
+
+Second example:
 version: 2
 task_description: |
     This skill provides the ability to read a markdown-formatted table.
@@ -61,5 +80,5 @@ seed_examples:
     answer: |
       The blueberry is blue, small, and has no peel.
 
-You need to do it for:
+Given all of this, this is the markdown on which you have to work:
 
