@@ -1,0 +1,87 @@
+version: 2
+task_description: |
+    This file is designed to train an AI model to understand the concept of couriers in Jolie programming, including their syntax, functionality, and use cases. It also includes questions that require writing code.
+created_by: valex
+seed_examples:
+  - question: What is a courier process in Jolie programming?
+    answer: |
+      A courier process in Jolie enhances a service aggregation by adding contextual functionalities, such as authentication or logging. It is executed between a message reception and its forwarding to the final target service without altering the connection topology.
+  - context: |
+      Courier processes can handle specific functionalities like logging and authentication, which are useful in network contexts but not directly related to the target service. They are defined within an input port and executed before forwarding messages.
+    question: How does a courier process benefit a service aggregator?
+    answer: |
+      A courier process benefits a service aggregator by enabling the inclusion of contextual functionalities such as logging, authentication, or other network-related tasks without modifying the service's primary logic.
+  - context: |
+      The syntax for defining a courier process includes the `courier` keyword, followed by the input port name and a scope that specifies the operations and their associated behavior.
+    question: What is the basic syntax for defining a courier process in Jolie?
+    answer: |
+      The basic syntax for defining a courier process is:
+      ```jolie
+      courier <Name of the Input port> {
+          [ <operation_declaration> ] {
+              // behavior
+          }
+      }
+      ```
+  - context: |
+      The `forward` statement is used in courier processes to send a message to its final target. It supports both request-response and one-way operations by handling the forwarding of requests and responses appropriately.
+    question: What is the role of the `forward` statement in a courier process?
+    answer: |
+      The `forward` statement in a courier process sends a message to its final target, as defined in the input port. It ensures that the operation is processed correctly, whether it's a request-response or a one-way operation.
+  - context: |
+      A courier process can be attached to an entire interface, allowing it to handle all operations defined in the interface with uniform behavior. This reduces redundancy in the definition of operations.
+    question: How can a courier process be attached to all operations of an interface?
+    answer: |
+      A courier process can be attached to all operations of an interface using the `interface` keyword within the courier's definition. This applies the behavior to every operation in the specified interface.
+  - context: |
+      An example courier process is attached to the `Aggregator` input port. It logs a message to the console before forwarding the request and response for the `print` operation.
+    question: Write a courier process for the `Aggregator` port that logs a message before forwarding the request and response for the `print` operation.
+    answer: |
+      ```jolie
+      courier Aggregator {
+          [ print( request )( response ) ] {
+              println@Console("Logging from the courier process")();
+              forward( request )( response )
+          }
+      }
+      ```
+  - context: |
+      Interface extension in Jolie allows enriching the message types of aggregated ports without affecting the target service. It is used when a courier process requires additional data in request or response messages.
+    question: What is the purpose of interface extension in Jolie programming?
+    answer: |
+      Interface extension in Jolie is used to modify the message types of an aggregated port, enabling the inclusion of additional data for use in courier processes without altering the original service's interface.
+  - context: |
+      The `interface extender` keyword in Jolie defines extension rules for modifying operation types. It can apply these rules to all operations or specific ones by specifying their names.
+    question: How are interface extension rules defined in Jolie?
+    answer: |
+      Interface extension rules in Jolie are defined using the `interface extender` keyword. They specify modifications to operation types, such as adding fields to request messages or defining new faults.
+  - context: |
+      Interface extenders can be applied to aggregated output ports in an input port declaration using the `with` keyword. This alters the message types handled by the courier process without affecting the target ports.
+    question: How do you apply an interface extender to an aggregated output port?
+    answer: |
+      An interface extender is applied to an aggregated output port using the `with` keyword in the input port's `Aggregates` section:
+      ```jolie
+      inputPort AggregatorPort {
+          Aggregates:
+              outputPort_1 with extender_id1,
+              outputPort_2 with extender_id2
+      }
+      ```
+  - context: |
+      A logging service can be integrated with a courier process to log messages before forwarding them to the target port. This can be achieved by calling the logger service within the courier process.
+    question: Write a courier process that logs messages using a logging service before forwarding requests and responses.
+    answer: |
+      ```jolie
+      courier Aggregator {
+          [ interface PrinterInterface( request )( response ) ] {
+              valueToPrettyString@StringUtils( request )( s );
+              log@Logger( { .content = s } );
+              forward( request )( response )
+          }
+      }
+      ```
+  - context: |
+      Operations implemented within the aggregator itself cannot be managed by courier processes because couriers operate at the service network level, not the individual service level.
+    question: Why can't courier processes manage operations implemented by the aggregator itself?
+    answer: |
+      Courier processes cannot manage operations implemented by the aggregator itself because they operate at the service network level, handling interactions between services, not within a single service's logic.

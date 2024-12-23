@@ -1,0 +1,64 @@
+version: 2
+task_description: Explain the concept of redirection in a programming context, focusing on its syntax, use cases, and examples.
+created_by: valex
+seed_examples:
+  - question: What is redirection in programming?
+    answer: |
+      Redirection allows for the creation of a service, called a proxy, that acts as a single communication endpoint for multiple services, known as resources. It exposes the resource names of the redirected services and provides a unique access point for clients.
+  - question: What are the main advantages of using redirection?
+    answer: |
+      The main advantages are:
+      - It provides a unique access point for system clients, enabling services to be relocated or replaced transparently.
+      - It facilitates transparent communication protocol transformations between the client and the system's services.
+  - question: How do you define a redirect in Jolie's syntax?
+    answer: |
+      A redirect is defined in an input port using the `Redirects` keyword. For example:
+      ```jolie
+      inputPort id {
+          Location: URI
+          Protocol: p
+          Redirects:
+              sid_1 => OP_id_1,
+              sid_2 => OP_id_2
+      }
+      ```
+      This associates resource names (e.g., `sid_1`) with output port identifiers (e.g., `OP_id_1`).
+  - context: |
+      Redirection is achieved by binding an input port of a proxy service to multiple output ports. Resource names are specified using the `Redirects` keyword, and the syntax includes the format `sid_i => OP_id_i`.
+    question: |
+      What does `sid_i => OP_id_i` represent in redirection syntax?
+    answer: |
+      It represents the association of a resource name (`sid_i`) to an output port identifier (`OP_id_i`), enabling the proxy to route messages to the correct service.
+  - context: |
+      The resource name is added to a location using the token `/!/` between the redirector location and the resource name. Examples include:
+      - `socket://localhost:9000/!/A`
+      - `socket://200.200.200.200:19000/!/MyService`
+    question: |
+      How is a resource name added to a service location in redirection?
+    answer: |
+      A resource name is added to a service location by placing `/!/` between the redirector's base location and the resource name. For example, in `socket://localhost:9000/!/A`, `A` is the resource name.
+  - question: What is the difference between redirection and aggregation in terms of client visibility?
+    answer: |
+      In redirection, the client is aware of the target services and treats them as separate entities with distinct output ports. In aggregation, the client interacts with a single service that consolidates operations, without being aware of the individual services handled by the aggregator.
+  - context: |
+      Redirection can be used for transparent protocol transformation. For example, a redirector may expose a port using the `sodep` protocol but internally communicate with services using the `http` protocol.
+    question: |
+      How does redirection support protocol transformation?
+    answer: |
+      Redirection supports protocol transformation by exposing a protocol on the redirector port that is different from the protocol used internally with redirected services. For example, the redirector can expose a `sodep` protocol while communicating internally using `http`.
+  - question: Can you provide an example of defining a redirector input port in Jolie?
+    answer: |
+      Here's an example:
+      ```jolie
+      inputPort Redirector {
+          Location: "socket://localhost:9000"
+          Protocol: sodep
+          Redirects:
+              ServiceA => PortA,
+              ServiceB => PortB
+      }
+      ```
+      This defines a redirector that maps `ServiceA` to `PortA` and `ServiceB` to `PortB`.
+  - question: How does a client interact with services in a redirection scenario?
+    answer: |
+      In a redirection scenario, the client uses separate output ports for each target service, specifying resource names in the locations to route messages appropriately.

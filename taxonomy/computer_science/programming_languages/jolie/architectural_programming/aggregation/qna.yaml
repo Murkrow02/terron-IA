@@ -1,0 +1,88 @@
+version: 2
+task_description: |
+    This file helps train an AI model to understand the concept of aggregation in Jolie programming, including its syntax, functionality, and use cases. It also includes questions requiring code writing.
+created_by: valex
+seed_examples:
+  - question: What is aggregation in Jolie programming?
+    answer: |
+      Aggregation is an architectural operator between an inputPort and a set of outputPorts that allows composing services by merging the APIs of aggregated services with those of the aggregator.
+  - context: |
+      Aggregation uses the `aggregates` primitive to define the output ports aggregated by an input port. The primitive takes a list of output port names.
+    question: How is the `aggregates` primitive used in aggregation?
+    answer: |
+      The `aggregates` primitive is used within an inputPort declaration to specify a list of output port names that the inputPort aggregates.
+  - context: |
+      An aggregator service combines two or more services, such as a printer service and a fax service, under a single input port. The aggregated input port allows invokers to access all available operations from both services through one interface.
+    question: Write a Jolie input port declaration for an aggregator service that combines a printer and a fax service.
+    answer: |
+      inputPort Aggregator {
+          location: "socket://localhost:8080"
+          protocol: http
+          interfaces: ifacePrinter, ifaceFax
+          aggregates: printerPort, faxPort
+      }
+  - context: |
+      When an operation is requested through an input port, it is either handled directly, forwarded to an aggregated output port, or rejected if it is not declared in any interface.
+    question: What happens if an operation is not declared in the interfaces of an inputPort or its aggregated outputPorts?
+    answer: |
+      If an operation is not declared in the interfaces of an inputPort or its aggregated outputPorts, the message is rejected, and an `IOException` fault is sent to the caller.
+  - context: |
+      The jolie2surface tool allows developers to create a "surface" file automatically from an input port declaration. This surface file includes all available operations for an aggregated service.
+    question: What is the purpose of the jolie2surface tool?
+    answer: |
+      The jolie2surface tool is used to create a surface file automatically from an input port declaration, which can then be used to access all the available operations for an aggregated service.
+  - context: |
+      Aggregation can bridge services that use different communication protocols, such as http/json and http/soap. This allows seamless integration of services with distinct communication technologies.
+    question: How does aggregation handle protocol transformation in Jolie?
+    answer: |
+      Aggregation automatically transforms messages between services using different protocols, enabling transparent composition of services with distinct communication technologies.
+  - context: |
+      To extract the surface programmatically in Jolie, you can use the MetaJolie and MetaParser services to obtain and render input port metadata into a syntactically correct Jolie definition.
+    question: Write a Jolie program to extract the surface of an input port programmatically.
+    answer: |
+      include "metajolie.iol"
+      include "metaparser.iol"
+      include "console.iol"
+
+      main {
+          getInputPortMetaData@MetaJolie( { .filename = "aggregator.ol" } )( meta_description );
+          getSurface@Parser( meta_description.input[ 0 ] )( surface );
+          println@Console( surface )()
+      }
+  - context: |
+      Aggregation allows invokers to access all operations from aggregated services through a single input port. Consider a scenario where a printer service and a fax service are aggregated under one input port.
+    question: Write the Jolie input port declarations for a fax service, a printer service, and an aggregator that combines them.
+    answer: |
+      inputPort FaxService {
+          location: "socket://localhost:8081"
+          protocol: http
+          interfaces: ifaceFax
+      }
+
+      inputPort PrinterService {
+          location: "socket://localhost:8082"
+          protocol: soap
+          interfaces: ifacePrinter
+      }
+
+      inputPort Aggregator {
+          location: "socket://localhost:8080"
+          protocol: http
+          interfaces: ifacePrinter, ifaceFax
+          aggregates: printerPort, faxPort
+      }
+  - context: |
+      Aggregation can implement architectural patterns such as load balancers, reverse proxies, and adapters by delegating operations to aggregated services based on their interfaces.
+    question: What architectural patterns can aggregation implement?
+    answer: |
+      Aggregation can implement architectural patterns such as load balancers, reverse proxies, and adapters.
+  - context: |
+      Aggregation respects the execution modalities of aggregated services. This ensures that different operations retain their distinct execution modalities based on the services implementing them.
+    question: How does aggregation respect execution modalities of aggregated services?
+    answer: |
+      Aggregation respects the execution modalities of aggregated services, allowing different operations to maintain their distinct execution modalities based on the services implementing them.
+  - context: |
+      The jolie2surface command can be used to generate a surface file for a port. This includes redirecting the output to save the surface definition into a file.
+    question: Write the Jolie command to generate a surface file from the aggregator service.
+    answer: |
+      jolie2surface aggregator.ol Aggregator > surface.iol

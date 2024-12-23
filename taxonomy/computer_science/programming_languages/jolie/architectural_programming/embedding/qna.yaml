@@ -1,0 +1,65 @@
+version: 2
+task_description: |
+    Provide knowledge about Jolie's embedding mechanism, including its syntax, use cases, and examples.
+created_by: valex
+seed_examples:
+  - question: What is the purpose of the `embed` primitive in Jolie?
+    answer: |
+      The `embed` primitive in Jolie is used to launch an embedded service from within another service, facilitating modular service composition.
+  - question: How can you bind an inputPort of an embedded service in Jolie?
+    answer: |
+      You can bind an inputPort of an embedded service using two methods:
+      - With the `in` keyword to bind it to an existing outputPort of the embedder.
+      - With the `as` keyword to create a new outputPort that mirrors the inputPort of the embedded service.
+  - context: |
+      The following Jolie syntax is used for embedding:
+      ```
+      embed serviceName( passingValue ) [in existedPortName | as newPortName]
+      ```
+      This allows embedding a service with optional input value binding and port configuration.
+    question: What is the syntax for embedding a service in Jolie?
+    answer: |
+      The syntax for embedding a service in Jolie is:
+      ```
+      embed serviceName( passingValue ) [in existedPortName | as newPortName]
+      ```
+      It optionally binds ports for the embedded service.
+  - context: |
+      The Jolie standard library can be embedded using the `embed` primitive. For example:
+      ```
+      from console import Console
+      service MyService {
+          embed Console as C
+          main {
+              print@C( "Hello world!" )()
+          }
+      }
+      ```
+      This embeds the Console service for input/output operations.
+    question: How can you use the Jolie standard library with the `embed` primitive?
+    answer: |
+      You can embed services from the Jolie standard library by importing them and using the `embed` primitive. For example, the `Console` service can be embedded to handle standard input/output operations.
+  - context: |
+      In an example, a parent service `clean_div.ol` embeds another service `clean_br.ol` to clean HTML tags. The `embed` primitive connects the services with in-memory communication:
+      ```
+      embed CleanBr in CleanBr
+      ```
+      This hides connections from external invokers.
+    question: What is the benefit of using in-memory communication with the `embed` primitive?
+    answer: |
+      Using in-memory communication with the `embed` primitive hides connections among embedded services, preventing external access to their internal ports.
+  - context: |
+      The concept of cells in Jolie refers to a unique execution context for a set of services. A cell exposes only public ports and hides internal connections, enabling modular and secure service design.
+    question: What are cells in Jolie, and how do they relate to the `embed` primitive?
+    answer: |
+      Cells are a unique execution context for a set of services in Jolie, exposing only public ports while hiding internal ones. They are implemented using the `embed` primitive to group services.
+  - context: |
+      Dynamic embedding in Jolie allows associating an embedded instance to a specific process. For example, a calculator dynamically loads and embeds arithmetic services at runtime using the `loadEmbeddedService` operation from the Runtime API.
+    question: How does dynamic embedding work in Jolie?
+    answer: |
+      Dynamic embedding in Jolie allows associating a unique embedded instance to a process by loading services at runtime using the `loadEmbeddedService` operation, enabling polymorphic and session-specific behavior.
+  - context: |
+      In Jolie, a calculator service dynamically embeds arithmetic operations like `sum`, `sub`, `mul`, and `div`, using files named after the operations. Each implements a shared interface for polymorphic behavior.
+    question: How are arithmetic operations dynamically embedded in Jolie's calculator example?
+    answer: |
+      Arithmetic operations in the calculator are dynamically embedded by loading service files named after the operations (e.g., `sum.ol`, `mul.ol`) at runtime. Each file implements a shared interface, enabling polymorphism.
