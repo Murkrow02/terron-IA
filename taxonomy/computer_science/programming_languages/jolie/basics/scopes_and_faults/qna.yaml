@@ -1,0 +1,49 @@
+version: 2
+task_description: |
+    Teach the model about fault handling in Jolie, focusing on scopes, the `throw` primitive, fault handlers, the `install` statement, and the transmission of data in faults.
+created_by: davidederosa
+seed_examples:
+  - question: What is a scope in Jolie?
+    answer: |
+      A scope in Jolie is a behavioural container denoted by a unique name and is used to manage faults within a service behaviour.
+  - context: |
+      In Jolie, a fault is a signal raised by a behaviour towards the enclosing scope when an error state is reached, allowing for recovery.
+    question: What is a fault in Jolie?
+    answer: |
+      A fault in Jolie is a signal raised by a behaviour towards the enclosing scope when an error state is reached, allowing for recovery.
+  - context: |
+      The `throw` statement in Jolie is used to raise faults within a scope.
+    question: How do you raise a fault in Jolie?
+    answer: |
+      You raise a fault in Jolie using the `throw` statement, followed by the fault's name.
+  - context: |
+      The `install` statement is used to install dynamic fault handlers within a scope. It associates faults with handlers that are executed when the scope catches the fault.
+    question: What is the purpose of the `install` statement in Jolie?
+    answer: |
+      The `install` statement is used to install dynamic fault handlers within a scope and associates faults with their corresponding handlers.
+  - question: How do you define a fault handler in Jolie?
+    answer: |
+      A fault handler in Jolie is defined using the `install` statement, which specifies the fault and the handling code to be executed when the fault is caught.
+  - context: |
+      If a fault is not caught within a scope, it is automatically re-thrown to the parent scope. In this example, a fault is raised when the user inserts the wrong number.
+    question: What happens if a fault is not caught within a scope in Jolie?
+    answer: |
+      If a fault is not caught within a scope in Jolie, it is automatically re-thrown to the parent scope.
+  - context: |
+      The `install` statement in Jolie is given priority over parallel fault-throwing behaviours, ensuring that fault handlers are installed before the fault is thrown.
+    question: How does Jolie ensure that the correct fault handlers are installed when there is parallel behaviour?
+    answer: |
+      Jolie ensures that the correct fault handlers are installed first by giving priority to the `install` statement over parallel fault-throwing behaviours.
+  - question: How do you attach data to a fault in Jolie?
+    answer: |
+      Data can be attached to a fault in Jolie by passing it as an argument in the `throw` statement, e.g., `throw( FaultName, faultData )`.
+  - context: |
+      In the example, when the number guessed is wrong, the server attaches an exception message to the fault before throwing it. The message includes the number and a custom exception message.
+    question: How do you handle faults with data in Jolie?
+    answer: |
+      Faults with data are handled by using the `throw` statement with the fault name and fault data as arguments. The fault handler can access this data by referencing the appropriate path.
+  - context: |
+      In Jolie, faults can be accessed using the alias `default` when you don't specify a handler for a particular fault. The alias allows you to reference the fault data dynamically.
+    question: What is the `default` alias in Jolie used for?
+    answer: |
+      The `default` alias in Jolie is used to access faults that do not have a specific handler. It allows for dynamic fault handling.

@@ -1,0 +1,63 @@
+version: 2
+task_description: "Teach the model how to define and use constants in a programming language, specifically Jolie."
+created_by: davidederosa
+seed_examples:
+  - question: What is the syntax to declare constants in Jolie?
+    answer: |
+      The syntax to declare constants in Jolie is:
+      ```
+      constants {
+          const1 = val1,
+          const2 = val2,
+          ...
+          constn = valn
+      }
+      ```
+  - question: How can you override a constant value on the command line in Jolie?
+    answer: |
+      To override a constant value on the command line in Jolie, use the `-C` option. For example:
+      ```
+      jolie -C server_location="socket://localhost:4003" program.ol
+      ```
+  - question: What is the purpose of the `-C` option in Jolie?
+    answer: |
+      The `-C` option in Jolie allows overriding constants from the command line during program execution.
+  - context: |
+      constants {
+          Server_location = "socket://localhost:8080",
+          ALARM_TIMEOUT = 2000,
+          standard_gravity = 9.8
+      }
+    question: |
+      What are some examples of constants you can define in Jolie?
+    answer: |
+      Examples of constants in Jolie are:
+      - `Server_location` set to `"socket://localhost:8080"`
+      - `ALARM_TIMEOUT` set to `2000`
+      - `standard_gravity` set to `9.8`
+  - context: |
+      Under Windows, `=` is a parameter delimiter.
+    question: |
+      How should you format the `-C` option on Windows to correctly assign constants?
+    answer: |
+      On Windows, you should enclose the assignment of the constant in single or double quotes. For example:
+      ```
+      jolie -C "server_location=\"socket://localhost:4003\"" program.ol
+      ```
+  - question: What happens if you remove a constant declaration from the `constants` list in Jolie and use the `-C` option?
+    answer: |
+      If you remove a constant declaration from the `constants` list in Jolie, you can make the constant assignment mandatory using the `-C` option when running the program.
+  - context: |
+      constants {
+          ALARM_TIMEOUT = 2000,
+          standard_gravity = 9.8
+      }
+    question: |
+      How do you declare a constant for an alarm timeout in Jolie?
+    answer: |
+      To declare a constant for an alarm timeout in Jolie, use:
+      ```
+      constants {
+          ALARM_TIMEOUT = 2000
+      }
+      ```

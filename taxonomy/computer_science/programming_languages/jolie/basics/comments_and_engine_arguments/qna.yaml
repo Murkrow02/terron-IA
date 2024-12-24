@@ -1,0 +1,42 @@
+version: 2
+task_description: |
+    Teach the model about comments and engine arguments in Jolie, including their format, usage, and available options.
+created_by: davidederosa
+seed_examples:
+  - question: What is the format for single-line comments in Jolie?
+    answer: |
+      In Jolie, single-line comments are written using `//`, followed by the comment text.
+  - question: What is the format for multi-line comments in Jolie?
+    answer: |
+      Multi-line comments in Jolie are written using `/*` to start the comment and `*/` to end the comment block.
+  - question: What is the command to display the available options in Jolie?
+    answer: |
+      To display the available options in Jolie, you can run the command `jolie --help` in the console.
+  - context: |
+      The Jolie engine supports various arguments such as `-h` for help, `--connlimit` to set the maximum number of active connection threads, and `--log` to set the logging level.
+    question: What is the purpose of the `--connlimit` argument in Jolie?
+    answer: |
+      The `--connlimit` argument in Jolie sets the maximum number of active connection threads.
+  - context: |
+      The Jolie engine can be parametrized with various arguments, such as `--typecheck` to check for data-related typing errors and `--trace` to activate a tracer for communication or computation traces.
+    question: What does the `--trace` argument do in Jolie?
+    answer: |
+      The `--trace` argument activates tracing in Jolie. You can specify `console` to print traces to the console or `file` to create a JSON file with the traces.
+  - question: How can you specify the service to execute in Jolie when there is more than one service in a module?
+    answer: |
+      When there is more than one service in a module, you can specify the service to execute using the `-s [service name]` or `--service [service name]` argument.
+  - context: |
+      Jolie allows you to set logging levels using the `--log` argument. Available levels include `severe`, `warning`, `info`, and `fine`.
+    question: What are the available logging levels in Jolie and how do you set them?
+    answer: |
+      The available logging levels in Jolie are `severe`, `warning`, `info`, and `fine`. You can set the logging level using the `--log` argument.
+  - context: |
+      The `--params` argument in Jolie allows you to pass a JSON file that contains the parameters for the service being executed.
+    question: What is the purpose of the `--params` argument in Jolie?
+    answer: |
+      The `--params` argument allows you to use the contents of a JSON file as the argument for the service being executed in Jolie.
+  - context: |
+      The `--correlationAlgorithm` argument in Jolie allows you to choose between two algorithms: `simple` and `hash` for message correlation.
+    question: What are the available options for the `--correlationAlgorithm` argument in Jolie?
+    answer: |
+      The available options for the `--correlationAlgorithm` argument in Jolie are `simple` and `hash`, which define the algorithm used for message correlation.

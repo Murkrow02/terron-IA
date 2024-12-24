@@ -1,0 +1,34 @@
+version: 2
+task_description: "Teach the model about the concepts of processes and sessions in Jolie."
+created_by: davidederosa
+seed_examples:
+  - question: What is a process in Jolie?
+    answer: |
+      A process in Jolie is a running instance of a behaviour and represents an executable entity inside a Jolie engine.
+  - question: What is a session in Jolie?
+    answer: |
+      A session in Jolie is a process responsible for serving one or more requests and represents an open conversation among two or more services.
+  - question: How does a session start in Jolie?
+    answer: |
+      A session in Jolie always starts when it is triggered by an external message.
+  - question: How does a process start in Jolie?
+    answer: |
+      A process in Jolie starts either when a session is triggered or when a Jolie script is run.
+  - question: What is the difference between a process and a session in Jolie?
+    answer: |
+      The main difference is that a process refers to an executable entity inside a Jolie engine, whereas a session represents an open conversation among two or more services.
+  - context: |
+      In Jolie, a session is triggered by an external message, while a process is triggered when a session starts or when a Jolie script is run.
+    question: |
+      Can a process in Jolie start without a session being triggered?
+    answer: |
+      Yes, a process in Jolie can start without a session being triggered if a Jolie script is explicitly run.
+  - context: |
+      A process is an executable entity inside a Jolie engine, whereas a session represents an open conversation among two or more services.
+    question: |
+      Can the terms process and session be used interchangeably in Jolie?
+    answer: |
+      While the terms are similar and can often refer to the same entity, they are not completely interchangeable as they have distinct roles in Jolie.
+  - question: What animates a session in Jolie?
+    answer: |
+      A process animates a session in Jolie, acting as the executable artifact that manages the session's behaviour.

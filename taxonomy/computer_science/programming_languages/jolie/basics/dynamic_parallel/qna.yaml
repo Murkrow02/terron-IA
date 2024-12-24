@@ -1,0 +1,35 @@
+version: 2
+task_description: |
+    Teach the model about dynamic parallelism in Jolie, including its syntax, semantics, and usage examples.
+created_by: davidederosa
+seed_examples:
+  - question: What is the purpose of the spawn primitive in Jolie?
+    answer: |
+      The spawn primitive in Jolie is used to instantiate parallel activities within a service behaviour. Unlike the parallel operator, it allows for the dynamic definition of the number of parallel activities at runtime.
+  - question: How does the spawn primitive syntax look in Jolie?
+    answer: |
+      The syntax for the spawn primitive in Jolie is:
+      ```jolie
+      spawn( var over range ) in resultVar {
+          spawned session
+      }
+      ```
+      Here, `var` is the index variable ranging over `range`, `resultVar` is the variable vector to store results, and `spawned session` is the code to be executed in parallel.
+  - context: |
+      The execution of a spawn statement in Jolie completes when all its spawned sessions finish. These sessions inherit variables and output port declarations from the parent session and can exploit global variables.
+    question: What happens to variables and output ports in spawned sessions in Jolie?
+    answer: |
+      Spawned sessions in Jolie inherit all variables and output port declarations from the parent session. Additionally, global variables are shared among all sessions, but each spawned session has local variables for its scope.
+  - context: |
+      In an IoT scenario, sensors communicate their readings to a central service using the spawn primitive. A global hashmap stores sensor locations, and a vector organizes this data for parallel processing.
+    question: How is the spawn primitive used to calculate the average temperature from multiple sensors?
+    answer: |
+      The spawn primitive iterates over a vector containing sensor data, spawning sessions to fetch temperatures from each sensor. The results are stored in a result vector, and the average temperature is calculated from this data.
+  - question: How does the advanced use of spawn differ from the basic usage in Jolie?
+    answer: |
+      In advanced usage, spawn runs a session in an embedded service to handle asynchronous communication. Sensors send data asynchronously, and a correlation set is used to maintain consistency between requests and responses.
+  - context: |
+      The advanced scenario introduces an embedded service to handle asynchronous communication with sensors. The spawn primitive synchronously calls a retrieveTemperature operation, and the correlation between calls is managed using a token.
+    question: What role does the correlation set play in the advanced use of spawn in Jolie?
+    answer: |
+      The correlation set ensures consistent communication between the retrieveTemperature operation and sensor responses. A unique token is generated and used to match requests with their corresponding responses.

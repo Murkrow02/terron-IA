@@ -1,0 +1,90 @@
+version: 2
+task_description: |
+    Teach the model about sessions and correlation sets in Jolie programming language, focusing on their usage and examples.
+created_by: davidederosa
+seed_examples:
+  - question: What is a session in Jolie?
+    answer: |
+      In Jolie, a session represents a communication session among the service that holds the session and other participants. It typically begins with a message received on a request-response operation and ends with a response message.
+  - question: How are stateful sessions handled in Jolie?
+    answer: |
+      Stateful sessions are designed to handle multiple messages from external invokers. Each message is routed to the correct session using a session identifier or correlation set.
+  - context: |
+      Stateful sessions allow a service to maintain state across multiple interactions. For instance, a Tris game service uses sessions to keep track of different games, routing user messages to the appropriate session using a game token as a correlation set.
+    question: How does the Tris game service manage multiple game sessions?
+    answer: |
+      The Tris game service uses a session identifier, or correlation set, to route each user's messages to the correct game session. The game token identifies the session within the service.
+  - context: |
+      Correlation sets in Jolie are a generalization of session identifiers, allowing multiple variables to define a session. They are declared in the deployment part and initialized in the behavioral part of a program.
+    question: How are correlation sets declared and initialized in Jolie?
+    answer: |
+      Correlation sets are declared using the `cset` construct in the deployment part and initialized in the behavioral part with the syntax `csets.<variable name> = <variable value>`.
+  - question: What is the purpose of the `new` primitive in Jolie?
+    answer: |
+      The `new` primitive generates a unique, fresh value for a correlation variable, ensuring it has not been used in previous calls.
+  - question: Can you provide an example of defining a correlation set in Jolie?
+    answer: |
+      An example of a correlation set is:
+      ```jolie
+      cset {
+          token: MoveRequest.game_token
+      }
+      ```
+      Here, the correlation variable `token` is linked to the `game_token` node of the `MoveRequest` message type.
+  - context: |
+      In Jolie, correlation sets can use multiple aliases to link a variable to different message types. This ensures loose coupling between correlation variables and data structures.
+    question: Why would a correlation variable have multiple aliases?
+    answer: |
+      Multiple aliases allow the correlation variable to match data from different message types, making it flexible to handle diverse incoming messages in a session.
+  - context: |
+      A chat server can use correlation sets to manage multiple client sessions. Each client is assigned a unique session identifier (`sid`) that is used in subsequent operations like sending messages or logging out.
+    question: How does a chat server manage client sessions using correlation sets?
+    answer: |
+      The chat server assigns each client a unique session identifier (`sid`) during login. This `sid` is included in all client messages and is used to correlate messages with the appropriate session.
+  - question: What happens if a message does not correlate with an existing behavior instance in Jolie?
+    answer: |
+      If the message does not correlate and the operation is a starting operation, a new behavior instance is created. Otherwise, the message is rejected, and a `CorrelationError` fault is sent back to the invoker.
+  - question: What is the purpose of the `subscribeSessionListener` operation in Jolie?
+    answer: |
+      The `subscribeSessionListener` operation in Jolie signals the Console service to tag input messages with a token provided by the user. This tagging allows incoming input messages to be correlated with the appropriate session.
+  - question: How do you enable session listeners for the Console service in Jolie?
+    answer: |
+      To enable session listeners for the Console service, you call the `registerForInput` operation with a request containing the `enableSessionListener` node set to `true`.
+  - context: |
+      In Jolie, routing input messages to the correct session is complex in `concurrent` and `sequential` execution modes. The Console service offers operations like `subscribeSessionListener` and `unsubscribeSessionListener` to manage this. Users must define a session token to correlate inputs to their sessions.
+    question: How is a session token created and used in Jolie?
+    answer: |
+      A session token is created using the `new` primitive and assigned to a variable. This token is then used in operations like `subscribeSessionListener` to associate input messages with a specific session.
+  - question: What steps are involved in handling user input in a Jolie session?
+    answer: |
+      The steps are:
+      1. Define a session token using the `new` primitive.
+      2. Enable session listeners with `registerForInput`.
+      3. Subscribe the listener with `subscribeSessionListener` using the session token.
+      4. Wait for the user input using `in(message)`.
+      5. Unsubscribe the listener with `unsubscribeSessionListener` when the session ends.
+  - context: |
+      The Console service in Jolie allows operations to be tagged with tokens to handle inputs for different sessions. This is especially useful in concurrent or sequential execution modes where multiple instances can interact.
+    question: Why is input routing straightforward in single-session services but not in `concurrent` or `sequential` modes in Jolie?
+    answer: |
+      In single-session services, there is only one instance, so routing input messages is direct. However, in `concurrent` or `sequential` modes, multiple instances can prompt for user input simultaneously, requiring token-based tagging to route messages correctly.
+  - question: Can you provide an example of using `subscribeSessionListener` and `unsubscribeSessionListener` in Jolie?
+    answer: |
+      Sure! Here is an example:
+      ```jolie
+      // Enable session listeners
+      registerForInput@Console( { enableSessionListener = true } )();
+      // Create a session token
+      token = new;
+      // Subscribe the listener
+      subscribeSessionListener@Console( { token = token } )();
+      // Handle input
+      in( message );
+      // Unsubscribe the listener
+      unsubscribeSessionListener@Console( { token = token } )();
+      ```
+  - context: |
+      In Jolie, the `cset` construct is used to target specific nodes. The `InRequest.token` node is used for tagging inputs to associate them with specific sessions.
+    question: What is the role of `cset` in session management in Jolie?
+    answer: |
+      The `cset` construct in Jolie is used to target specific nodes, like `InRequest.token`, to enable tagging of input messages with session tokens for proper routing.

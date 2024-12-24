@@ -1,0 +1,34 @@
+version: 2
+task_description: |
+    Teach the model about the concept of dynamic binding in Jolie, including its application, example scenarios, and compatibility rules.
+created_by: davidederosa
+seed_examples:
+  - question: What is dynamic binding in Jolie?
+    answer: |
+      Dynamic binding in Jolie allows output ports to have their locations and protocols change at runtime, enabling the creation of dynamic systems where components can bind dynamically during execution.
+  - question: How can dynamic binding be achieved in Jolie?
+    answer: |
+      Dynamic binding is achieved by treating output ports as variables and changing their location at runtime. For instance, you can reassign the location of an output port like this: `Printer.location = "newLocation"`.
+  - context: |
+      A Jolie program has two printer services, `printer1` and `printer2`, both sharing the same interface. The PrinterManager forwards messages to the appropriate printer service based on the client's selection. It dynamically sets the location of the Printer output port depending on the requested printer.
+    question: How does the PrinterManager decide which printer service to use in Jolie?
+    answer: |
+      The PrinterManager checks the `request.printer` value and assigns the Printer's location to either `"socket://localhost:8001"` for `printer1` or `"socket://localhost:8002"` for `printer2`.
+  - context: |
+      A chat application uses dynamic binding where a `chat-registry` service dynamically binds its outputPort to send messages to connected users. The user's locations are stored in a hashmap updated during chat registration.
+    question: How does the chat-registry dynamically bind to a user in Jolie?
+    answer: |
+      The chat-registry retrieves the user's location from a hashmap, assigns it to the output port `User.location`, and sends the message using the dynamically updated output port.
+  - context: |
+      Dynamic binding in Jolie requires compatible interfaces between output ports and receiving input ports. This means the output port's operations must exist in the input port, and the message types must be compatible to avoid type mismatches.
+    question: What are the requirements for interface compatibility in Jolie dynamic binding?
+    answer: |
+      Interface compatibility requires that all operations defined in the output port are also declared in the input port, and the message types for the operations are compatible, ensuring no TypeMismatch errors.
+  - question: What happens if an operation in the output port is not defined in the input port in Jolie dynamic binding?
+    answer: |
+      If an operation in the output port is not defined in the input port, the binding will fail due to interface incompatibility, as all operations must be declared in the receiving input port.
+  - context: |
+      The sendMessage operation in a Jolie chat-registry uses dynamic binding to send messages to all chat participants. For each participant, the User output port is dynamically assigned a location before sending the message.
+    question: How does the sendMessage operation handle message delivery to multiple users in Jolie?
+    answer: |
+      The sendMessage operation iterates over all registered users, dynamically assigns the User output port's location for each user, and forwards the message to them, skipping the sender.

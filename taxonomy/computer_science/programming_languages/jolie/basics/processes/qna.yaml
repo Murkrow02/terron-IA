@@ -1,0 +1,49 @@
+version: 2
+task_description: |
+  Provide information on Jolie processes, execution modalities, global variables, synchronization, and their implementation in services.
+created_by: davidederosa
+seed_examples:
+  - question: What is the default execution modality in Jolie processes?
+    answer: |
+      The default execution modality in Jolie processes is `single`, which runs the program behavior once.
+  - context: |
+      A process can be executed in three modalities: single, sequential, or concurrent. Single is the default modality, sequential makes the behavior available again after the current instance terminates, and concurrent allows a new process to start whenever the first input statement can receive a message.
+    question: How does the `concurrent` execution modality differ from `sequential`?
+    answer: |
+      The `concurrent` execution modality starts a new process whenever its first input statement can receive a message, while the `sequential` modality ensures the behavior is made available again only after the current instance has terminated.
+  - context: |
+      Global variables in Jolie are used to share data among different processes. These are accessed using the `global` prefix. Local variables are scoped to a behavior instance.
+    question: How are global variables accessed in Jolie?
+    answer: |
+      Global variables are accessed using the `global` prefix, for example, `global.myVariable`.
+  - question: Why are synchronized blocks used in Jolie?
+    answer: |
+      Synchronized blocks in Jolie restrict concurrent access to global variables, ensuring that only one process can execute code within the block sharing the same synchronization ID at a time.
+  - context: |
+      The `init{}` scope in Jolie initializes a service before making its behavior available. It is executed only once, while the `main{}` scope executes following the service's execution modality.
+    question: What is the difference between the `init{}` and `main{}` scopes in Jolie?
+    answer: |
+      The `init{}` scope is used for service initialization and is executed only once when the service starts, whereas the `main{}` scope defines the service's behavior and follows the execution modality.
+  - question: What happens to a global variable in concurrent execution when multiple requests are made?
+    answer: |
+      A global variable retains its value across different processes and increments with each new session, unlike local variables, which are reset for every process.
+  - context: |
+      Concurrent processes can use synchronized blocks to restrict simultaneous access to critical sections of code. For example, using `synchronized(syncToken) {}` ensures that only one process at a time can access the block sharing the `syncToken`.
+    question: How does synchronization work in Jolie for managing concurrent processes?
+    answer: |
+      Synchronization in Jolie works by using `synchronized` blocks with an ID, such as `syncToken`, to ensure mutual exclusion. This means only one process at a time can execute the code in any block sharing the same ID.
+  - question: How are global variables and local variables initialized and modified in Jolie processes?
+    answer: |
+      Global variables are initialized using the `global` prefix and retain their value across processes, while local variables are specific to a process and are reinitialized with each new execution. For example:
+      ```jolie
+      global.myGlobalVariable = 3
+      myLocalVariable = 1
+      ```
+  - question: How does the `main` scope handle execution in a concurrent modality?
+    answer: |
+      In a concurrent modality, the `main` scope allows the process to start a new instance whenever the first input statement can receive a message, enabling parallel processing.
+  - context: |
+      In Jolie, `synchronized` blocks ensure mutual exclusion by restricting access to a block with the same ID to one process at a time. This helps prevent race conditions when modifying shared data.
+    question: Why is mutual exclusion important in concurrent Jolie processes?
+    answer: |
+      Mutual exclusion is important to prevent race conditions when multiple processes access shared resources or variables, ensuring data consistency and correct behavior.

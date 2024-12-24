@@ -1,0 +1,29 @@
+version: 2
+task_description: |
+    Teach the model about basic fault handling in Jolie, including the use of scope, fault, throw, and the unique features of termination_handlers and compensation_handlers.
+created_by: davidederosa
+seed_examples:
+  - question: What are the main concepts involved in fault handling in Jolie?
+    answer: |
+      The main concepts involved in fault handling in Jolie are scope, fault, and throw.
+  - context: |
+      In Jolie, the primitive install is used to instantiate fault handlers within a scope.
+    question: How do you instantiate fault handlers in Jolie?
+    answer: |
+      You instantiate fault handlers in Jolie by using the primitive `install` within a scope.
+  - context: |
+      Jolie is different from other languages in terms of termination_handlers and compensation_handlers. The `install` primitive is used to promote compensation handlers instead of fault handlers for a given scope.
+    question: How does fault handling in Jolie differ from other languages in terms of compensation_handlers?
+    answer: |
+      In Jolie, the `install` primitive is used to promote compensation handlers for a given scope, whereas other languages may use different mechanisms for handling compensation.
+  - question: What is the role of the `install` primitive in Jolie's fault handling system?
+    answer: |
+      The `install` primitive in Jolie is used to instantiate fault handlers and to promote compensation handlers within a given scope.
+  - context: |
+      In Jolie, termination_handlers are related to fault handling and are promoted in a similar manner as compensation_handlers using the `install` primitive.
+    question: How are termination_handlers promoted in Jolie's fault handling system?
+    answer: |
+      Termination_handlers in Jolie are promoted using the `install` primitive, similar to how compensation_handlers are promoted.
+  - question: What is the purpose of the `throw` concept in Jolie's fault handling system?
+    answer: |
+      The `throw` concept in Jolie is used to trigger faults within a scope.

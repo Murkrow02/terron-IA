@@ -1,0 +1,82 @@
+version: 2
+task_description: 'Teach the model about termination and compensation mechanisms in Jolie programming language.'
+created_by: davidederosa
+seed_examples:
+  - question: What is the difference between termination and compensation in Jolie?
+    answer: |
+      Termination is triggered when a scope is interrupted during execution, and it allows recovery by executing a recovery handler. Compensation, on the other hand, is used to recover after a scope has successfully completed its activities. A termination handler becomes a compensation handler when the scope finishes successfully.
+  - context: |
+      A termination handler is executed when a scope is interrupted by a fault raised in a sibling activity. Compensation handlers are executed when a scope finishes its activities successfully and are promoted to the parent scope.
+    question: When is a termination handler triggered in Jolie?
+    answer: |
+      A termination handler is triggered when a scope is interrupted due to a fault raised by a parallel activity or sibling scope.
+  - context: |
+      In Jolie, when a fault is raised during the execution of a scope, the corresponding termination handler is executed, and the parent scope's fault handler can invoke the compensation handler of a successfully completed child scope.
+    question: How does a parent scope execute a compensation handler of a child scope?
+    answer: |
+      The parent scope executes the compensation handler of a child scope when the child scope completes successfully, and the parent scope's fault handler is triggered by a fault raised in a sibling scope.
+  - question: How do you define and use a termination handler in Jolie?
+    answer: |
+      A termination handler is defined using the `install` statement and is executed when a scope is interrupted by a fault. It is installed within a scope to handle recovery when the scope is terminated prematurely.
+  - context: |
+      A scope can dynamically install or update recovery handlers, which can also include termination handlers. The handler can refer to `this`, which means it can be the current scope's handler or a recovery handler from the enclosing scope.
+    question: Can recovery handlers be dynamically updated in Jolie?
+    answer: |
+      Yes, recovery handlers, including termination handlers, can be dynamically updated using the `install` statement. This allows the handler to change based on the scope's execution progress.
+  - context: |
+      In the provided example, the `cH` placeholder is used to add code to the current recovery handler without replacing the existing handler entirely. This allows the composition of multiple recovery steps.
+    question: What is the purpose of the `cH` keyword in Jolie recovery handlers?
+    answer: |
+      The `cH` keyword allows you to compose additional code into the current recovery handler without replacing the existing handler. It is used to add extra recovery steps while retaining previous ones.
+  - question: How does compensation work in Jolie after a scope finishes successfully?
+    answer: |
+      Compensation in Jolie is triggered by the `comp` statement, which can be used within a handler to invoke the recovery actions of a successfully completed scope. The compensation handler is promoted to the parent scope when the child scope finishes successfully.
+  - context: |
+      In the transaction example, the termination handlers for locking the product, booking transportation, and locking the bank account are executed in parallel. If a fault occurs, the corresponding compensation handlers for the sibling activities are executed to undo their actions.
+    question: How do termination and compensation handlers work in a parallel scenario in Jolie?
+    answer: |
+      In a parallel scenario, termination handlers are executed when a fault occurs, and compensation handlers are triggered to undo actions such as locking a product or booking transportation. These handlers are executed in the reverse order of the activities that were initiated in parallel.
+  - question: How is a fault triggered in Jolie during scope execution?
+    answer: |
+      A fault is triggered using the `throw` statement. When a fault is raised, it interrupts the scope's execution, and the associated termination or compensation handlers are executed to recover from the fault.
+  - question: What does the `^` operator do in Jolie?
+    answer: |
+      The `^` operator in Jolie freezes the state of a variable at the moment of its installation, preserving its value even when the variable is modified later.
+  - question: How does Jolie use the `^` operator for freezing variable states in handlers?
+    answer: |
+      The `^` operator is used to freeze the state of variables within handlers. This ensures that the values of variables are preserved as they were at the time of installation, even if the variables are modified later in the program.
+  - context: |
+      In Jolie, the `^` operator is used to freeze variables within installed handlers, ensuring the variable's value remains fixed during execution.
+    question: How can you freeze the value of a variable when using an installed handler in Jolie?
+    answer: |
+      You can freeze the value of a variable by prefixing it with the `^` operator when installing a handler. This will capture the variable's value at the time the handler is installed.
+  - question: How does the `install` primitive work in Jolie within a loop?
+    answer: |
+      The `install` primitive in Jolie is used within loops to repeatedly install handlers. Each handler can freeze the state of variables, allowing for the preservation of their values across iterations.
+  - question: What happens if a fault occurs in a Jolie program with a solicit-response handler installed?
+    answer: |
+      If a fault occurs in a Jolie program with a solicit-response handler installed, the handler will be triggered if the response is successful. If the fault occurs during the solicit-response operation, the termination handler will be executed.
+  - context: |
+      In Jolie, solicit-response handlers are installed using the following syntax: `operation_name@Port_name( request )( response ) [ this => handler code here ]`. This allows you to execute code after sending a request but before receiving the reply.
+    question: How do you install a handler in a Jolie solicit-response operation?
+    answer: |
+      You install a handler in a solicit-response operation by adding the handler code within square brackets, placed after the request and before receiving the response.
+  - context: |
+      In a Jolie program, solicit-response handlers can be installed to execute certain actions after the request is sent and before the reply is received. This allows for synchronized handling of request-response sequences.
+    question: Can you install a handler in a Jolie program after sending a request and before receiving a reply?
+    answer: |
+      Yes, in Jolie, you can install a handler after sending a request and before receiving a reply by using the syntax `operation_name@Port_name( request )( response ) [ this => handler code here ]`.
+  - question: How do you install a handler that is only executed after a successful response in Jolie?
+    answer: |
+      A handler in Jolie is only executed after a successful response if it is placed within the square brackets of a solicit-response operation, such as `operation_name@Port_name( request )( response ) [ this => handler code here ]`.
+  - question: What is the purpose of the `cH` operator in the example with the freeze operator in Jolie?
+    answer: |
+      The `cH` operator is used to queue all the installed handlers, ensuring that they are executed in the correct sequence when triggered by certain events or conditions.
+  - context: |
+      In the Jolie example, a handler is installed to unlock a product and cancel a booking after performing some product and logistics operations. The freeze operator is used to ensure that variables like `i`, `token`, and `reservation_id` retain their values at the time of installation.
+    question: What role does the freeze operator play in the Jolie product and logistics operation?
+    answer: |
+      The freeze operator in this Jolie example ensures that the values of variables like `i`, `token`, and `reservation_id` are preserved when installing handlers for operations like unlocking a product and canceling bookings.
+  - question: How do you program a fault-handling mechanism in Jolie with multiple products in a transaction?
+    answer: |
+      You can handle faults in Jolie by using `install` to assign termination handlers for each product operation. The handlers will execute after each product operation, ensuring the transaction can be properly managed and reversed in case of failure.
