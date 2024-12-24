@@ -1,0 +1,39 @@
+version: 2
+task_description: |
+    This documentation explains how type mismatching is handled in Jolie, particularly in relation to one-way and request-response operations.
+created_by: davidederosa
+seed_examples:
+  - question: What happens when a type mismatch occurs in a one-way operation in Jolie?
+    answer: |
+      In a one-way operation, the sender checks if the type of the output message matches the declared operation's interface. If there is a mismatch, a `TypeMismatch` fault is raised, and the message is not sent. The receiver checks the incoming message's type, and if it doesn't match, the message is discarded, and a warning is printed, but no fault is sent back to the sender.
+  - question: How can a `TypeMismatch` fault be handled in Jolie?
+    answer: |
+      A `TypeMismatch` fault can be handled by using fault handling in Jolie. You can install a handler using the `install` function in a scope, as shown in the following code snippet:
+      ```jolie
+      scope ( myScope )
+      {
+          install(
+              TypeMismatch => println@Console( myScope.TypeMismatch )()
+          );
+          // code
+      }
+      ```
+  - context: |
+      Type mismatching in request-response operations leads to different scenarios based on where the mismatch occurs.
+      |                   | Fault raised in REQUEST messages                                                                                   | Fault raised in RESPONSE messages                                                  |
+      |:------------------|:-------------------------------------------------------------------------------------------------------------------|:-----------------------------------------------------------------------------------|
+      | **SENDER side**   | The message is not sent; a `TypeMismatch` exception is raised.                                                      | a `TypeMismatch` exception is raised.                                              |
+      | **RECEIVER side** | The message is discarded; a warning message is sent to console; a `TypeMismatch` fault message is sent to the sender | a `TypeMismatch` exception is raised. a `TypeMismatch` fault is sent to the sender. |
+    question: |
+      What happens when a `TypeMismatch` fault is raised in request-response operations on the sender's side?
+    answer: |
+      If a `TypeMismatch` fault is raised on the sender's side for a request-response operation, the message is not sent, and a `TypeMismatch` exception is raised.
+  - context: |
+      Type mismatching in one-way operations occurs both when sending and receiving messages. If a sender sends a message with a mismatched type, the message is not sent, and a `TypeMismatch` fault is raised. If the receiver receives a message with a mismatched type, the message is discarded, and a warning message is printed.
+    question: |
+      What happens if a type mismatch occurs when the receiver is handling a one-way operation message in Jolie?
+    answer: |
+      If the receiver encounters a type mismatch in a one-way operation, the message is discarded, and a `TypeMismatch` warning is printed to the console. However, no fault is sent back to the invoker.
+  - question: How is type mismatching handled in request-response operations when it occurs on the receiver's side?
+    answer: |
+      When type mismatching occurs on the receiver's side in request-response operations, the message is discarded, a warning is printed to the console, and a `TypeMismatch` fault message is sent back to the sender.

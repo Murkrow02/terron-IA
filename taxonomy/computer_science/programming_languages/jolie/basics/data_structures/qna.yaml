@@ -1,55 +1,127 @@
 version: 2
-task_description: "Understanding Jolie Data Structures"
-created_by: murkrow
+task_description: 'Teach the model how to navigate and manipulate Jolie data structures, including creating, traversing, and modifying trees, using various operators like foreach, with, undef, and <<.'
+created_by: davidederosa
 seed_examples:
-  - question: "How do you create a simple tree structure in Jolie?"
+  - question: How do you create a tree-like data structure in Jolie?
     answer: |
-      To create a simple tree structure in Jolie, you can define a root node and add children as arrays or nested objects. For example, the following code creates a root node named 'animals' with 'pet' and 'wild' as children arrays:
+      In Jolie, you can create a tree-like structure using nested arrays and objects. For example:
       ```jolie
       main
       {
           animals.pet[0].name = "cat";
           animals.pet[1].name = "dog";
           animals.wild[0].name = "tiger";
-          animals.wild[1].name = "lion"
+          animals.wild[1].name = "lion";
       }
       ```
-  - context: |
-      You have a tree structure with nested elements, and you want to access an individual element.
-    question: "How do you access the first pet's name in Jolie?"
+  - question: How do you navigate a nested Jolie structure?
     answer: |
-      You can access the first pet's name by navigating the tree structure using the `.` operator. Here's the code:
+      You can navigate a nested Jolie structure using the `.` operator. For example:
       ```jolie
-      println@Console(animals.pet[0].name)()
+      animals.pet[0].name
       ```
-      This will print `cat`, as it accesses the first element in the `pet` array.
-  - question: "What is dynamic look-up in Jolie?"
+      This accesses the name of the first pet in the `animals` structure.
+  - question: How would you retrieve the name of the second wild animal in a Jolie structure?
     answer: |
-      Dynamic look-up allows you to reference elements in the structure by using a string expression at runtime. For instance:
+      To retrieve the name of the second wild animal, you would use the following path:
       ```jolie
-      a = "pe";
-      println@Console(animals.(a + "t")[0].name)()
+      animals.wild[1].name
       ```
-      This code dynamically evaluates `"pet"` by concatenating `"pe"` and `"t"`, and prints `cat`.
-  - context: |
-      You have a tree structure and want to loop through the elements, performing an operation on each.
-    question: "How can you use the `foreach` statement in Jolie?"
+  - question: What does the `foreach` statement do in Jolie?
     answer: |
-      The `foreach` statement allows you to iterate through the child nodes of a structure. For example:
+      The `foreach` statement in Jolie is used to iterate over elements in a structure. For example:
       ```jolie
-      foreach(kind : animals) {
-          for(i = 0, i < #animals.(kind), i++) {
-              println@Console("animals." + kind + "[" + i + "].name=" + animals.(kind)[i].name)()
-          }
+      foreach ( kind : animals ) {
+          println@Console( "animals." + kind + ".name=" + animals.( kind ).name )()
       }
       ```
-      This will print the names of all animals in both the `pet` and `wild` categories.
-  - question: "How do you use aliases in Jolie?"
+      This code will print the name of each element in the `animals` structure.
+  - question: How do you define a dynamic lookup in Jolie?
     answer: |
-      Aliases are created with the `->` operator, allowing you to refer to a variable path indirectly. For example:
+      In Jolie, you can use dynamic look-up by placing a string expression in parentheses. For example:
+      ```jolie
+      println@Console( animals.( "pet" )[ 0 ].name )()
+      ```
+      This will evaluate `"pet"` dynamically and print the name of the first pet.
+  - question: How do you use the `with` operator in Jolie?
+    answer: |
+      The `with` operator in Jolie allows you to avoid writing redundant paths for nested elements. For example:
+      ```jolie
+      with ( animals ) {
+          .pet[ 0 ].name = "cat";
+          .pet[ 1 ].name = "dog";
+          .wild[ 0 ].name = "tiger";
+          .wild[ 1 ].name = "lion";
+      }
+      ```
+  - question: What is the purpose of the `undef` operator in Jolie?
+    answer: |
+      The `undef` operator is used to erase or undefined a variable or structure alias in Jolie. For example:
+      ```jolie
+      undef( animals )
+      ```
+      This removes the alias of `animals` but does not delete the structure itself.
+  - question: How can you make a copy of an entire data structure in Jolie?
+    answer: |
+      You can use the deep copy operator `<<` to copy an entire structure in Jolie. For example:
+      ```jolie
+      zoo.sector_a << animals; undef( animals )
+      ```
+      This copies the `animals` structure to `zoo.sector_a`, even if `animals` is later undefined.
+  - question: How do you define a structure using literals in Jolie?
+    answer: |
+      In Jolie, you can define a structure using literals like this:
+      ```jolie
+      d << 12 {.greeting = "hello", .first = "to the", .first.second = "world", .first.third = "!" }
+      ```
+      This creates the `d` structure with nested elements.
+  - question: How do aliases work in Jolie?
+    answer: |
+      Aliases in Jolie are created using the `->` operator. For example:
       ```jolie
       myPets -> animals.pet;
-      println@Console(myPets[1].name)();  // Prints 'dog'
-      myPets[0].name = "bird";  // Replaces the first pet's name with 'bird'
-      println@Console(animals.pet[0].name)()  // Prints 'bird'
+      println@Console( myPets[ 1 ].name )() // Will print dog
       ```
+      In this case, `myPets` refers to `animals.pet`, and changes to `myPets` affect `animals.pet`.
+  - question: What happens if you use the `->` operator with a dynamic path in Jolie?
+    answer: |
+      When you use the `->` operator with a dynamic path, the alias is evaluated each time it is accessed. For example:
+      ```jolie
+      prev_env -> __environment.(__name);
+      ```
+      In this case, `prev_env` is a dynamic alias that is evaluated each time it is used, reflecting the current state of `__environment.(__name)`.
+  - question: Write a Jolie code snippet to create a structure with a nested array and access a specific element.
+    answer: |
+      Here’s how to create a nested array and access the second element:
+      ```jolie
+      main {
+          animals.pet[0].name = "cat";
+          animals.pet[1].name = "dog";
+          println@Console( animals.pet[1].name )(); // This will print 'dog'
+      }
+      ```
+  - context: |
+      main {
+          animals.pet[0].name = "cat";
+          animals.pet[1].name = "dog";
+          animals.wild[0].name = "tiger";
+          animals.wild[1].name = "lion";
+      }
+    question: |
+      How do you access the name of the second pet in the animals structure?
+    answer: |
+      You can access the name of the second pet using the following path:
+      ```jolie
+      animals.pet[1].name
+      ```
+  - context: |
+      with ( animals ) {
+          .pet[ 0 ].name = "cat";
+          .pet[ 1 ].name = "dog";
+          .wild[ 0 ].name = "tiger";
+          .wild[ 1 ].name = "lion";
+      }
+    question: |
+      How does the `with` operator simplify working with nested data structures?
+    answer: |
+      The `with` operator simplifies working with nested structures by allowing you to reference paths without repeating the full structure. For example, inside `with(animals)`, you can use `.pet[0].name` instead of `animals.pet[0].name`.

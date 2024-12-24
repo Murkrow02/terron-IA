@@ -1,0 +1,83 @@
+version: 2
+task_description: |
+    This task teaches the AI model to understand the concept of ports in Jolie, including input and output ports, their components, and configurations.
+created_by: davidederosa
+seed_examples:
+  - question: What are the two types of ports in Jolie?
+    answer: |
+        The two types of ports in Jolie are input ports and output ports.
+  - question: What is the purpose of an input port in Jolie?
+    answer: |
+        An input port exposes input operations to other services, defining where the service listens for messages.
+  - question: What is the purpose of an output port in Jolie?
+    answer: |
+        An output port defines how to invoke the operations of other services, specifying where messages should be sent.
+  - context: |
+      Jolie ports consist of three main components: location, protocol, and interfaces. Location defines where the service listens for or sends messages. Protocol specifies how data is sent or received, including encoding and decoding. Interfaces define the operations and message types available for interaction.
+    question: What are the three main components of Jolie ports?
+    answer: |
+        The three main components of Jolie ports are location, protocol, and interfaces.
+  - context: |
+      An input port can define multiple interfaces to specify the operations it exhibits. For example:
+      ```jolie
+      inputPort ExampleInput {
+          location: "socket://localhost:9000/"
+          protocol: soap
+          interfaces: Interface1, Interface2
+      }
+      ```
+    question: How can an input port in Jolie handle multiple interfaces?
+    answer: |
+        An input port in Jolie can handle multiple interfaces by listing them in the "interfaces" section of its declaration.
+  - context: |
+      The location for a port specifies the medium and address used for communication. Jolie supports five media: local, socket, btl2cap, rmi, and localsocket.
+    question: What are the supported communication media for Jolie ports?
+    answer: |
+        The supported communication media for Jolie ports are local, socket, btl2cap, rmi, and localsocket.
+  - question: How does the protocol differ when using the "local" medium in Jolie?
+    answer: |
+        The "local" medium in Jolie does not require a specific protocol to be set since it communicates directly in-memory.
+  - context: |
+      An output port declaration in Jolie specifies the location, protocol, and interfaces to communicate with another service. For example:
+      ```jolie
+      outputPort ExampleOutput {
+          location: "socket://localhost:8000/"
+          protocol: jsonrpc
+          interfaces: ExampleInterface
+      }
+      ```
+    question: What elements must be included in an output port declaration in Jolie?
+    answer: |
+        An output port declaration in Jolie must include the location, protocol, and interfaces to communicate with another service.
+  - question: How can multiple input and output ports be used in a Jolie service?
+    answer: |
+        Multiple input and output ports can be defined in a Jolie service to enable communication with different locations and protocols.
+  - context: |
+      A valid example of a Jolie input port configuration:
+      ```jolie
+      inputPort ServiceInput {
+          location: "socket://localhost:8080/"
+          protocol: http
+          interfaces: ServiceInterface
+      }
+      ```
+    question: What does an input port configuration in Jolie specify?
+    answer: |
+        An input port configuration in Jolie specifies the location, protocol, and interfaces for receiving messages.
+  - context: |
+      Jolie allows using multiple output ports to connect to various external services. Each output port can have a unique configuration. Example:
+      ```jolie
+      outputPort ExternalService1 {
+          location: "socket://service1.com:9000/"
+          protocol: jsonrpc
+          interfaces: InterfaceA
+      }
+      outputPort ExternalService2 {
+          location: "socket://service2.com:9001/"
+          protocol: soap
+          interfaces: InterfaceB
+      }
+      ```
+    question: Why might a Jolie service use multiple output ports?
+    answer: |
+        A Jolie service might use multiple output ports to connect to different external services, each with unique locations and protocols.

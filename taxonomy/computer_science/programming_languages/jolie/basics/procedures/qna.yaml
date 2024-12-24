@@ -1,32 +1,24 @@
 version: 2
 task_description: |
-    This skill helps the model learn how to create and use procedures in Jolie. It covers defining procedures using the `define` keyword, invoking procedures, and understanding their behavior in the context of Jolie’s lack of local variable scope.
-created_by: murkrow
+    This documentation explains how to define and use procedures in Jolie, including the main procedure and auxiliary procedures.
+created_by: davidederosa
 seed_examples:
-  - question: |
-      How do you define a procedure in Jolie?
+  - question: How do you define a procedure in Jolie?
     answer: |
-      To define a procedure in Jolie, use the `define` keyword followed by the procedure name and a block of code that implements its behavior. For example:
+      In Jolie, a procedure is defined using the `define` keyword followed by the procedure name and a block of code. For example:
       ```jolie
-      define sumProcedure
+      define procedureName
       {
-          sum = x + y
+          // code
       }
       ```
   - context: |
-      You need to define a procedure to calculate the sum of two numbers and then invoke it from the `main` block.
-    question: |
-      How do you define and invoke a simple sum procedure in Jolie?
-    answer: |
-      First, define the `sumProcedure`:
+      In Jolie, the `define` keyword is used to define procedures. These procedures do not have local variable scope. Here's an example of defining a procedure and invoking it from the main procedure:
       ```jolie
       define sumProcedure
       {
           sum = x + y
       }
-      ```
-      Then, in the `main` block, invoke the procedure:
-      ```jolie
       main
       {
           x = 1;
@@ -34,68 +26,19 @@ seed_examples:
           sumProcedure
       }
       ```
-  - context: |
-      In Jolie, you want to modify a procedure to accept parameters instead of using global variables.
     question: |
-      How do you modify a procedure to accept parameters in Jolie?
+      How do you invoke a procedure in Jolie?
     answer: |
-      To accept parameters, you can define them in the procedure and pass them when invoking it. For example:
-      ```jolie
-      define sumProcedure(x, y)
-      {
-          sum = x + y
-      }
-      ```
-      Then invoke the procedure like this:
-      ```jolie
-      main
-      {
-          x = 1;
-          y = 2;
-          sumProcedure( x, y )
-      }
-      ```
+      You can invoke a procedure in Jolie by simply calling its name within the `main` procedure or any other procedure. For example, `sumProcedure` is called in the `main` procedure in the example above.
+  - question: What is the purpose of the `main` procedure in Jolie?
+    answer: |
+      The `main` procedure in Jolie is the entry point of the program, where the execution starts. It can invoke other defined procedures as needed.
   - context: |
-      You want to call a procedure within another procedure in Jolie. Both procedures will access the same instance data.
+      In Jolie, auxiliary procedures can be defined and invoked from other procedures. Unlike some languages, Jolie procedures do not have a local variable scope, meaning variables are shared across the procedures within the same instance.
     question: |
-      How do you invoke a procedure within another procedure in Jolie?
+      How are variables handled in procedures in Jolie?
     answer: |
-      In Jolie, you can invoke one procedure inside another. Here’s an example where `sumProcedure` calls `multiplyProcedure`:
-      ```jolie
-      define multiplyProcedure(x, y)
-      {
-          product = x * y
-      }
-
-      define sumProcedure(x, y)
-      {
-          sum = x + y
-          multiplyProcedure(x, y)
-      }
-      ```
-  - context: |
-      You are working with multiple procedures in Jolie, and you need to ensure the procedures modify the same data.
-    question: |
-      How do you ensure that multiple procedures modify the same data in Jolie?
+      In Jolie, variables are shared across all procedures within the same instance because procedures do not have local variable scope.
+  - question: How is the code block of a procedure structured in Jolie?
     answer: |
-      Since procedures in Jolie do not have a local variable scope, all variables used within the procedures are global and shared. Here is an example:
-      ```jolie
-      define sumProcedure
-      {
-          sum = x + y
-      }
-
-      define multiplyProcedure
-      {
-          product = x * y
-      }
-
-      main
-      {
-          x = 3;
-          y = 4;
-          sumProcedure
-          multiplyProcedure
-      }
-      ```
-      Both `sumProcedure` and `multiplyProcedure` will modify the same `x` and `y` values.
+      The code block of a procedure in Jolie is enclosed within curly braces `{ ... }`, where the actual procedure logic is defined.

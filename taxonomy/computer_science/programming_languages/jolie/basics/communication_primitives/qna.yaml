@@ -1,0 +1,42 @@
+version: 2
+task_description: |
+  This documentation explains communication primitives in Jolie, focusing on input and output primitives, their categories, and how to use them in a Jolie service.
+created_by: davidederosa
+seed_examples:
+  - question: What are input primitives in Jolie?
+    answer: |
+      Input primitives in Jolie can be divided into two types: one-way and request-response. A one-way primitive is triggered by the reception of a message, and a request-response primitive is triggered by the reception of a message with a synchronous reply.
+  - context: |
+      Input primitives can be divided in two types which also correspond to those used into the interface declaration:
+      * one-way: a message can be received from an external caller. It must correspond to a OneWay operation declared into an interface.
+      * request-response: a message can be received from an external caller, and a synchronous reply can be sent back. It must correspond to a RequestResponse operation declared into an interface.
+    question: How do you declare a one-way operation in Jolie?
+    answer: |
+      To declare a one-way operation in Jolie, you simply write the name of the OneWay operation followed by the name of the variable where the received message will be stored. Example: `operation_name( request )`.
+  - context: |
+      A request-response operation requires the name of a RequestResponse operation defined into an interface followed by two variables: the former stores the receiving message and the latter stores the replying message. Some code can be executed between the request and response.
+    question: How do you declare a request-response operation in Jolie?
+    answer: |
+      To declare a request-response operation in Jolie, you write the operation name followed by two variables (one for the received message and one for the reply). You can also execute code between receiving the request and sending the response. Example: `operation_name( request )( response ){ // code block }`.
+  - context: |
+      Output primitives allow for sending messages to some input operations defined on another service. They can be categorized as notification or solicit-response.
+      A notification sends a message to a receiving one-way operation, and a solicit-response sends a message to a receiving request-response operation.
+    question: What is the difference between notification and solicit-response output primitives in Jolie?
+    answer: |
+      Notification sends a message to a one-way operation, while solicit-response sends a message to a request-response operation and waits for the reply before continuing.
+  - context: |
+      To program a notification in Jolie, use the operation name followed by the token `@` and the outputPort name where the message will be sent. For example, `operation_name@OutputPort_Name( request )`.
+    question: How do you program a notification in Jolie?
+    answer: |
+      To program a notification, write the operation name followed by `@` and the outputPort name. Example: `operation_name@OutputPort_Name( request )`.
+  - context: |
+      To program a solicit-response in Jolie, the operation name is followed by the outputPort name and the variables for the request and response. The response is received after sending the message and waiting for the reply.
+    question: How do you program a solicit-response in Jolie?
+    answer: |
+      To program a solicit-response, write the operation name followed by `@` and the outputPort name. The first variable stores the message to be sent, and the second variable stores the reply. Example: `operation_name@OutputPort_Name( request )( response )`.
+  - question: What is the syntax for declaring a OneWay operation in Jolie?
+    answer: |
+      The syntax for declaring a OneWay operation in Jolie is `operation_name( request )`, where `request` is the variable where the received message will be stored.
+  - question: What does the `responseTimeout` argument do in Jolie?
+    answer: |
+      The `responseTimeout` argument in Jolie sets the response timeout for solicit-response operations, controlling how long the system will wait for a reply before timing out.

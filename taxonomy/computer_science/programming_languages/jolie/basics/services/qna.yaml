@@ -1,21 +1,17 @@
 version: 2
 task_description: |
-    This skill helps to understand and manage services in Jolie, including their structure, usage, parameters, and execution.
-created_by: murkrow
+    Teach the AI about the concept of services in Jolie programming language, including definitions, parameterized services, embedding, private services, and service execution targets.
+created_by: davidederosa
 seed_examples:
-  - context: |
-      The `service` keyword in Jolie is used to define a service and its components. For example, `service MyService()` defines a service that can contain blocks for input ports, execution, and more.
-    question: |
-      How is a service defined in Jolie?
+  - question: What is the main element of a Jolie program?
     answer: |
-      A service in Jolie is defined using the `service` keyword followed by the service name and optional parameters. It may also include blocks for input ports and a main section for execution logic.
+      The main element of a Jolie program is a service. It is the minimal artifact that can be designed and developed in Jolie, and every Jolie application is a composition of services.
+  - question: How is a service defined in Jolie?
+    answer: |
+      A service in Jolie is defined using a `service` definition block which includes its deployment and behavior, such as named procedures, communication ports, and execution parameters.
   - context: |
-      The following example shows a simple Jolie service that multiplies a number by a constant factor of 8:
+      The following is a Jolie service definition:
       ```jolie
-      interface MyServiceInterface {
-          RequestResponse: multiply ( int )( int )
-      }
-
       service MyService() {
           execution: concurrent
           inputPort IP {
@@ -23,7 +19,6 @@ seed_examples:
               protocol: sodep
               interfaces: MyServiceInterface
           }
-
           main {
               multiply ( number )( result ) {
                   result = number * 8
@@ -31,59 +26,23 @@ seed_examples:
           }
       }
       ```
-    question: |
-      How does the example `MyService` service work in Jolie?
+    question: What is the purpose of the `main` block in a Jolie service definition?
     answer: |
-      The `MyService` service listens on a socket at `localhost:8000` using the `sodep` protocol and provides a `multiply` operation. The `multiply` function takes a number and returns the result multiplied by 8.
-  - context: |
-      Jolie allows parameters to be passed to a service using a JSON file. For instance, the following JSON can be used to pass parameters to a service:
-      ```json
-      {
-          "location": "socket://localhost:8000",
-          "factor": 2
-      }
-      ```
-    question: |
-      How are parameters passed to a service in Jolie?
+        The `main` block in a Jolie service definition specifies the core logic or behavior of the service, outlining how it processes inputs and produces outputs.
+  - question: How can parameters be passed to a Jolie service from the command line?
     answer: |
-      Parameters can be passed to a Jolie service via a JSON file, which is provided as an argument when starting the service using the `--params` option.
-  - context: |
-      A service can be embedded within another service using the `embed` keyword. For instance, in the following example, `ConfigurationService` is embedded within `MainService`:
-      ```jolie
-      service ConfigurationService {
-          inputPort IP {
-              location: "local"
-              requestResponse: getDBConn( void )(string)
-          }
-
-          main {
-              getDBConn ( req )( result ) {
-                  result = "SUPER_SECRET_CONN"
-              }
-          }
-      }
-
-      service MainService {
-          embed ConfigurationService() as Conf
-
-          main {
-              getDBConn@Conf()( res )
-          }
-      }
-      ```
-    question: |
-      What does the `embed` keyword do in Jolie?
+      Parameters can be passed to a Jolie service from the command line using a JSON file and the `--params` argument. For example, `jolie --params params.json my-service.ol` passes the parameters defined in `params.json`.
+  - question: What is the purpose of the `embed` keyword in Jolie?
     answer: |
-      The `embed` keyword allows one service to be included within another, enabling the inner service's functionality to be used by the outer service.
+      The `embed` keyword is used to include one service within another, allowing for the creation of multi-service compositions or "cells" in Jolie.
   - context: |
-      Jolie supports both public and private services, where a private service is not accessible by external modules. Private services are defined using the `private` keyword:
+      Services in Jolie can be marked as `private` to restrict their accessibility. For example:
       ```jolie
       private service ConfigurationService {
           inputPort IP {
               location: "local"
               requestResponse: getDBConn( void )(string)
           }
-
           main {
               getDBConn ( req )( result ) {
                   result = "SUPER_SECRET_CONN"
@@ -91,29 +50,24 @@ seed_examples:
           }
       }
       ```
-    question: |
-      What is the difference between public and private services in Jolie?
+    question: What does marking a service as `private` in Jolie achieve?
     answer: |
-      A public service can be accessed by any module, while a private service is restricted to being used only within the module it is defined in. Private services are defined using the `private` keyword.
-  - context: |
-      A service in Jolie may also have a specified execution target, which determines which service within a module is executed when the module is run. For instance:
-      ```bash
-      jolie --service MainService script.ol
-      ```
-    question: |
-      How is a specific service selected for execution in Jolie?
+        Marking a service as `private` in Jolie restricts it from being accessed externally, ensuring secure and maintainable code.
+  - question: What happens if a Jolie module contains multiple service definitions and the `--service` parameter is not used?
     answer: |
-      A specific service can be selected for execution by using the `--service` parameter followed by the name of the service when running the Jolie module.
+      If a Jolie module contains multiple service definitions and the `--service` parameter is not used, the Jolie interpreter reports an execution error unless the parameter specifies the target service for execution.
+  - question: How is the `execution` modality specified in a Jolie service?
+    answer: |
+      The `execution` modality in a Jolie service is specified using the `execution` statement within the service definition. For example, `execution: concurrent` sets the service to execute concurrently.
   - context: |
-      In Jolie, parameters can be embedded within the service's execution logic, allowing for dynamic behavior. For example:
+      A parameterized Jolie service can accept input parameters for its execution, such as in the following example:
       ```jolie
-      service MyService ( p: MyServiceParam ) {
+      service MyService( p: MyServiceParam ) {
           inputPort IP {
               location: p.location
               protocol: sodep
               interfaces: MyServiceInterface
           }
-
           main {
               multiply ( number )( result ) {
                   result = number * p.factor
@@ -121,47 +75,6 @@ seed_examples:
           }
       }
       ```
-    question: |
-      How do parameters affect the behavior of a service in Jolie?
+    question: What is the role of input parameters in a parameterized Jolie service?
     answer: |
-      Parameters in Jolie allow the behavior of a service to be customized at runtime. These parameters can define the service's execution environment, such as the location and protocol of the input port or other logic-specific values.
-  - context: |
-      A Jolie service can be run with parameters passed through a JSON file, like this:
-      ```json
-      {
-          "location": "socket://localhost:8000",
-          "factor": 2
-      }
-      ```
-    question: |
-      What is the format of the JSON file used to pass parameters to a Jolie service?
-    answer: |
-      The JSON file format consists of key-value pairs where keys represent parameter names and values represent their corresponding values. For example, `"location": "socket://localhost:8000"` and `"factor": 2`.
-  - context: |
-      A service can include an input port that specifies the location, protocol, and interfaces, as shown in the following example:
-      ```jolie
-      inputPort IP {
-          location: "socket://localhost:8000"
-          protocol: sodep
-          interfaces: MyServiceInterface
-      }
-      ```
-    question: |
-      What is the purpose of the input port in a Jolie service?
-    answer: |
-      The input port in a Jolie service defines how the service communicates with external entities. It specifies the location, protocol, and the interfaces it supports for communication.
-  - context: |
-      The service `MainService` uses `MyService` by embedding it and passing parameters. For example:
-      ```jolie
-      service MainService {
-          embed MyService({ .protocol = "sodep", .factor = 2 }) as Service
-          main {
-              multiply@Service( 3 )( res ) // res = 6
-              println@Console( res )()
-          }
-      }
-      ```
-    question: |
-      How does `MainService` interact with `MyService` in Jolie?
-    answer: |
-      `MainService` embeds `MyService` and passes parameters such as protocol and factor. It then calls the `multiply` function from `MyService` to perform the calculation and prints the result.
+        Input parameters in a parameterized Jolie service provide values that configure the service's behavior, such as specifying properties for its `inputPort` or influencing the logic within the `main` block.

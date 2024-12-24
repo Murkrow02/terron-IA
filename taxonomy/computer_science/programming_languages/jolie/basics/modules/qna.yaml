@@ -1,0 +1,49 @@
+version: 2
+task_description: 'Teach the model about the Jolie module system, including packages, modules, symbols, and the import statement.'
+created_by: davidederosa
+seed_examples:
+  - question: What are the main components of the Jolie module system?
+    answer: |
+      The main components of the Jolie module system are packages, modules, and symbols. A package is a directory containing Jolie modules, a module corresponds to a Jolie file containing a set of symbols, and a symbol is a named definition like a type, interface, or service.
+  - context: |
+      The syntax of the Jolie `import` statement is:
+      ```jolie
+      from moduleSpecifier import importTarget_1 [as alias_1], ..., importTarget_n [as alias_n]
+      ```
+      The `moduleSpecifier` defines the location of the module being imported, and `importTarget` specifies the symbols to be imported, optionally with aliases.
+    question: How can symbols be imported with an alias in Jolie?
+    answer: |
+      Symbols can be imported with an alias using the `as` keyword in the `import` statement. For example: `from module import symbol as alias`.
+  - context: |
+      When importing symbols in Jolie, users can use wildcard imports. For example:
+      ```jolie
+      from myPackage.myModule import *
+      ```
+      This imports all public symbols defined in the target module.
+    question: What does the `*` wildcard mean in Jolie imports?
+    answer: |
+      The `*` wildcard in Jolie imports means that all public symbols from the specified module will be imported.
+  - context: |
+      A Jolie module corresponds to a Jolie file and typically contains a single service with a `main` block. The service in the `main` block is the entry point for execution when the module is run.
+    question: What is the purpose of the `main` block in a Jolie module?
+    answer: |
+      The `main` block in a Jolie module defines the entry point for execution when the module is run, containing the service's main logic.
+  - question: How does Jolie resolve relative import paths?
+    answer: |
+      Jolie resolves relative import paths based on the location of the importing module. A single `.` prefix refers to the current directory, `..` refers to the parent directory, and additional dots traverse further up in the directory hierarchy.
+  - context: |
+      During module lookup, Jolie first looks for modules in the execution directory, then in system-level directories like `$JOLIE_HOME/packages`. It prioritizes nested paths within the working directory, followed by packaged `.jap` files.
+    question: What is the order of module lookup in Jolie for absolute paths?
+    answer: |
+      For absolute paths, Jolie first looks in the working directory, then for `.jap` files in the `lib` subdirectory of the working directory, and finally in system-level directories like `$JOLIE_HOME/packages`.
+  - question: What are the stages of execution for a Jolie `import` statement?
+    answer: |
+      The execution of a Jolie `import` statement involves three stages: module lookup, module parsing, and symbol binding.
+  - question: How does Jolie handle importing from nested packages?
+    answer: |
+      Jolie uses dots `.` to navigate through nested packages in the module path. For example, `from A.B.C import symbol` looks into folder A, then B, then C, and imports the specified symbol from the module.
+  - context: |
+      The Jolie interpreter terminates execution if errors occur during the import process, such as modules or symbols not found or illegal access to private symbols.
+    question: What happens if an import statement in Jolie fails?
+    answer: |
+      If an import statement in Jolie fails due to missing modules, symbols, or illegal access, the Jolie interpreter terminates execution.

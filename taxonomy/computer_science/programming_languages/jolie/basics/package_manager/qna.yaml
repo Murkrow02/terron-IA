@@ -1,0 +1,71 @@
+version: 2
+task_description: 'Teach the model about the Jolie package manager (jpm) and how to use it for managing dependencies in Jolie projects.'
+created_by: davidederosa
+seed_examples:
+  - question: How can I install jpm?
+    answer: |
+      You can install jpm using npm with the following command:
+      ```bash
+      npm install -g @jolie/jpm
+      ```
+  - question: What is the required NodeJS version to use jpm?
+    answer: |
+      jpm requires NodeJS version 18 or newer to operate.
+  - question: How can I create a new Jolie project using jpm?
+    answer: |
+      To create a new Jolie project, use the following command:
+      ```bash
+      npm create jolie
+      ```
+      Follow the instructions to choose the type of Jolie project.
+  - question: How do I activate jpm in an existing Jolie project?
+    answer: |
+      To activate jpm in an existing Jolie project, make sure the project has a `package.json` file. First, run:
+      ```bash
+      npm init --y
+      ```
+      Then, run:
+      ```bash
+      jpm init
+      ```
+      This will add the Jolie-specific field to the `package.json` file.
+  - question: How do I add a dependency to a Jolie project using jpm?
+    answer: |
+      To add a dependency to a Jolie project, use the following command:
+      ```bash
+      jpm install [TARGET[@version]] [-r mvn|npm]
+      ```
+      For example:
+      ```bash
+      jpm install @jolie/websocket
+      ```
+      This will add the `@jolie/websocket` package to your project.
+  - question: How do I remove a dependency from a Jolie project using jpm?
+    answer: |
+      To remove a dependency from a Jolie project, use the following command:
+      ```bash
+      jpm remove [TARGET]
+      ```
+      For example:
+      ```bash
+      jpm remove jolie-jsoup
+      ```
+      This will remove `jolie-jsoup` from the dependencies.
+  - context: |
+      jpm operates only on the `jolie` field in the `package.json` file. This field contains the information about the dependencies and the repositories to fetch the data from. The rest of the content in `package.json` is managed by npm.
+    question: What is the role of the `jolie` field in the `package.json` file?
+    answer: |
+      The `jolie` field in the `package.json` file contains information about Jolie dependencies and which repository to fetch them from. It should not be modified manually.
+  - context: |
+      jpm can fetch packages from both `npm` and `maven` repositories. This is useful for projects that need to import Java classes, such as database drivers.
+    question: From which repositories can jpm fetch packages?
+    answer: |
+      jpm can fetch packages from both `npm` and `maven` repositories.
+  - question: What should I do if I want to modify the `jolie` field in `package.json`?
+    answer: |
+      The `jolie` field should not be modified manually. jpm manages this field automatically when adding or removing dependencies.
+  - context: |
+      jpm can download and extract dependencies into the correct directory within the project. It supports both npm and maven repositories.
+    question: How does jpm handle dependencies after they are installed?
+    answer: |
+      jpm downloads and extracts the dependencies to the proper directory in the project.

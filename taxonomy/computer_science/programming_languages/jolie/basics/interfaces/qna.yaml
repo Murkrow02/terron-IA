@@ -1,6 +1,7 @@
 version: 2
-task_description: 'Understanding Interfaces in Jolie.'
-created_by: murkrow
+task_description: |
+    Teach the model about Jolie interface definitions, their structure, types of operations, and fault handling declarations.
+created_by: davidederosa
 seed_examples:
   - context: |
       Jolie defines two types of operations:
@@ -22,32 +23,65 @@ seed_examples:
       }
       One-way operations require only one message type, while request-responses define both request (left argument) and response (right argument) types.
     question: What are the two types of operations in Jolie interfaces?
-    answer: The two types of operations in Jolie interfaces are one-way operations and request-response operations.
-
+    answer: |
+      The two types of operations in Jolie interfaces are one-way operations, which receive a message, and request-response operations, which receive a message and send back a response.
+  - question: How are operations grouped in a Jolie interface?
+    answer: |
+      Operations in a Jolie interface are grouped by type into One-Way and Request-Response operation declarations.
   - context: |
-      Here's an example of an interface declaration for SumInterface:
-      interface SumInterface {
+      interface ExampleInterface {
+          OneWay:
+              log( string ),
+              notify( int )
           RequestResponse:
-              sum( SumRequest )( int )
+              compute( int )( float )
       }
-      SumInterface defines a request-response operation sum. It takes a SumRequest as input and returns an int as output. This interface is used in the declaration of SumInput and SumServ in the ports section.
-    question: What does the SumInterface in Jolie define?
-    answer: SumInterface defines a request-response operation sum, which takes a SumRequest as input and returns an int as output.
-
+    question: What does the "RequestResponse" section define in this Jolie interface?
+    answer: |
+        The "RequestResponse" section defines operations where a request message is received and a response message is sent back, such as "compute" with request type "int" and response type "float".
   - context: |
-      In Jolie, operations of type RequestResponse can reply with a fault instead of the response message. To specify this behavior, you use the throws statement to declare that a request-response operation can raise a fault.
-      Here is the syntax for declaring faults in an interface:
       interface IfaceName {
           RequestResponse:
-              Op1( ReqType1 )( ResType1 ) throws ErrX( MsgTypeX ) ... ErrY( MsgTypeY )
-              //...
-              OpN( ReqTypeN )( ResTypeN ) throws ErrW( MsgTypeW ) ... ErrZ( MsgTypeZ )
+              calculate( ReqType )( ResType ) throws CalculationError( ErrorMessage )
       }
-      In this declaration, ErrX, ErrY, etc., are the fault names, and MsgTypeX, etc., are the types of the messages associated with those faults.
-    question: How are faults declared in Jolie interfaces?
-    answer: Faults in Jolie interfaces are declared using the throws statement, followed by the fault names and message types for each operation.
-
+    question: How can faults be declared for request-response operations in Jolie interfaces?
+    answer: |
+        Faults for request-response operations in Jolie interfaces are declared using the "throws" statement, listing the fault name and its message type.
+  - question: Can you provide an example of a Jolie interface with a single one-way operation?
+    answer: |
+      Sure, here is an example:
+      ```jolie
+      interface LoggingInterface {
+          OneWay:
+              logMessage( string )
+      }
+      ```
+  - question: What is the purpose of the `throws` statement in Jolie interfaces?
+    answer: |
+      The `throws` statement in Jolie interfaces specifies that a request-response operation can raise faults, listing their names and associated message types.
   - context: |
+      interface PaymentInterface {
+          RequestResponse:
+              processPayment( PaymentRequest )( PaymentResponse ) throws InsufficientFunds( ErrorMsg ), InvalidAccount( ErrorMsg )
+      }
+    question: What faults can a request-response operation raise in a Jolie interface?
+    answer: |
+        A request-response operation can raise faults specified using the "throws" statement, listing the fault names and their associated message types.
+  - question: What information does the left argument in a request-response operation type provide?
+    answer: |
+      The left argument in a request-response operation type specifies the type of the request message.
+  - question: How would you declare a Jolie interface with both one-way and request-response operations?
+    answer: |
+      Here is an example:
+      ```jolie
+      interface MixedOperationsInterface {
+          OneWay:
+              notifyUser( string )
+          RequestResponse:
+              getUserData( UserRequest )( UserResponse )
+      }
+      ```
+        - context: |
       One-way operations in Jolie are used to send a message but do not expect a response. These are useful for scenarios where a service is simply receiving a command or data but does not need to reply back. The syntax is as follows:
       interface MyInterface {
           OneWay:
@@ -55,7 +89,7 @@ seed_examples:
               operation2( MessageType2 )
       }
       In this case, operation1 and operation2 are one-way operations that each take a specific message type as input.
-    question: What is the purpose of one-way operations in Jolie?
+  - question: What is the purpose of one-way operations in Jolie?
     answer: One-way operations in Jolie are used to send a message without expecting a response, typically for commands or data reception.
 
   - context: |

@@ -1,0 +1,97 @@
+version: 2
+task_description: 'Teach the model how to compose statements using Jolie programming language.'
+created_by: davidederosa
+seed_examples:
+  - question: What does the sequence operator `;` do in Jolie?
+    answer: |
+      The sequence operator `;` in Jolie ensures that the left operand of a statement is executed before the right operand. It is commonly used in writing sequences of statements within the same line, although newlines are interpreted as a `;` operator.
+  - question: What is the syntax for using the sequence operator in Jolie?
+    answer: |
+      The syntax for using the sequence operator in Jolie is:
+      ```jolie
+      statementA ; statementB
+      ```
+  - context: |
+      The sequence operator `;` in Jolie is used when statements must be executed in sequence, with the left statement executed first, followed by the right one. A valid use of this operator is:
+      ```jolie
+      main {
+          print@Console( "Hello, " )();
+          println@Console( "world!" )()
+      }
+      ```
+    question: |
+      How does the sequence operator work in the provided example?
+    answer: |
+      In the example, the `print@Console("Hello, ")` is executed first, followed by `println@Console("world!")`, ensuring that "Hello, world!" is printed in sequence.
+  - question: What does the parallel operator `|` do in Jolie?
+    answer: |
+      The parallel operator `|` ensures that both operands of a statement are executed concurrently, allowing for simultaneous operations.
+  - context: |
+      The parallel operator `|` is used to execute two statements concurrently. For example:
+      ```jolie
+      main {
+          getTemperature@Forecast( request )( response.temperature )
+          |
+          getData@Traffic( request )( response.traffic )
+      }
+      ```
+    question: |
+      What does the parallel operator accomplish in the example provided?
+    answer: |
+      In the example, the parallel operator `|` allows the `getTemperature` and `getData` calls to be executed simultaneously, improving efficiency when dealing with multiple services.
+  - question: How can you implement an input choice in Jolie?
+    answer: |
+      An input choice in Jolie is implemented by using square brackets around different input statements, each followed by a block of code that will execute when the corresponding input message is received. For example:
+      ```jolie
+      [ buy( stock )( response ) { buy@Exchange( stock )( response ) } ] { println@Console( "Buy order forwarded" )() }
+      [ sell( stock )( response ) { sell@Exchange( stock )( response ) }] { println@Console( "Sell order forwarded" )() }
+      ```
+  - context: |
+      An input choice can be used to define different operations that a service can execute. In this example, the service chooses to either buy or sell based on the received message:
+      ```jolie
+      [ buy( stock )( response ) { buy@Exchange( stock )( response ) } ] { println@Console( "Buy order forwarded" )() }
+      [ sell( stock )( response ) { sell@Exchange( stock )( response ) }] { println@Console( "Sell order forwarded" )() }
+      ```
+    question: |
+      What happens if the service receives a message for the `buy` operation in the input choice example?
+    answer: |
+      If the service receives a message for the `buy` operation, the code block within the `[ buy ]` statement will execute, forwarding the buy order to the exchange and printing "Buy order forwarded" to the console.
+  - question: How do conditions work in Jolie, and what are some valid relational operators?
+    answer: |
+      Conditions in Jolie are used to evaluate boolean expressions in control flow statements. Some valid relational operators include:
+      '==': equal to
+      '!=': not equal to
+      '<': less than
+      '<=': less than or equal to
+      '>': greater than
+      '>=': greater than or equal to
+      '!': negation
+  - context: |
+      The following example uses conditions to evaluate a variable `a`:
+      ```jolie
+      if ( !is_int( a ) ) {
+          println@Console( "a is not an integer" )()
+      } else if ( a > 50 ) {
+          println@Console( "a is greater than 50" )()
+      } else {
+          println@Console( "a is less than or equal to 50" )()
+      }
+      ```
+    question: |
+      What happens if `a` is not an integer in the provided condition example?
+    answer: |
+      If `a` is not an integer, the condition `!is_int(a)` will evaluate to true, and the message "a is not an integer" will be printed to the console.
+  - question: How do `for` and `while` loops work in Jolie?
+    answer: |
+      The `while` loop in Jolie executes a block of code repeatedly as long as a condition is true. The `for` loop works similarly but includes initialization code, a condition, and a post-cycle code block to execute after each iteration.
+  - context: |
+      In the following example, a `for` loop iterates over an array and prints each element:
+      ```jolie
+      for( element in a ) {
+          println@Console( element )()
+      }
+      ```
+    question: |
+      What does the `for` loop in the provided example do?
+    answer: |
+      The `for` loop iterates over the array `a` and prints each element to the console.
