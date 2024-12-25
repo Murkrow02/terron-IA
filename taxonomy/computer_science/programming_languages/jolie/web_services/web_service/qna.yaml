@@ -1,0 +1,77 @@
+version: 2
+task_description: |
+    This skill trains the model to understand how to expose and invoke web services using Jolie programming language, including handling WSDL files and SOAP protocols.
+created_by: davidederosa
+seed_examples:
+  - question: How do you expose a Jolie service as a web service using SOAP protocol?
+    answer: |
+      To expose a Jolie service as a web service, you define an input port using the `soap` protocol. You specify the service interface, the location, and the protocol parameters like WSDL and WSDL port if necessary.
+  - context: |
+      inputPort MyServiceSOAPPort {
+          Location: "socket://localhost:8001"
+          Protocol: soap {
+              .wsdl = "MyWsdl.wsdl";
+              .wsdl.port = "MyServiceSOAPPortServicePort"
+          }
+          Interfaces: MyServiceInterface
+      }
+    question: What do the `.wsdl` and `.wsdl.port` parameters specify in a Jolie SOAP input port?
+    answer: |
+      The `.wsdl` parameter specifies the path to the WSDL definition file, and `.wsdl.port` defines the port in the WSDL to map with the Jolie input port.
+  - question: What tool can generate a WSDL file for a Jolie service?
+    answer: |
+      The `jolie2wsdl` tool generates a WSDL file for a Jolie service.
+  - context: |
+      main {
+          getAddress( request )( response ) {
+              if ( request.person.name == "Homer" &&
+                  request.person.surname == "Simpsons" ) {
+                  with( response.address ) {
+                      .country = "USA";
+                      .city = "Springfield";
+                      .zip_code = "01101";
+                      .street = "Evergreen Terrace";
+                      .number = "742"
+                  }
+              } else {
+                  with( fault.person ) {
+                      .name = request.person.name;
+                      .surname = request.person.surname
+                  };
+                  throw( NameDoesNotExist, fault )
+              }
+          }
+      }
+    question: How does the service determine the address for "Homer Simpsons"?
+    answer: |
+      The service checks if the `name` is "Homer" and the `surname` is "Simpsons". If true, it assigns the address for 742 Evergreen Terrace in Springfield, USA.
+  - question: How can you invoke a web service in Jolie using a WSDL definition?
+    answer: |
+      You can invoke a web service in Jolie by generating a Jolie interface from the WSDL using the `wsdl2jolie` tool. The tool creates a `.iol` file which you include in your Jolie program, allowing you to call the service through the output port defined in the interface.
+  - context: |
+      include "generated_interface.iol"
+      main {
+          with( request.person ) {
+              .name = "Homer";
+              .surname = "Simpsons"
+          }
+          getAddress@MyServiceSOAPPortServicePort( request )( response )
+      }
+    question: What does the `getAddress@MyServiceSOAPPortServicePort` function do?
+    answer: |
+      It invokes the `getAddress` operation on the `MyServiceSOAPPortServicePort` output port, sending the `request` object and receiving the `response`.
+  - question: What does the `wsdl2jolie` tool do?
+    answer: |
+      The `wsdl2jolie` tool generates a Jolie interface (`.iol` file) from a WSDL definition, including the interface and output port configuration needed to interact with the web service.
+  - context: |
+      inputPort MyServiceSOAPPort {
+          Location: "socket://localhost:8001"
+          Protocol: soap
+          Interfaces: MyServiceInterface
+      }
+    question: What is required in a Jolie input port to use the SOAP protocol?
+    answer: |
+      A Jolie input port using the SOAP protocol requires a `Location`, the `soap` protocol configuration, and the service interface to be specified.
+  - question: How do Jolie services handle errors when invoking web services?
+    answer: |
+      Jolie services handle errors by defining and throwing specific fault types in the interface. For example, the `NameDoesNotExist` fault type can be thrown if the requested name is not found.

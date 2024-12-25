@@ -1,0 +1,48 @@
+version: 2
+task_description: "Teach the model about deploying Jolie services using Jolier as a REST service."
+created_by: davidederosa
+seed_examples:
+  - question: What is the purpose of the Jolier tool in Jolie?
+    answer: |
+      Jolier is a tool distributed with Jolie to easily deploy a Jolie microservice as a REST service. It uses parameters to configure the deployment and can optionally manage headers or SSL settings.
+  - question: What are the required parameters to run Jolier?
+    answer: |
+      The required parameters for running Jolier are:
+      1. `service_filename`: The path to the target service to be executed as a REST service.
+      2. `input_port`: The input port of the target service, which must be exposed as a REST service and set to "local".
+      3. `router_host`: The location where Jester will listen for incoming requests.
+  - question: How can you enable SSL support when deploying a REST service using Jolier?
+    answer: |
+      SSL support can be enabled by using the additional parameters: `-keyStore` for the keystore file location, `-keyStorePassword` for the keystore password, `-trustStore` for the truststore file location, `-trustStorePassword` for the truststore password, and `-sslProtocol` for the SSL protocol.
+  - question: How do you define the mapping of REST calls in Jolier?
+    answer: |
+      REST calls are mapped in a `rest_templates.json` file. It defines the relationship between operation names and REST endpoints, using keys for operation names and values for methods (like GET, POST) and URL templates.
+  - question: Can you give an example of a REST call mapping in Jolier?
+    answer: |
+      Here is an example:
+      ```json
+      {
+          "getOrders": {
+              "method": "get",
+              "template": "/orders/{userId}?maxItems={maxItems}"
+          }
+      }
+      ```
+      This maps the operation `getOrders` to use the GET method, with `userId` and `maxItems` as URL parameters.
+  - question: What is the behavior when the `-easyInterface` parameter is used?
+    answer: |
+      When `-easyInterface` is specified, a REST call mapping file is not necessary. All operations are converted to POST methods, and request types are included in the body as defined in the Jolie interface.
+  - question: How does Jolier handle incoming and outgoing headers?
+    answer: |
+      Jolier can manage headers by implementing a `RestHandler.ol` service. This service defines two operations:
+      1. `incomingHeaderHandler` to process headers before forwarding requests.
+      2. `outgoingHeaderHandler` to manage headers in responses back to the client.
+  - question: What are the requirements for request message types in REST mappings using the GET method?
+    answer: |
+      For GET methods, all parameters must be specified within the URL. The target request message type must be a flat list of nodes and cannot use nested structures.
+  - question: What happens when a REST template is not defined for a method?
+    answer: |
+      If no template is defined, the request is completely read from the body of the message, which must match the structure of the target operation.
+  - question: How can you create a skeleton for a `RestHandler.ol` service in Jolier?
+    answer: |
+      You can create a skeleton for a `RestHandler.ol` service by running the command `jolier createHandler`. This generates a file named `RestHandler.ol` for managing request and response headers.

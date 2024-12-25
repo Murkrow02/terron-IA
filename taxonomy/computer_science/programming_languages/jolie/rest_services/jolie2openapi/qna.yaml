@@ -1,0 +1,36 @@
+version: 2
+task_description: Convert markdown text explaining `jolie2openapi` functionality into structured Q&A for AI training.
+created_by: davidederosa
+seed_examples:
+  - question: What is `jolie2openapi`?
+    answer: |
+      `jolie2openapi` is a tool that converts a Jolie interface into an OpenAPI 2.0 specification, also known as Swagger. It can be used alongside `jolier` for deploying Jolie services as REST services.
+  - question: How can `jolie2openapi` be used to generate an OpenAPI specification?
+    answer: |
+      The tool is used with the command: `jolie2openapi <service_filename> <input_port> <router_host> <output_folder> [easy_interface true|false]`. This generates the OpenAPI specification for the specified Jolie interface.
+  - context: |
+      Usage: jolie2openapi <service_filename> <input_port> <router_host> <output_folder> [easy_interface true|false]
+      * **service_filename**: the filename of the Jolie service from which the interface must be extracted
+      * **input_port**: the name of the input port whose interfaces must be converted
+      * **router_host**: the URL of the host to be contacted for using REST APIs
+      * **output_folder**: the output folder where the resulting JSON file will be stored
+      * **[easy_interface true|false]**: if true, no templates will be used, and the mapping will assume all operations map to POST methods. Default is false.
+    question: What happens if the `easy_interface` option is set to `true`?
+    answer: |
+      If `easy_interface` is set to `true`, the mapping is automatically generated without templates, assuming all operations are mapped to POST methods.
+  - question: What is the purpose of the `rest_templates.json` file in `jolie2openapi`?
+    answer: |
+      The `rest_templates.json` file defines the REST call mappings required by `jolie2openapi`. Its rules can be found in the related section of the `jolier` documentation.
+  - question: What output does `jolie2openapi` generate when executed?
+    answer: |
+      The tool generates a JSON file containing the OpenAPI 2.0 specification, which can be imported into tools supporting OpenAPI specifications.
+  - context: |
+      As an example, let us consider the service demo. Run the following command:
+      `jolie2openapi demo.ol DEMO localhost:8000 .`
+      This will generate a file called `DEMO.json` containing the OpenAPI 2.0 specification.
+    question: What does the command `jolie2openapi demo.ol DEMO localhost:8000 .` do?
+    answer: |
+      It generates a file named `DEMO.json` containing the OpenAPI 2.0 specification for the interface `DemoInterface`.
+  - question: What is the default behavior of `jolie2openapi` if the `easy_interface` option is omitted?
+    answer: |
+      If the `easy_interface` option is omitted, its default value is `false`, meaning templates are used for generating the JSON file, and operations are mapped according to these templates.

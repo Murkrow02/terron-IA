@@ -1,0 +1,28 @@
+version: 2
+task_description: Provide knowledge about creating REST services using Jolie programming language, including self-contained REST services and adding a router.
+created_by: davidederosa
+seed_examples:
+  - question: What HTTP methods are used in Jolie REST services?
+    answer: GET, POST, PUT, and DELETE are the HTTP methods used in Jolie REST services.
+  - question: How can you create a self-contained REST service in Jolie?
+    answer: You can create a self-contained REST service in Jolie by using the `http` protocol to define operations and their configurations, such as URI templates, HTTP methods, and status codes.
+  - question: What is the purpose of the `osc` parameter in Jolie's HTTP protocol?
+    answer: The `osc` parameter maps Jolie operations to their respective HTTP configurations, such as URI templates, HTTP methods, and status codes.
+  - context: |
+      A Jolie REST service can define operations like viewing user details, creating new users, updating user information, and deleting users. The `osc` parameter maps these operations to their HTTP configurations.
+    question: How is the `viewUser` operation configured in Jolie?
+    answer: The `viewUser` operation is configured with a GET method and the URI template `/api/user/{username}`. It returns user details and throws a 404 status code if the user is not found.
+  - question: What is the `jester` tool in Jolie?
+    answer: The `jester` tool is an HTTP router distributed with Jolie that converts REST calls into corresponding Jolie operations. It is used to expose Jolie services as REST services.
+  - question: How can you generate an OpenAPI definition from a Jolie interface?
+    answer: You can generate an OpenAPI definition from a Jolie interface using the `jolie2openapi` tool.
+  - question: What is the purpose of the `openapi2jolie` tool?
+    answer: The `openapi2jolie` tool generates a Jolie client that can invoke a REST service described by an OpenAPI definition.
+  - context: |
+      The `jester` tool uses a mapping file in JSON format to map Jolie operations to HTTP methods and resource templates.
+    question: What format is required for mapping files used by `jester`?
+    answer: Mapping files used by `jester` must be in JSON format and provide a mapping between Jolie operations and HTTP methods with resource templates.
+  - question: How does the `listUsers` operation filter results in Jolie?
+    answer: The `listUsers` operation filters results based on the `minKarma` parameter. If specified, only users with a karma greater than or equal to the given value are included.
+  - question: What types are defined for the user data structures in Jolie's REST example?
+    answer: The types defined are `User` (name, email, karma), `UserWithUsername` (username, name, email, karma), `ListUsersRequest` (optional minKarma), and `ListUsersResponse` (list of usernames).

@@ -1,0 +1,62 @@
+version: 2
+task_description: 'Teach the model about configuring and using the Leonardo web server for static and dynamic content.'
+created_by: davidederosa
+seed_examples:
+  - question: How do I launch Leonardo and serve static content?
+    answer: |
+      Download and unpack the archive from its GitHub page. Navigate to the `leonardo` directory and run the command `jolie leonardo.ol`. By default, static content is served from the `leonardo/www` subdirectory. Place files like `index.html` there, and access them via `http://localhost:8000/index`.
+  - question: How can the default static content directory for Leonardo be changed?
+    answer: |
+      You can override the default `www` directory by specifying a new path as the first parameter in the command, e.g., `jolie leonardo.ol /path/to/my/content/directory`.
+  - context: |
+      constants {
+          Location_Leonardo = "socket://localhost:8000/",
+          RootContentDirectory = "www/",
+          DefaultPage = "index.html",
+          DebugHttp = false,
+          DebugHttpContent = false
+      }
+    question: What is the purpose of the `RootContentDirectory` constant in Leonardo's configuration file?
+    answer: |
+      The `RootContentDirectory` constant specifies the directory where static content is stored. Its default value is "www/".
+  - question: How does Leonardo handle dynamic content using Jolie?
+    answer: |
+      Leonardo supports dynamic content through the Jolie HTTP protocol. Developers can expose operations, like `length`, via Jolie code and integrate them into Leonardo's HTTP input port. These operations can be accessed using URLs with query strings or via web forms.
+  - context: |
+      interface ExampleInterface {
+          RequestResponse:
+              length( LengthRequest )( int )
+      }
+      inputPort HTTPInput {
+          Interfaces: HTTPInterface, ExampleInterface
+      }
+    question: How can a new operation be added to Leonardo's HTTP input port?
+    answer: |
+      Define the operation in an interface, like `ExampleInterface`, and add the interface to the `Interfaces` list in the `HTTPInput` port configuration.
+  - question: What is automatic type casting in Jolie?
+    answer: |
+      Automatic type casting is Jolie's mechanism for interpreting incoming messages without type information. It attempts to cast the content values to the expected types defined in the service interface.
+  - question: How can a length operation be invoked from the browser using query strings?
+    answer: |
+      Use the URL `http://localhost:8000/length?item=Hello&item=World`. Leonardo will process the query and return a response, such as `<lengthResponse>10</lengthResponse>`.
+  - context: |
+      $( document ).ready( function() {
+          $( "#lengthButton" ).click( function() {
+              Jolie.call(
+                  'length',
+                  {
+                      item: [
+                          $("#text1").val(),
+                          $("#text2").val(),
+                          $("#text3").val()
+                      ]
+                  },
+                  function( response ) {
+                      $( "#result" ).html( response );
+                  }
+              );
+          })
+      });
+    question: How does Leonardo interact with AJAX calls using JQuery?
+    answer: |
+      Using Jolie's JavaScript library, operations like `length` can be invoked through AJAX. For example, the function `Jolie.call` sends a request and handles the response asynchronously to update the HTML DOM.

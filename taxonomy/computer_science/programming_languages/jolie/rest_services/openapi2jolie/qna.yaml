@@ -1,0 +1,38 @@
+version: 2
+task_description: Create a QnA dataset for understanding the `openapi2jolie` tool and its functionality based on markdown documentation.
+created_by: davidederosa
+seed_examples:
+  - question: What is `openapi2jolie` used for?
+    answer: |
+      `openapi2jolie` is a tool that generates a Jolie client from an OpenAPI 2.0 definition. The generated client can be embedded or exposed as a service to be invoked by other Jolie services using the sodep protocol.
+  - question: How do you use the `openapi2jolie` tool to generate a Jolie client?
+    answer: |
+      Use the command: `openapi2jolie <url|filepath> <service_name> <output_folder> <protocol http|https> <ssl protocol>`. This generates a Jolie client and its interface from the specified OpenAPI definition.
+  - context: |
+      Usage: openapi2jolie <url|filepath> <service_name> <output_folder> <protocol http|https> <ssl protocol>
+      * **url|filepath**: the URL or filepath of the OpenAPI specification to convert
+      * **service_name**: the name of the generated service client
+      * **output_folder**: the folder where the generated client is stored
+      * **http|https**: the protocol for the generated client
+      * **ssl protocol**: used when `https` is selected to define the 'ssl.protocol' parameter if necessary
+    question: What does the `ssl protocol` parameter do when using the `openapi2jolie` tool?
+    answer: |
+      The `ssl protocol` parameter allows specifying the 'ssl.protocol' configuration when the HTTPS protocol is used for the generated client.
+  - question: What files does `openapi2jolie` generate, and what are their purposes?
+    answer: |
+      The tool generates two files: `<service_name>Client.ol`, which is the actual Jolie client to be embedded or exposed, and `<service_name>Interface.iol`, which is the Jolie interface derived from the OpenAPI definition.
+  - question: What command would you use to generate a Jolie client for the PetStore example using `openapi2jolie`?
+    answer: |
+      Use the command: `openapi2jolie https://petstore.swagger.io/v2/swagger.json SwaggerPetStore . https`.
+  - context: |
+      Example:
+      Command: openapi2jolie https://petstore.swagger.io/v2/swagger.json SwaggerPetStore . https
+      Files generated:
+      * `SwaggerPetStoreClient.ol`
+      * `SwaggerPetStoreInterface.iol`
+    question: What is the output of the command `openapi2jolie https://petstore.swagger.io/v2/swagger.json SwaggerPetStore . https`?
+    answer: |
+      The command generates two files: `SwaggerPetStoreClient.ol` and `SwaggerPetStoreInterface.iol`, representing the client and interface for the PetStore API.
+  - question: How can a Jolie service invoke a REST API using a generated client from `openapi2jolie`?
+    answer: |
+      The generated client can be included in a Jolie service, and its functions can be invoked using the sodep protocol. For example, using `getUserByName` from a PetStore client to call `/user/{username}`.

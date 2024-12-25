@@ -1,0 +1,86 @@
+version: 2
+task_description: |
+    Teach the model about handling HTTP GET and POST requests in Jolie programming language, including setting up servers, sending requests, and formatting data.
+created_by: davidederosa
+seed_examples:
+  - question: How can you handle a GET request in Jolie for summing two numbers?
+    answer: |
+      You can handle a GET request in Jolie by defining an input port with the HTTP protocol and creating a service that processes query parameters. For example:
+      ```
+      inputPort MyInput {
+          Location: "socket://localhost:8000/"
+          Protocol: http
+          Interfaces: SumInterface
+      }
+
+      main {
+          sum(request)(response) {
+              response = request.x + request.y;
+          }
+      }
+      ```
+  - question: How do you send a GET request from Jolie to a service that sums two numbers?
+    answer: |
+      You can send a GET request from Jolie by setting the HTTP protocol's method to "get" in the output port. For example:
+      ```
+      outputPort SumService {
+          Location: "socket://localhost:8000/"
+          Protocol: http { .method = "get" }
+          Interfaces: SumInterface
+      }
+
+      main {
+          request.x = 4;
+          request.y = 2;
+          sum@SumService(request)(response);
+          println@Console(response)();
+      }
+      ```
+  - question: What is the difference between handling GET and POST requests in Jolie?
+    answer: |
+      The primary difference is the method specified in the HTTP protocol. GET requests are automatically parsed from the query string, while POST requests are sent in the HTTP body. In Jolie, you configure this with the `.method` parameter in the HTTP protocol.
+  - context: |
+      Handling POST requests in Jolie involves using an input port with the HTTP protocol and the "format" parameter to enable HTML responses. An example service processes a POST request with HTML forms.
+    question: How can you create an HTML form in Jolie that sends a POST request to a service?
+    answer: |
+      You can create an HTML form in Jolie using the "format = 'html'" parameter in the input port. The form can be defined as follows:
+      ```
+      form()(f) {
+          f = "
+              <html>
+              <body>
+              <form action='sum' method='POST'>
+                  <code>x</code>: <input type='text' value='3' name='x' />
+                  <br/>
+                  <code>y</code>: <input type='text' value='2' name='y' />
+                  <br/>
+                  <input type='submit'/>
+              </form>
+              </body>
+              </html>";
+      }
+      ```
+  - question: How can you format a POST request payload as JSON in Jolie?
+    answer: |
+      You can format a POST request payload as JSON by setting the `format` parameter in the HTTP protocol to "json". For example:
+      ```
+      outputPort SumService {
+          Location: "socket://localhost:8000/"
+          Protocol: http {
+              .method = "post"
+              .format = "json"
+          }
+          Interfaces: SumInterface
+      }
+      ```
+  - question: How can you trace the HTTP message sent by a Jolie program?
+    answer: |
+      You can trace the HTTP message sent by using the `--trace` option when running your Jolie program. For example:
+      ```
+      jolie --trace yourclient-filename.ol
+      ```
+  - context: |
+      Sending GET or POST requests in Jolie requires defining an output port with appropriate HTTP protocol parameters and sending the request using the operation defined in the service interface.
+    question: What parameter is used in Jolie to differentiate between GET and POST methods?
+    answer: |
+      The parameter used to differentiate between GET and POST methods in Jolie is `.method` in the HTTP protocol configuration of the output port. Set it to "get" or "post" accordingly.

@@ -1,0 +1,45 @@
+version: 2
+task_description: 'Teach the model about the wsdl2jolie tool and its usage for converting WSDL documents into Jolie definitions.'
+created_by: davidederosa
+seed_examples:
+  - question: What is wsdl2jolie, and what does it do?
+    answer: |
+      wsdl2jolie is a tool installed in the Jolie standard trunk. It takes a URL or file path to a WSDL document, downloads all related files, parses them, and outputs corresponding Jolie port, interface, and data type definitions.
+  - question: What is the syntax for using wsdl2jolie?
+    answer: |
+      The syntax for wsdl2jolie is:
+      wsdl2jolie wsdl_uri [output filename]
+      Here, `wsdl_uri` is the URL or file path to the WSDL document, and `[output filename]` is an optional parameter to save the output in a file.
+  - question: What output does wsdl2jolie generate for a WSDL document?
+    answer: |
+      wsdl2jolie generates Jolie service declarations that include types, interfaces, and outputPorts. These declarations define the structure and protocols needed to interact with the specified web service.
+  - context: |
+      The wsdl2jolie tool generates mappings between WSDL elements and Jolie elements. For example, `<types>` in WSDL is mapped to `type` in Jolie, and `<portType>` is mapped to `interface`.
+    question: |
+      How does wsdl2jolie map WSDL `<types>` to Jolie?
+    answer: |
+      wsdl2jolie maps WSDL `<types>` to Jolie `type`, ensuring that data structures defined in WSDL are represented as Jolie types.
+  - context: |
+      wsdl2jolie generates SOAP outputPorts with parameters like `wsdl`, which sets the location of the WSDL document, and `wsdl.port`, which sets the WSDL port. These parameters ensure conformance with the WSDL document during service invocation.
+    question: |
+      What parameters are generated for SOAP outputPorts by wsdl2jolie?
+    answer: |
+      SOAP outputPorts include the `wsdl` parameter for specifying the WSDL document location and the `wsdl.port` parameter for defining the WSDL port related to the outputPort.
+  - question: How does wsdl2jolie enhance readability for WSDL documents?
+    answer: |
+      wsdl2jolie creates a Jolie equivalent of WSDL documents, providing a more human-readable form with clearly defined types, interfaces, and outputPorts.
+  - question: What is the purpose of the `debug` parameter in SOAP outputPorts?
+    answer: |
+      The `debug` parameter, when set to 1, displays all SOAP messages exchanged by the outputPort on the standard output, useful for troubleshooting.
+  - context: |
+      Jolie's MetaService can act as a bridge for Web Services using the `.wsdl` and `.wsdl.port` parameters. This allows automatic WSDL downloads and transparent redirection to enable client calls.
+    question: |
+      How does Jolie's MetaService simplify Web Service integration?
+    answer: |
+      Jolie's MetaService uses `.wsdl` and `.wsdl.port` parameters to automatically download WSDL documents and redirect service calls transparently, simplifying client interaction with Web Services.
+  - question: What are the limitations of wsdl2jolie and SOAP features in Jolie?
+    answer: |
+      wsdl2jolie and Jolie currently do not support SOAP 1.2, XML Schema Extended types, and have partial support for HTTP GET and HTTP POST as Web Service calls.
+  - question: How can wsdl2jolie be combined with other tools like jolie2plasma?
+    answer: |
+      Combining wsdl2jolie with tools like jolie2plasma allows transforming Jolie intermediate representations into formats compatible with other frameworks, such as KDE Plasma::Service XML, and facilitates type-safe Web Service invocations.
