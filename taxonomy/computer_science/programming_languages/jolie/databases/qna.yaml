@@ -1,0 +1,54 @@
+version: 2
+task_description: 'Teach the model about database integration in Jolie, including supported databases, setup, and usage examples.'
+created_by: davidederosa
+seed_examples:
+  - question: What is the purpose of the Database service in Jolie?
+    answer: |
+      The Database service in Jolie is used to connect and interact with various relational/SQL databases through JDBC drivers.
+  - question: Where should the JDBC driver JAR file be placed for Jolie's Database service?
+    answer: |
+      The JDBC driver JAR file should be placed in the `lib` subdirectory, either in the program's local directory or in a global directory like `/usr/lib/jolie/lib/` on Linux.
+  - question: How can multiple databases be used within a single Jolie service?
+    answer: |
+      Multiple databases can be used by creating additional output ports and embedding the Database Java service again for each database connection.
+  - question: What are the driver names and JAR filenames for PostgreSQL and MySQL in Jolie's Database service?
+    answer: |
+      For PostgreSQL, the driver name is `postgresql` and the JAR filename is `jdbc-postgresql.jar`. For MySQL, the driver name is `mysql` and the JAR filename is `jdbc-mysql.jar`.
+  - context: |
+      By default, the Database service included by `database.iol` works for connecting to a single database. If you need to use multiple databases from the same Jolie service, you can run an additional instance by creating another output port and embedding the Database Java service again.
+    question: How can Jolie handle connections to multiple databases simultaneously?
+    answer: |
+        Jolie handles connections to multiple databases by running additional instances of the Database service, each connected through a distinct output port.
+  - question: What does the WeatherService example demonstrate in relation to Jolie's Database service?
+    answer: |
+      The WeatherService example demonstrates how Jolie can fetch data from a web service, store it in an HSQLDB database, and handle database initialization and data insertion/updating automatically.
+  - question: Write Jolie code to connect to a database and create a table if it does not already exist.
+    answer: |
+      ```jolie
+      with ( connectionInfo ) {
+          .username = "user";
+          .password = "password";
+          .host = "";
+          .database = "file:mydb/mydb"; // Memory-only DB: "."
+          .driver = "hsqldb_embedded"
+      };
+      connect@Database( connectionInfo )( void );
+
+      scope ( createTable ) {
+          install ( SQLException => println@Console("Table already exists")() );
+          updateRequest =
+              "CREATE TABLE example(id INTEGER PRIMARY KEY, name VARCHAR(50))";
+          update@Database( updateRequest )( ret )
+      };
+      ```
+  - question: How does Jolie handle CRUD operations in the TodoList example?
+    answer: |
+      Jolie uses HTTP requests (both GET and POST) to perform CRUD operations. Each operation maps to a database query or update that interacts with the `TodoItem` table in an HSQLDB database.
+  - question: What is the output format of the HTTP server in the TodoList example?
+    answer: |
+      The HTTP server output format in the TodoList example is JSON.
+  - context: |
+      The Database service officially supports a specific list of database systems that have been tested and are known to work. Examples include PostgreSQL, MySQL, Apache Derby, SQLite, SQLServer, and HSQLDB.
+    question: If a database is not supported by the Jolie Database service, what can you do?
+    answer: |
+        If a database is not supported, you can contact the Jolie development team at <jolie-devel@lists.sourceforge.net> for assistance in adding support.

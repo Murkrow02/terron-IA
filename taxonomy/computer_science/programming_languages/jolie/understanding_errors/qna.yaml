@@ -1,0 +1,32 @@
+version: 2
+task_description: |
+    Provide explanations and examples about errors raised by the Jolie interpreter, particularly in relation to the service-oriented model.
+created_by: davidederosa
+seed_examples:
+  - question: What does the error "If execution is not single, the body of main must be either an input choice or a sequence that starts with an input statement" mean in Jolie?
+    answer: |
+      This error means that when the execution modality is set to concurrent or sequential, the `main` block must either start with an input primitive (like a request-response or one-way input) or be defined as an input choice. If this condition is not met, the interpreter raises this error.
+  - question: What are the possible execution modalities in Jolie?
+    answer: |
+      In Jolie, the possible execution modalities are single, sequential, and concurrent. The default modality is single, which is suitable for one-shot programs like scripts. Sequential and concurrent modalities allow the service to listen for multiple requests.
+  - question: What is the default execution modality in Jolie if none is specified?
+    answer: |
+      If no execution modality is specified in Jolie, the default is single.
+  - question: How can you resolve the error related to the body of `main` when the execution modality is concurrent or sequential?
+    answer: |
+      To resolve this error, ensure that the `main` block starts with an input statement such as a request-response or a one-way input, or that it is structured as an input choice.
+  - context: |
+      In Jolie, a service may have different execution modalities: single, sequential, and concurrent. The default modality is single. For concurrent or sequential execution, the body of the `main` block must begin with an input primitive or be structured as an input choice.
+    question: |
+      What is an input primitive in Jolie?
+    answer: |
+      An input primitive in Jolie is a statement that receives a message, such as a request-response or a one-way input.
+  - context: |
+      If execution is not single, the body of `main` must be either an input choice or a sequence that starts with an input statement (request-response or one-way).
+    question: |
+      What should you check in the `main` block if you encounter this error in Jolie?
+    answer: |
+      You should check that the `main` block either begins with an input statement (like request-response or one-way) or is structured as an input choice.
+  - question: Why might Jolie raise an error about execution modality in the `main` block?
+    answer: |
+      Jolie might raise this error if the `main` block does not adhere to the required structure for the selected execution modality. For sequential or concurrent execution, the block must begin with an input primitive or be an input choice.
