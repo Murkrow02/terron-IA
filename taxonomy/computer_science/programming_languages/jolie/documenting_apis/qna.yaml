@@ -1,0 +1,48 @@
+version: 2
+task_description: "Teach the model about documenting APIs in Jolie and using the joliedoc tool."
+created_by: davidederosa
+seed_examples:
+  - question: What are forward documentation comments in Jolie?
+    answer: |
+      Forward documentation comments in Jolie are comments that document the syntactic node that follows them. They include:
+      - `/** ... */`: multiline comment
+      - `/// ...`: inline comment
+  - question: What are backward documentation comments in Jolie?
+    answer: |
+      Backward documentation comments in Jolie are comments that document the syntactic node that precedes them. They include:
+      - `/*< ... */`: multiline comment
+      - `//< ...`: inline comment
+  - question: How do you generate API documentation using joliedoc?
+    answer: |
+      To generate API documentation using joliedoc, run the command `joliedoc <filename>` where `<filename>` is the service file to document. Optionally, include the `--internals` flag to include all local input and output ports in the documentation.
+  - context: |
+      /** This type represents a message test type */
+      type TestRRRequest: void {
+          .field1: string //< this is field1
+          .field2: double //< this is field2
+      }
+    question: How do you document fields in a Jolie type?
+    answer: |
+      Fields in a Jolie type can be documented using backward documentation comments. For example:
+      `.field1: string //< this is field1`
+  - context: |
+      joliedoc test.ol
+    question: What happens when you run the `joliedoc` command?
+    answer: |
+      Running the `joliedoc` command generates a folder named `joliedoc` containing a set of HTML files. These files can be navigated by opening `index.html` in a browser.
+  - question: What does the `--internals` flag do in the joliedoc command?
+    answer: |
+      The `--internals` flag includes all local input and output ports in the generated documentation. By default, this is set to false.
+  - question: How do you document operations in a Jolie interface?
+    answer: |
+      Operations in a Jolie interface are documented using forward documentation comments. For example:
+      `/** this is a simple request-response operation */`
+  - question: How do you specify the location and protocol for a port in Jolie?
+    answer: |
+      In Jolie, the location and protocol for a port are specified in the port declaration. For example:
+      ```
+      inputPort Service {
+          Location: "socket://localhost:8000"
+          Protocol: sodep
+      }
+      ```

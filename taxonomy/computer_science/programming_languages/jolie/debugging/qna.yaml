@@ -1,0 +1,41 @@
+version: 2
+task_description: |
+    Teach the model how to use tracing tools in Jolie for debugging programs and analyzing program traces using the Jolie Trace Viewer.
+created_by: davidederosa
+seed_examples:
+  - question: How can you enable tracing in a Jolie program?
+    answer: |
+      You can enable tracing in a Jolie program by running it with the `--trace` parameter in the command line. For example: `jolie --trace myProgram.ol`.
+  - question: What does the `--trace` parameter in Jolie do?
+    answer: |
+      The `--trace` parameter in Jolie enables tracing, which reports all actions performed by the program, such as sending, sent, and received messages for solicit-response operations.
+  - context: |
+      In Jolie, tracing can be enabled using the `--trace` parameter. For instance, the command `jolie --trace myService.ol` outputs a trace in the console showing actions like sending, sent, and received messages.
+    question: |
+      What type of information is shown in the console when `--trace` is used?
+    answer: |
+      The console shows actions like `SENDING`, `SENT`, and `RECEIVED` for message exchanges, along with additional details about the messages and operations.
+  - question: How can you save traces to a file instead of printing them in the console?
+    answer: |
+      You can save traces to a file by using the `file` parameter after `--trace`. For example: `jolie --trace file myProgram.ol`. This generates a file named `<timestamp>.jolie.log.json`.
+  - question: What tool can be used to analyze Jolie trace files?
+    answer: |
+      The `jolietraceviewer` tool can be used to analyze Jolie trace files. You can install it using `npm install -g @jolie/jolietraceviewer`.
+  - context: |
+      After installing `jolietraceviewer`, you can run it in the folder containing the Jolie trace file. The tool starts a web server at `http://localhost:8000` by default, allowing you to navigate the traces in a browser.
+    question: |
+      How do you start the Jolie Trace Viewer and access it in a browser?
+    answer: |
+      Run `jolietraceviewer` from the folder with the trace file. Open `http://localhost:8000` in a browser to navigate the traces.
+  - question: How can you change the port for the Jolie Trace Viewer?
+    answer: |
+      You can change the port for the Jolie Trace Viewer by providing the desired port as an argument. For example: `jolietraceviewer 8001` runs it on port 8001.
+  - context: |
+      The tracing level in Jolie can be adjusted using the `--traceLevel` parameter with options `ALL`, `COMP`, or `COMM`. For instance, using `jolie --trace file --traceLevel comm myProgram.ol` will restrict the trace to communication actions only.
+    question: |
+      How can you limit a Jolie trace to only communication actions?
+    answer: |
+      Use the `--traceLevel comm` parameter. For example: `jolie --trace file --traceLevel comm myProgram.ol`.
+  - question: What are the options available for the `--traceLevel` parameter in Jolie?
+    answer: |
+      The options for the `--traceLevel` parameter are `ALL`, `COMP`, and `COMM`. `ALL` traces everything, `COMP` traces only computation actions, and `COMM` traces only communication actions.
