@@ -1,0 +1,60 @@
+version: 2
+task_description: 'Teach the model about collections and their usage in programming with Jolie.'
+created_by: valex
+seed_examples:
+  - question: What is a collection in Jolie?
+    answer: |
+      A collection in Jolie is a set of output ports that share the same interface. It is used in combination with Aggregation and Couriers to publish their interface into an aggregator and forward messages to an output port based on specific rules.
+  - question: How do you define a collection in Jolie syntax?
+    answer: |
+      A collection is defined by grouping output ports with the same interface within curly brackets, as shown below:
+      ```
+      inputPort AggregatorPort {
+          Aggregates: { outputPort_11, outputPort_12, ... },
+      }
+      ```
+  - context: |
+      Collections in Jolie can forward messages to different output ports based on specific rules using a courier process. These rules can include cyclic delivery mechanisms.
+    question: How can a courier process deliver messages cyclically in a Jolie collection?
+    answer: |
+      A courier process can use a counter, like `global.printer_counter`, to alternate forwarding messages between output ports in the collection, ensuring cyclic delivery. For example:
+      ```
+      courier AggregatorInput {
+          [ interface PrinterInterface( request ) ] {
+              if ( (global.printer_counter % 2) == 0 ) {
+                  forward Printer1( request )
+              } else {
+                  forward Printer2( request )
+              }
+              synchronized( printer_count_write ) {
+                  global.printer_counter++
+              }
+          }
+      }
+      ```
+  - context: |
+      Broadcasting messages to all output ports in a Jolie collection involves sending the same request to multiple services simultaneously.
+    question: How can you broadcast messages to all output ports in a Jolie collection?
+    answer: |
+      To broadcast messages to all output ports in a collection, you can use the parallel composition of the `forward` operation as follows:
+      ```
+      forward Printer1( request ) | forward Printer2( request )
+      ```
+  - context: |
+      Interface extension in Jolie allows adding extra data to requests managed by the aggregator, while ensuring this data is removed before being forwarded to the target services.
+    question: How can interface extension be used in a Jolie collection?
+    answer: |
+      Interface extension in a Jolie collection allows adding extra data, like authentication keys, which are managed by the aggregator. This data is removed when forwarded to the target services, ensuring the target services are unaware of the authentication logic.
+  - question: What is the purpose of the `AuthInterfaceExtender` in the comprehensive Jolie example?
+    answer: |
+      The `AuthInterfaceExtender` adds authentication data to requests handled by the aggregator, ensuring only authenticated requests are processed by specific services in the collection.
+  - context: |
+      When an invalid authentication key is detected, the courier process logs the event and does not forward the request to any service.
+    question: How does the courier process handle invalid authentication keys in the comprehensive example?
+    answer: |
+      The courier process logs a message indicating an invalid key and does not forward the request to any service when the key is invalid.
+  - context: |
+      The Logger service is used in the comprehensive example for monitoring and debugging activities, such as logging valid and invalid requests made to the aggregator.
+    question: What is the role of the `Logger` output port in the comprehensive example?
+    answer: |
+      The `Logger` output port logs activity such as requests made to the aggregator, including valid and invalid operations, helping in monitoring and debugging.
