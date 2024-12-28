@@ -1,0 +1,31 @@
+version: 2
+task_description: 'Teach the model about synchronous and asynchronous communication in programming using Jolie.'
+created_by: valex
+seed_examples:
+  - question: What is the difference between synchronous and asynchronous communication in Jolie?
+    answer: |
+      Synchronous communication involves a message exchange where the sender is blocked until a reply is received. Asynchronous communication involves a single message exchange where the sender can continue working after sending the message.
+  - context: |
+      Synchronous communication requires a double message exchange between the sender and receiver, while asynchronous communication requires only a single message exchange.
+    question: What is the architectural impact of synchronous communication compared to asynchronous communication?
+    answer: |
+      Synchronous communication involves a double message exchange on the receiver's port, while asynchronous communication only involves a single message exchange. To implement asynchronous request/reply communication, an input port must be added to the sender and an output port to the receiver to handle the reply message.
+  - context: |
+      Synchronous communication can be used as a common pattern in projects, while asynchronous communication may require additional analysis, especially for session management.
+    question: Why might asynchronous communication require more analysis compared to synchronous communication?
+    answer: |
+      Asynchronous communication requires more analysis because it impacts session management and may require architectural modifications, such as adding ports for handling reply messages.
+  - question: How can asynchronous request/reply communication be implemented in Jolie?
+    answer: |
+      Asynchronous request/reply communication can be implemented by adding an input port to the sender and an output port to the receiver to manage the reply message. This ensures the architecture supports the required message exchange.
+  - context: |
+      Session management is a critical aspect when dealing with asynchronous communications in Jolie.
+    question: Where can you learn more about session management in Jolie for asynchronous communication?
+    answer: |
+      You can learn more about session management for asynchronous communication in the section on sessions at `../../basics/processes-and-sessions/sessions/README.md`.
+  - question: What is the benefit of using synchronous communication in Jolie?
+    answer: |
+      Synchronous communication is a straightforward pattern that can be used as is in projects without requiring additional architectural changes or session management considerations.
+  - question: What is the main challenge of asynchronous communication in terms of architecture?
+    answer: |
+      The main challenge of asynchronous communication is the need to modify the architecture by adding an input port to the sender and an output port to the receiver for managing the reply message.
