@@ -1,0 +1,55 @@
+version: 2
+task_description: |
+    Teach the model about Jocker, a Jolie service for interacting with Docker APIs, and its usage examples.
+created_by: valex
+seed_examples:
+  - question: What is Jocker, and what is its purpose?
+    answer: |
+      Jocker is a Jolie service that provides a Jolie interface to the HTTP Docker APIs, allowing interaction with a Docker server as if it were a Jolie service.
+  - question: How can you activate a Jocker instance using Docker?
+    answer: |
+      You can activate a Jocker instance using the following commands:
+      ```
+      docker pull jolielang/jocker
+      docker run -it -p 8008:8008 --name jocker -v /var/run:/var/run jolielang/jocker
+      ```
+  - context: |
+      Jocker communicates with the Docker server using the localsocket `/var/run/docker.sock`, as suggested by Docker documentation.
+    question: Why is it important to share the host volume when creating a Jocker container?
+    answer: |
+      It is important to share the host volume to ensure Jocker can communicate with the Docker server via the localsocket `/var/run/docker.sock`.
+  - context: |
+      Jocker listens on the internal port `8008`, which can be configured using the `-p` parameter when running the Docker container.
+    question: How can you change the port Jocker listens on?
+    answer: |
+      You can change the port Jocker listens on by specifying the desired port in the `-p` parameter during container setup, e.g., `-p 8080:8008`.
+  - context: |
+      Jocker allows deploying Jolie systems into Docker by creating images, networks, and containers and managing them programmatically.
+    question: What are the steps implemented by the Jocker orchestrator for creating a system?
+    answer: |
+      The steps include:
+      1. Creating Docker images for services.
+      2. Creating a Docker network, such as `testnet`.
+      3. Creating containers for each service.
+      4. Attaching containers to the network.
+      5. Starting the containers.
+      6. Inspecting the containers to ensure they are running.
+  - context: |
+      Jocker can be used for disposing of a system by stopping containers, removing containers, removing networks, and removing images.
+    question: How do you dispose of a system using Jocker?
+    answer: |
+      The steps include:
+      1. Stopping all containers.
+      2. Removing all containers.
+      3. Removing the network (e.g., `testnet`).
+      4. Removing all images.
+  - context: |
+      A Jolie orchestrator script can deploy a system using Jocker APIs, as demonstrated in an example.
+    question: How do you run the Jocker orchestrator script to deploy a Jolie system?
+    answer: |
+      You can run the orchestrator script using the command: `jolie jockerOrchestrator.ol`.
+  - context: |
+      Jocker is an experimental project and should be used with caution as noted in its documentation.
+    question: What precaution should you take when using Jocker?
+    answer: |
+      Since Jocker is an experimental project, it should be used with caution, and its limitations should be understood.

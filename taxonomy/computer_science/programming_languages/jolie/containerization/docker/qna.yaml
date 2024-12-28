@@ -1,0 +1,64 @@
+version: 2
+task_description: |
+    Train the model to understand how to deploy Jolie microservices using Docker, including creating Docker images, running containers, passing parameters, and configuring output ports.
+created_by: valex
+seed_examples:
+  - question: What is the purpose of a Dockerfile in deploying a Jolie microservice?
+    answer: |
+      A Dockerfile contains instructions to build a Docker image for deploying a Jolie microservice. It specifies the base image, maintainer details, exposed ports, file copies, and the command to run the microservice.
+  - context: |
+      FROM jolielang/jolie
+      MAINTAINER YOUR NAME <YOUR EMAIL>
+      EXPOSE 8000
+      COPY helloservice.ol main.ol
+      CMD jolie main.ol
+    question: |
+      What does the EXPOSE command do in this Dockerfile?
+    answer: |
+      The EXPOSE command exposes the port 8000 to be used by external invokers. It makes the service accessible on this port within the container.
+  - question: How can you create a Docker image for the helloservice Jolie microservice?
+    answer: |
+      You can create a Docker image by running the command `docker build -t hello .` in the directory containing the Dockerfile. This builds the image with the name "hello."
+  - context: |
+      docker run -d --name hello-cnt -p 8000:8000 hello
+    question: |
+      What does the `-p 8000:8000` option do in the `docker run` command?
+    answer: |
+      The `-p 8000:8000` option maps port 8000 of the container to port 8000 on the host machine, allowing external access to the service on the host.
+  - question: How can you pass an environment variable to a Docker container running a Jolie service?
+    answer: |
+      You can pass an environment variable using the `-e` option in the `docker run` command. For example, `docker run -d --name hello-cnt -p 8000:8000 -e TESTVAR=spiderman hello` initializes the environment variable `TESTVAR` with the value `spiderman`.
+  - context: |
+      interface HelloInterface {
+      RequestResponse:
+          hello( string )( string )
+      }
+      init {
+          getenv@Runtime( "TESTVAR" )( TESTVAR )
+      }
+    question: |
+      How can a Jolie service access environment variables passed to the Docker container?
+    answer: |
+      A Jolie service can access environment variables by using the `getEnv` operation from the Runtime library. For example, `getenv@Runtime( "TESTVAR" )( TESTVAR )` reads the value of `TESTVAR`.
+  - question: How can you pass parameters to a Jolie microservice using a configuration file?
+    answer: |
+      You can pass parameters by creating a JSON configuration file, copying it into the container, and reading it within the service using the `readFile` operation from the File library. Map the host's file path to the container's path using the `-v` option in the `docker run` command.
+  - context: |
+      docker run -it -d --name info -p 8002:8000 -v /host/path/config.ini:/var/temp --network testnet info_img
+    question: |
+      How does the `-v` option help in passing configuration files to containers?
+    answer: |
+      The `-v` option maps a directory or file from the host machine to a path inside the container, enabling the container to access external files like configuration files.
+  - question: How do you resolve service dependencies when deploying multiple Jolie microservices in Docker?
+    answer: |
+      You can create a Docker network and connect all containers to it. Use container names to identify services within the network, and configure outputPorts in Jolie services to dynamically bind to these names.
+  - context: |
+      outputPort Forecast {
+          Location: "auto:ini:/Location/Forecast:file:/var/temp/config.ini"
+          Protocol: sodep
+          Interfaces: ForecastInterface
+      }
+    question: |
+      How can you dynamically configure outputPort locations in a Jolie service?
+    answer: |
+      You can use the `auto` extension with an external configuration file. For example, `auto:ini:/Location/Forecast:file:/var/temp/config.ini` fetches the location from the `config.ini` file.

@@ -1,0 +1,94 @@
+version: 2
+task_description: |
+    This skill provides an understanding of deploying and managing Jolie microservices in Kubernetes, including creating Docker images, Kubernetes Deployments, Services, and invoking microservices.
+created_by: valex
+seed_examples:
+  - question: What is Kubernetes used for?
+    answer: |
+      Kubernetes is an open-source system for automating deployment, scaling, and management of containerized applications.
+  - question: How can you install a Kubernetes environment easily?
+    answer: |
+      You can install a Kubernetes environment easily using Minikube.
+  - context: |
+      include "runtime.iol"
+
+      interface HelloInterface {
+        RequestResponse:
+            hello( string )( string )
+      }
+
+      execution{ concurrent }
+
+      inputPort Hello {
+          Location: "socket://localhost:8000"
+          Protocol: sodep
+          Interfaces: HelloInterface
+      }
+
+      init {
+          getenv@Runtime( "HOSTNAME" )( HOSTNAME )
+      }
+
+      main {
+          hello( request )( response ) {
+              response = HOSTNAME + ":" + request
+          }
+      }
+    question: |
+      What is the purpose of the HOSTNAME variable in the Jolie service code?
+    answer: |
+      The HOSTNAME variable is set by Kubernetes and is used to identify the microservice instance answering the request.
+  - question: How do you build a Docker image for the Jolie service?
+    answer: |
+      To build a Docker image for the Jolie service, use the `docker build -t hello .` command with a Dockerfile that specifies the Jolie runtime and copies the service file.
+  - context: |
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+          name: jolie-sample-deployment
+          labels:
+              app: jolie-sample
+      spec:
+          replicas: 2
+          selector:
+              matchLabels:
+                  app: jolie-sample
+          template:
+              metadata:
+                  labels:
+                      app: jolie-sample
+              spec:
+                  containers:
+                  - name: jolie-k8s-sample
+                    image: hello
+                    ports:
+                    - containerPort: 8000
+                    imagePullPolicy: IfNotPresent
+    question: |
+      How do you create a Kubernetes Deployment for the Jolie service?
+    answer: |
+      Save the Deployment configuration in a YAML file (e.g., jolie-k8s-deployment.yml) and apply it using `kubectl apply -f jolie-k8s-deployment.yml`.
+  - question: What command is used to expose a Kubernetes Deployment as a LoadBalancer Service?
+    answer: |
+      The command `kubectl expose deployment jolie-sample-deployment --type=LoadBalancer --port=8000` is used to expose a Deployment as a LoadBalancer Service.
+  - question: How does the LoadBalancer ensure requests are distributed between Pods?
+    answer: |
+      The LoadBalancer redirects incoming requests to one of the available Pods running the service, enabling load balancing.
+  - context: |
+      outputPort Hello {
+          Location: "socket://<your_IP>:<ext_port>"
+          Protocol: sodep
+          Interfaces: HelloInterface
+      }
+
+      main {
+          hello@Hello( "hello" )( response );
+          println@Console( response )()
+      }
+    question: |
+      How can a client invoke the Jolie service deployed in Kubernetes?
+    answer: |
+      A client can invoke the Jolie service by specifying the service's IP and port in the outputPort configuration and sending a request using the `hello@Hello` operation.
+  - question: How can you verify that your Kubernetes Pods are running?
+    answer: |
+      Use the command `kubectl get pods` to verify that your Kubernetes Pods are running.
