@@ -1,0 +1,43 @@
+version: 2
+task_description: |
+  This file helps the model learn about the SOAP protocol in Jolie, focusing on SOAP parameters and how to declare the protocol in a port.
+created_by: murkrow
+seed_examples:
+  - question: How do you declare a SOAP protocol in a port in Jolie?
+    answer: |
+      To declare a SOAP protocol in a port in Jolie, you use the `soap` keyword in the port definition. For example:
+      ```
+      inputPort MyInput {
+          Location: "socket://localhost:8000/"
+          Protocol: soap
+          Interfaces: TestInterface
+      }
+      ```
+  - question: What is the default style used for message encoding in SOAP in Jolie?
+    answer: |
+      The default style used for message encoding in SOAP in Jolie is "rpc".
+
+  - question: What parameter is used to specify the URL of the WSDL definition in SOAP configuration?
+    answer: |
+      The `.wsdl` parameter is used to specify the URL of the WSDL definition in SOAP configuration.
+
+  - context: |
+      The SOAP protocol in Jolie allows you to define configurations for handling XML Schema files, WSDL definitions, WS-Addressing, message encoding style, and more.
+    question: |
+      What is the default value for the `.convertAttributes` parameter in SOAP configuration?
+    answer: |
+      The default value for the `.convertAttributes` parameter in SOAP configuration is `false`.
+
+  - context: |
+      The `.schema` parameter in SOAP configuration defines the XML Schema files to be used in SOAP messages. It is an optional parameter and can contain multiple files.
+    question: |
+      What is the purpose of the `.schema` parameter in SOAP configuration?
+    answer: |
+      The `.schema` parameter in SOAP configuration defines the XML Schema files to be used in SOAP messages.
+
+  - context: |
+      The `.compression` parameter enables HTTP content compression in SOAP requests. By default, it is set to `true`.
+    question: |
+      What does the `.compression` parameter do in SOAP configuration?
+    answer: |
+      The `.compression` parameter enables HTTP content compression in SOAP requests and is set to `true` by default.

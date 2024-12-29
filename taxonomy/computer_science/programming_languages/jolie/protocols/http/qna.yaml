@@ -1,0 +1,109 @@
+version: 2
+task_description: 'Teach the model about HTTP configuration and parameters in Jolie.'
+created_by: murkrow
+seed_examples:
+  - question: What does the `keepAlive` parameter do in Jolie HTTP configuration?
+    answer: |
+      The `keepAlive` parameter defines whether the underlying connection should be kept open. It is important for handling multiple requests without closing the connection between the client and the server. If the parameter is set to `false`, the client will not keep the connection open after completing a request.
+  - context: |
+      The `keepAlive` parameter is crucial when making multiple requests. If set to true, the connection is kept open. If set to false, the client connection will close after each request, avoiding errors in scenarios where multiple requests are sent.
+    question: How can I disable the keep-alive feature in Jolie?
+    answer: |
+      To disable the keep-alive feature, you need to set the `keepAlive` parameter to `false` in your HTTP configuration:
+      ```jolie
+      type HttpConfiguration:void {
+          .keepAlive = false;
+      }
+      ```
+  - context: |
+      The `statusCode` parameter defines the status code of an HTTP message. It is used for both inbound and outbound requests to set or retrieve the HTTP status.
+    question: How do I set a custom status code for a request in Jolie?
+    answer: |
+      You can set a custom status code for a request by assigning a value to the `statusCode` parameter:
+      ```jolie
+      type HttpConfiguration:void {
+          .statusCode = "404"; // Not Found
+      }
+      ```
+  - context: |
+      The `debug` parameter enables debugging in Jolie. It includes a subparameter `showContent` which, when set to true, will display the message content for debugging purposes.
+    question: How can I enable debugging and show message content in Jolie?
+    answer: |
+      To enable debugging and display the message content, you need to set the `debug.showContent` parameter to `true`:
+      ```jolie
+      type HttpConfiguration:void {
+          .debug = true;
+          .debug.showContent = true;
+      }
+      ```
+  - context: |
+      The `compression` parameter enables content compression in HTTP requests and responses. It is essential for reducing the size of the data being transmitted.
+    question: How do I disable content compression in Jolie?
+    answer: |
+      To disable content compression, set the `compression` parameter to `false`:
+      ```jolie
+      type HttpConfiguration:void {
+          .compression = false;
+      }
+      ```
+  - context: |
+      The `requestCompression` parameter allows you to define the compression method for outgoing HTTP requests. It can be set to "gzip" or "deflate".
+    question: How do I enable gzip compression for HTTP requests in Jolie?
+    answer: |
+      To enable gzip compression for HTTP requests, set the `requestCompression` parameter to `gzip`:
+      ```jolie
+      type HttpConfiguration:void {
+          .requestCompression = "gzip";
+      }
+      ```
+  - context: |
+      The `method` parameter defines the HTTP request method. It supports values like "GET", "POST", "PUT", "DELETE", etc.
+    question: What HTTP method does Jolie use by default?
+    answer: |
+      By default, Jolie uses the "POST" method for HTTP requests:
+      ```jolie
+      type HttpConfiguration:void {
+          .method = "POST";
+      }
+      ```
+  - context: |
+      The `method.queryFormat` parameter defines the format of query parameters in GET requests. By default, query parameters are sent as regular key-value pairs, but they can also be sent as JSON.
+    question: How do I send GET request parameters in JSON format in Jolie?
+    answer: |
+      To send GET request parameters as JSON, set the `queryFormat` parameter to `"json"`:
+      ```jolie
+      type HttpConfiguration:void {
+          .method = "GET";
+          .method.queryFormat = "json";
+      }
+      ```
+  - context: |
+      The `osc` parameter in Jolie allows you to define operation-specific aliases and other configurations for HTTP requests.
+    question: How do I define an alias for a Jolie operation in an HTTP configuration?
+    answer: |
+      You can define an alias for a Jolie operation using the `osc.operationName.alias` parameter:
+      ```jolie
+      type HttpConfiguration:void {
+          .osc.fetchBib.alias = "rec/bib2/%!{dblpKey}.bib";
+      }
+      ```
+  - context: |
+      The `outHeaders` parameter maps outgoing request headers to specific values for authentication or other purposes.
+    question: How do I map the "Authorization" header to a token value in Jolie?
+    answer: |
+      To map the "Authorization" header to a token value, use the `outHeaders` parameter:
+      ```jolie
+      type HttpConfiguration:void {
+          .outHeaders.Authorization = "token";
+      }
+      ```
+  - context: |
+      The `inHeaders` parameter maps incoming request headers to specific values, often used for validation or authentication purposes.
+    question: How do I map the "Authorization" header to a token value on the server side in Jolie?
+    answer: |
+      To map the "Authorization" header to a token value, use the `inHeaders` parameter:
+      ```jolie
+      type HttpConfiguration:void {
+          .inHeaders.Authorization = "token";
+      }
+      ```

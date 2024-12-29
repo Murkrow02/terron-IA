@@ -1,0 +1,72 @@
+version: 2
+task_description: 'Teach the model about JSON-RPC protocol configuration in Jolie.'
+created_by: murkrow
+seed_examples:
+  - question: What is the default value for the `keepAlive` parameter in Jolie’s JSON-RPC configuration?
+    answer: |
+      The default value for the `keepAlive` parameter is `true`. This means the connection will be kept open by default unless specified otherwise.
+      ```jolie
+      type JsonRpcConfiguration:void {
+          .keepAlive = true; // default value
+      }
+      ```
+  - context: |
+      The `keepAlive` parameter controls whether the underlying connection should be kept open for future requests. It is set to `true` by default.
+    question: How do I disable keep-alive in the JSON-RPC configuration in Jolie?
+    answer: |
+      To disable keep-alive, you can set the `keepAlive` parameter to `false`:
+      ```jolie
+      type JsonRpcConfiguration:void {
+          .keepAlive = false;
+      }
+      ```
+  - context: |
+      The `debug` parameter enables debug messages in the JSON-RPC configuration. By default, debugging is turned off (`false`).
+    question: How can I enable debug messages in the JSON-RPC configuration?
+    answer: |
+      To enable debug messages, set the `debug` parameter to `true`:
+      ```jolie
+      type JsonRpcConfiguration:void {
+          .debug = true;
+      }
+      ```
+  - context: |
+      The `compression` parameter controls the content compression for HTTP requests and responses. It is enabled by default (`true`).
+    question: How do I disable content compression in Jolie’s JSON-RPC configuration?
+    answer: |
+      To disable content compression, set the `compression` parameter to `false`:
+      ```jolie
+      type JsonRpcConfiguration:void {
+          .compression = false;
+      }
+      ```
+  - context: |
+      The `requestCompression` parameter allows you to define the compression algorithm used for HTTP requests. It supports values like `gzip` or `deflate`.
+    question: How do I enable `gzip` compression for HTTP requests in Jolie’s JSON-RPC configuration?
+    answer: |
+      To enable `gzip` compression for HTTP requests, set the `requestCompression` parameter to `"gzip"`:
+      ```jolie
+      type JsonRpcConfiguration:void {
+          .requestCompression = "gzip";
+      }
+      ```
+  - context: |
+      The `requestCompression` parameter allows you to specify the compression algorithm for HTTP requests, which overrides the `Accept-Encoding` header.
+    question: How do I set `deflate` as the compression method for HTTP requests in Jolie?
+    answer: |
+      To use `deflate` compression for HTTP requests, set the `requestCompression` parameter to `"deflate"`:
+      ```jolie
+      type JsonRpcConfiguration:void {
+          .requestCompression = "deflate";
+      }
+      ```
+  - context: |
+      The `compression` parameter is used to enable or disable HTTP content compression for both requests and responses. By default, it is enabled.
+    question: How do I enable content compression for both client and server in Jolie’s JSON-RPC configuration?
+    answer: |
+      Content compression is enabled by default, but you can explicitly set it by setting the `compression` parameter to `true`:
+      ```jolie
+      type JsonRpcConfiguration:void {
+          .compression = true;
+      }
+      ```

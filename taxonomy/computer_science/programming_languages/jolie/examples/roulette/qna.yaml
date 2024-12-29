@@ -1,0 +1,67 @@
+version: 2
+task_description: |
+  This file teaches the model how to understand and generate code for a roulette program in Jolie. The system involves services like TableService, Croupier, and Player interacting through various protocols and performing tasks such as scheduling, dynamic binding, and using global variables for state management.
+created_by: murkrow
+seed_examples:
+  - question: How can I define input ports for different participants in Jolie?
+    answer: |
+      You can define input ports for different participants using the `inputPort` keyword. For example, in the TableService, input ports for Player and Croupier are defined as follows:
+      ```
+      inputPort PlayerPort {
+          location: p.locations.playerPort
+          protocol: sodep
+          interfaces: TableToPlayerInterface
+      }
+      inputPort CroupierPort {
+          location: p.locations.croupierPort
+          protocol: sodep
+          interfaces: TableToCroupierInterface
+      }
+      ```
+  - question: How can I set a cron job for scheduling tasks in Jolie?
+    answer: |
+      In Jolie, you can use the `Scheduler` service to set cron jobs. Here is an example of setting a cron job for the `Croupier`:
+      ```
+      setCronJob@Scheduler( {
+          jobName = "bet"
+          groupName = "roulette"
+          cronSpecs << {
+                  second = "0"
+                  minute = "0/1"
+                  hour = "*"
+                  dayOfMonth = "*"
+                  month = "*"
+                  dayOfWeek = "?"
+                  year = "*"
+          }
+      })()
+      ```
+  - context: |
+      In Jolie, global variables can be used for storing data at the service level, which persists across different sessions. For instance, global variables in TableService can store bets placed by players.
+    question: How can I store and access bets globally in Jolie?
+    answer: |
+      You can use global variables for persisting bets in Jolie, which can be accessed across sessions. Here's how you can store a player's bet:
+      ```
+      global.db.bets.( request.player )[ #global.db.bets.( request.player ) ] << request
+      ```
+  - question: How do I use dynamic binding in Jolie for a Player sending its location to the TableService?
+    answer: |
+      In Jolie, dynamic binding is used when a Player sends its location to the TableService during a bet invocation. You can achieve this by creating a request object with the player's location, as shown in this example:
+      ```
+      bet_req << {
+          location = playerLocation
+      }
+      ```
+  - question: How do I implement mutual exclusion in Jolie using synchronized statements?
+    answer: |
+      To implement mutual exclusion in Jolie, you can use the `synchronized` keyword, which ensures that only one thread accesses a specific section of code at a time. For example:
+      ```
+      synchronized {
+          // Code that needs mutual exclusion
+      }
+      ```
+  - context: |
+      The TableService interacts with multiple services such as Player and Croupier through input ports. The Croupier does not have its own input port but interacts as a client with the TableService and Player.
+    question: How does the Croupier interact with the TableService in Jolie?
+    answer: |
+      The Croupier interacts with the TableService by acting as a client, sending requests through predefined input ports such as the `TableToCroupierInterface` and receiving responses. It does not expose an input port itself.

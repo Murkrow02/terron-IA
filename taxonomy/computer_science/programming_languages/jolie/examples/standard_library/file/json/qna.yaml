@@ -1,0 +1,61 @@
+version: 2
+task_description: |
+    Provide explanations and examples for reading and writing JSON files in Jolie using the File library.
+created_by: murkrow
+seed_examples:
+  - question: How can I read a JSON file in Jolie?
+    answer: |
+      You can use the `readFile@File` operation from the File library to read a JSON file in Jolie. Provide the file name and format as parameters to retrieve the file's content into a Jolie data structure.
+  - context: |
+      {
+          "note": {
+              "sender": "John",
+              "receiver": "Jane",
+              "content": "I made pasta"
+          }
+      }
+    question: How do I access the 'receiver' field from the JSON file in Jolie?
+    answer: |
+        After reading the file into a variable, you can access the 'receiver' field using the standard Jolie syntax, like `data.note.receiver`.
+  - question: How do you write data to a JSON file in Jolie?
+    answer: |
+      You can use the `writeFile@File` operation from the File library. Pass the target file name, format as "json," and the data structure to be written as the `content`.
+  - context: |
+      {
+          "module": [
+              {
+                  "moduleId": "ONE",
+                  "moduleName": "ONE",
+                  "moduleOverview": "ONE"
+              },
+              {
+                  "moduleId": "TWO",
+                  "moduleName": "TWO",
+                  "moduleOverview": "TWO"
+              }
+          ]
+      }
+    question: How can I add a new module to the JSON file using Jolie?
+    answer: |
+        Use `readFile@File` to load the current content of the JSON file into a variable, add the new module entry to the variable, and then use `writeFile@File` to save the updated structure back to the file.
+  - question: What does the `embed File as File` line do in a Jolie program?
+    answer: |
+      The `embed File as File` line imports the File library into the Jolie service, allowing you to use its operations such as `readFile` and `writeFile`.
+  - context: |
+      writeFile@File( {
+          filename = "note.json"
+          format = "json"
+          content << {
+              note << {
+                  sender = "John"
+                  receiver = "Jane"
+                  content = "I made pasta"
+              }
+          }
+      } )()
+    question: What format should be specified when writing a JSON file in Jolie?
+    answer: |
+        When writing a JSON file in Jolie, you should specify the format as "json" in the parameters of the `writeFile@File` operation.
+  - question: Can you explain the role of `from file import File` in Jolie?
+    answer: |
+      The `from file import File` statement imports the File library in Jolie, which provides operations like `readFile` and `writeFile` for working with JSON and other file formats.

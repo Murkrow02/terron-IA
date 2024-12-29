@@ -1,0 +1,38 @@
+version: 2
+task_description: |
+  This task provides information on localsockets, a type of Unix domain socket used for communication between processes in Unix-like operating systems.
+created_by: murkrow
+seed_examples:
+  - question: What is a localsocket?
+    answer: |
+      A localsocket is a Unix domain socket used for communication between processes within the same host operating system. It is not available on Windows.
+  - context: |
+      Localsockets are communication endpoints for exchanging data between processes executing within the same host operating system. The feature is limited to Unix-like OSs and not available on Windows.
+    question: |
+      Which operating systems support localsockets?
+    answer: |
+      Localsockets are supported only on Unix-like operating systems and are not available on Windows.
+  - question: What is the port definition for localsockets in Jolie?
+    answer: |
+      In Jolie, the port definition for localsockets is `localsocket`.
+  - context: |
+      To run a localsockets program in Jolie, the `libunix-java.so` library needs to be included in the system's ld cache or specified by the `LD_LIBRARY_PATH` environment variable. The `libmatthew-java` library must also be installed, either from the system's package repository or compiled manually.
+    question: |
+      How can you set up the required libraries for running a localsockets program in Jolie?
+    answer: |
+      To set up the required libraries, you need to install `libmatthew-java` from the system's package repository or compile it manually. Additionally, include the `libunix-java.so` library in the system's ld cache or specify it using the `LD_LIBRARY_PATH` environment variable.
+  - question: What is the difference between abstract and regular localsockets?
+    answer: |
+      The difference between abstract and regular localsockets is that abstract sockets do not exist in the file system, meaning file permissions do not apply to them. They are deleted when not in use, whereas regular sockets persist in the file system.
+  - context: |
+      Abstract localsockets do not exist in the file system, meaning they do not have file permissions, and they are deleted when not in use. Regular localsockets, on the other hand, persist in the file system.
+    question: |
+      How are abstract localsockets different from regular localsockets?
+    answer: |
+      Abstract localsockets do not exist in the file system, lack file permissions, and are deleted when not in use, while regular localsockets persist in the file system.
+  - question: How do you define a regular localsocket in Jolie?
+    answer: |
+      A regular localsocket in Jolie is defined as `localsocket:///path/to/socket`.
+  - question: How do you define an abstract localsocket in Jolie?
+    answer: |
+      An abstract localsocket in Jolie is defined as `localsocket://abs/path/to/socket`.

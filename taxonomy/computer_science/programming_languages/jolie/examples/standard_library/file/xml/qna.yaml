@@ -1,0 +1,65 @@
+version: 2
+task_description: Learn how to read and write XML files using Jolie's File library service.
+created_by: murkrow
+seed_examples:
+  - question: How can you read an XML file in Jolie and access its content?
+    answer: |
+      You can use the File library's `readFile` operation to read an XML file. Pass the filename and format ("xml") as parameters. The content is stored in a variable, which you can access using standard Jolie syntax. For example:
+      ```jolie
+      readFile@file({
+          filename = "note.xml"
+          format = "xml"
+      })(data)
+      ```
+      The content of `data` will mirror the structure of the XML file.
+  - question: What is the purpose of the `File` library in Jolie?
+    answer: |
+      The `File` library in Jolie simplifies operations with files, such as reading and writing XML files. It leverages Jolie's native XML data structure conversions for easy handling.
+  - question: How do you print the 'to' field from an XML file's content in Jolie?
+    answer: |
+      After reading the XML file into a variable, you can use the Console library's `println` operation to print the 'to' field. For example:
+      ```jolie
+      println@console(data.node.to)()
+      ```
+      Ensure the Console library is embedded in your service.
+  - question: How can you write a data structure to an XML file using Jolie?
+    answer: |
+      Use the `writeFile` operation from the File library. Pass the filename, format ("xml"), and the data structure as content. For example:
+      ```jolie
+      writeFile@file({
+          filename = "note.xml"
+          format = "xml"
+          content << {
+              note << {
+                  from = "John"
+                  to = "Jane"
+                  content = "I made pasta"
+              }
+          }
+      })()
+      ```
+      This will store the data as an XML file.
+  - question: How does Jolie handle automatic conversions between Jolie and XML data structures?
+    answer: |
+      Jolie natively supports automatic conversions between its internal data structures and XML. This allows seamless manipulation and storage of XML data using Jolie's syntax without manual parsing or serialization.
+  - context: |
+      The File library in Jolie supports operations such as reading from and writing to XML files. It leverages Jolie's native XML data structure support to make these operations simple and efficient.
+    question: How does the File library use Jolie's native XML capabilities?
+    answer: |
+      The File library takes advantage of Jolie's built-in XML support to automatically convert XML files into Jolie data structures when reading, and vice versa when writing, making file operations seamless.
+  - context: |
+      The Console library in Jolie can be used to print output to the console. It is often used with the File library to display or debug data read from files.
+    question: How can you combine the File and Console libraries in Jolie?
+    answer: |
+      You can read data from an XML file using the File library and then print specific nodes or values using the Console library's `println` operation. For example:
+      ```jolie
+      println@console(data.node.to)()
+      ```
+  - context: |
+      The `writeFile` operation in Jolie's File library writes a data structure to an XML file. It requires the filename, format, and content as parameters.
+    question: What parameters do you need to provide for the `writeFile` operation in Jolie?
+    answer: |
+      The `writeFile` operation requires the following parameters:
+      - `filename`: The name of the XML file to write to.
+      - `format`: The format of the file, typically "xml".
+      - `content`: The Jolie data structure to be written.

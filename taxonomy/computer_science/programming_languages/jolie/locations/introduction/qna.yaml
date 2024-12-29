@@ -1,0 +1,68 @@
+version: 2
+task_description: 'Teach the model about locations in Jolie and how they are used to define communication mediums for ports, including the use of extensions for automatic configuration with ini and json files.'
+created_by: murkrow
+seed_examples:
+  - question: What are the five media supported by Jolie for location definitions?
+    answer: |
+      The five media supported by Jolie are local, socket, btl2cap, rmi, and localsocket.
+  - question: How is a location defined in Jolie?
+    answer: |
+      A location in Jolie is defined as a URI in the form medium[:parameters], where medium is the medium identifier and parameters are optional, medium-specific strings.
+  - question: What is the purpose of the 'auto' extension in Jolie?
+    answer: |
+      The 'auto' extension in Jolie allows for the automatic configuration of inputPort and outputPort locations from an external file, such as an ini or json file.
+  - context: |
+      A location can be automatically set from an external file using the 'auto' extension. For example, a file format like ini can define input and output port locations.
+    question: |
+      How can you automatically configure port locations using an ini file in Jolie?
+    answer: |
+      You can use the 'auto' extension with the format 'ini' to define locations. For example:
+      ```jolie
+      inputPort MyInput {
+          location: "auto:ini:/Location/MyInput:file:config.ini"
+          protocol: sodep
+          interfaces: DummyInterface
+      }
+      ```
+  - context: |
+      A location can also be automatically set from a json file. In this case, the location path in the json file is referenced in the port definition.
+    question: |
+      How can you automatically configure port locations using a json file in Jolie?
+    answer: |
+      You can use the 'auto' extension with the format 'json' to define locations. For example:
+      ```jolie
+      inputPort MyInput {
+          location: "auto:json:MyInput.location:file:config.json"
+          protocol: sodep
+          interfaces: DummyInterface
+      }
+      ```
+  - question: What does the variable path in the 'auto' extension refer to when using ini and json files?
+    answer: |
+      The variable path refers to the specific location defined in the external file. For example, in an ini file, it could be "/Location/MyInput", while in a json file, it could be "MyInput.location".
+  - question: What is the format of the location definition in an ini file for Jolie?
+    answer: |
+      In an ini file, the location definition follows the format: [section_name] followed by key-value pairs where the key is the port name and the value is the location URI.
+      Example:
+      ```ini
+      [Location]
+      MyInput=socket://localhost:8000
+      MyOutput=socket://100.100.100.100:8000
+      ```
+  - question: How is the variable path used in a json file for Jolie location configuration?
+    answer: |
+      In a json file, the variable path is the key that specifies the location for the port, such as "MyInput.location".
+      Example:
+      ```json
+      {
+          "MyInput": {
+              "location": "socket://localhost:8000"
+          },
+          "MyOutput": {
+              "location": "socket://100.100.100.100:8000"
+          }
+      }
+      ```
+  - question: What are the two file formats supported by the 'auto' extension for configuring locations in Jolie?
+    answer: |
+      The two supported file formats are ini and json.

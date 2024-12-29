@@ -1,0 +1,170 @@
+version: 2
+task_description: |
+    Provide understanding and examples of file operations in Jolie, such as reading, writing, and communicating file contents between services.
+created_by: murkrow
+seed_examples:
+  - question: How can you read the content of a file in Jolie and print it to the console?
+    answer: |
+      To read the content of a file in Jolie and print it to the console, use the `readFile@file` operation to read the file content into a variable and the `println@console` operation to display it. Here is an example:
+      ```jolie
+      from file import File
+      from console import Console
+
+      service Example {
+          embed Console as console
+          embed File as file
+          main {
+              readFile@file({ filename = "test.txt" })(response)
+              println@console(response)()
+          }
+      }
+      ```
+  - question: What are the necessary parameters for the `writeFile@file` operation in Jolie?
+    answer: |
+      The `writeFile@file` operation requires at least two parameters: the `filename`, which specifies the file to write to, and the `content`, which specifies the data to write. Here is an example:
+      ```jolie
+      from file import File
+
+      service Example {
+          embed File as file
+
+          main {
+              writeFile@file({
+                  filename = "test.txt",
+                  content = "this is a test message"
+              })()
+          }
+      }
+      ```
+  - question: How does a Jolie server append received content to a file?
+    answer: |
+      A Jolie server can append received content to a file by setting the `append` parameter of the `writeFile@file` operation to `1`. Here's an example:
+      ```jolie
+      from file import File
+
+      constants {
+          FILENAME = "received.txt"
+      }
+
+      service ExampleServer {
+          embed File as file
+
+          inputPort server {
+              Location: "socket://localhost:9000",
+              Protocol: sodep,
+              Interfaces: ServerInterface
+          }
+
+          execution: concurrent
+
+          main {
+              setFileContent(request)(response) {
+                  writeFile@file({
+                      filename = FILENAME,
+                      content = request,
+                      append = 1
+                  })()
+              }
+          }
+      }
+      ```
+  - question: How can you send the binary content of a file from a client to a server in Jolie?
+    answer: |
+      To send the binary content of a file from a client to a server in Jolie, use the `raw` type in the request and specify the `binary` format when writing the file. Here is an example of the client and server code:
+
+      **Client Code:**
+      ```jolie
+      from file import File
+
+      service ExampleClient {
+          embed File as file
+
+          outputPort server {
+              Location: "socket://localhost:9000",
+              Protocol: sodep,
+              Interfaces: ServerInterface
+          }
+
+          main {
+              readFile@file({ filename = "source.bin" })(content)
+              setFile@server({ content = content })()
+          }
+      }
+      ```
+
+      **Server Code:**
+      ```jolie
+      from file import File
+
+      constants {
+          FILENAME = "received.bin"
+      }
+
+      service ExampleServer {
+          embed File as file
+
+          inputPort server {
+              Location: "socket://localhost:9000",
+              Protocol: sodep,
+              Interfaces: ServerInterface
+          }
+
+          execution: concurrent
+
+          main {
+              setFile(request)(response) {
+                  writeFile@file({
+                      filename = FILENAME,
+                      content = request.content,
+                      format = "binary"
+                  })()
+              }
+          }
+      }
+      ```
+  - question: What is the `raw` type used for in Jolie, and how is it implemented in file communication?
+    answer: |
+      The `raw` type in Jolie is used for handling binary data in messages. It is typically used when sending non-text file contents, like images or PDFs. The server interface defines a request with the `.content` node of type `raw`, and the file is written using the `binary` format. Example interface and server implementation:
+
+      **Interface Definition:**
+      ```jolie
+      type SetFileRequest: void {
+          .content: raw
+      }
+
+      interface ServerInterface {
+          RequestResponse:
+              setFile(SetFileRequest)(void)
+      }
+      ```
+
+      **Server Code:**
+      ```jolie
+      from file import File
+
+      constants {
+          FILENAME = "received.bin"
+      }
+
+      service ExampleServer {
+          embed File as file
+
+          inputPort server {
+              Location: "socket://localhost:9000",
+              Protocol: sodep,
+              Interfaces: ServerInterface
+          }
+
+          execution: concurrent
+
+          main {
+              setFile(request)(response) {
+                  writeFile@file({
+                      filename = FILENAME,
+                      content = request.content,
+                      format = "binary"
+                  })()
+              }
+          }
+      }
+      ```

@@ -1,0 +1,68 @@
+version: 2
+task_description: 'This QnA helps learn how to declare the XML-RPC protocol in Jolie and understand its configuration.'
+created_by: murkrow
+seed_examples:
+  - question: How do you declare the XML-RPC protocol in a port definition in Jolie?
+    answer: |
+      To declare the XML-RPC protocol in a port definition in Jolie, use the `xmlrpc` protocol in the `Protocol` field of the `inputPort` definition. For example:
+      ```jolie
+      inputPort MyInput {
+          Location: "socket://localhost:8000/"
+          Protocol: xmlrpc { .debug = true }
+          Interfaces: SumInterface
+      }
+      ```
+  - question: What does the XML-RPC protocol in Jolie require for variable exchange?
+    answer: |
+      XML-RPC in Jolie requires that all exchanged variables be listed in a child array `param`, which is mapped into the XML-RPC `params` vector. Arrays need to be passed as child values called `array`. For example, `val.array[0] = 1` maps array values in XML-RPC.
+  - context: |
+      The XML-RPC protocol in Jolie does not support `long` type variables and cannot handle `dateTime.iso8601` as Jolie generates these as strings. Also, `base64` values are mapped into `raw`.
+    question: What types of variables are unsupported by XML-RPC in Jolie?
+    answer: |
+      XML-RPC in Jolie does not support `long` type variables and `dateTime.iso8601` values. Additionally, `base64` values are mapped into `raw`.
+  - context: |
+      A sample Jolie implementation of an XML-RPC server shows how the `sum` operation is defined and the protocol settings for the port are specified.
+    question: Can you give an example of a simple XML-RPC server in Jolie?
+    answer: |
+      Here is an example of a simple XML-RPC server in Jolie:
+      ```jolie
+      execution { concurrent }
+
+      type SumRequest:void {
+          .param:void {
+              .x:int
+              .y:int
+              .z:void {
+                  .a:int
+                  .b:int
+              }
+          }
+      }
+
+      type SumResponse:void {
+          .param:int
+      }
+
+      interface SumInterface {
+          RequestResponse:
+              sum(SumRequest)(SumResponse)
+      }
+
+      inputPort MyInput {
+          Location: "socket://localhost:8000/"
+          Protocol: xmlrpc { .debug = true }
+          Interfaces: SumInterface
+      }
+
+      main
+      {
+          [ sum( request )( response ) {
+              response.param = request.param.x + request.param.y + request.param.z.a + request.param.z.b
+          }]{ nullProcess }
+      }
+      ```
+  - context: |
+      The `XmlRpcConfiguration` type defines configuration options for the XML-RPC protocol, including aliases for operation names, connection keep-alive behavior, debug mode, and compression settings.
+    question: What are some configuration options available for the XML-RPC protocol in Jolie?
+    answer: |
+      The XML-RPC protocol in Jolie can be configured with options like aliases for operation names, connection keep-alive (`.keepAlive`), debug mode (`.debug`), HTTP content compression (`.compression`), and request compression (`.requestCompression`).

@@ -1,0 +1,60 @@
+version: 2
+task_description: 'Teach the model how to configure and use HTTPS input ports in a Jolie service.'
+created_by: murkrow
+seed_examples:
+  - question: What is required to configure an input port with the HTTPS protocol in Jolie?
+    answer: |
+      To configure an input port with the HTTPS protocol in Jolie, you need to specify the protocol as `https`, set the format to "json", and provide a keystore file with its password using the `ssl.keyStore` and `ssl.keyStorePassword` properties.
+  - context: |
+      The following code snippet demonstrates how to add an HTTPS input port to a service:
+      ```jolie
+      inputPort AdvancedCalculatorPortHTTPS {
+          location: "socket://localhost:8004"
+          protocol: https {
+              format = "json",
+              ssl.keyStore = "keystore.jks",
+              ssl.keyStorePassword = "jolie!"
+          }
+          interfaces: AdvancedCalculatorInterface
+      }
+      ```
+    question: How do you specify the keystore and password when configuring an HTTPS input port?
+    answer: |
+      In the code, the keystore is specified with the `ssl.keyStore` property, and the password is specified with the `ssl.keyStorePassword` property.
+  - context: |
+      The following example shows how the `AdvancedCalculatorService` uses multiple input ports, including one for HTTPS:
+      ```jolie
+      inputPort AdvancedCalculatorPortHTTPS {
+          location: "socket://localhost:8004"
+          protocol: https {
+              format = "json",
+              ssl.keyStore = "keystore.jks",
+              ssl.keyStorePassword = "jolie!"
+          }
+          interfaces: AdvancedCalculatorInterface
+      }
+      ```
+    question: What does the `AdvancedCalculatorPortHTTPS` input port configuration do?
+    answer: |
+      The `AdvancedCalculatorPortHTTPS` input port listens on port 8004 using the HTTPS protocol, formats messages as JSON, and secures communication with a keystore and password.
+  - context: |
+      The `AdvancedCalculatorService` includes an HTTPS input port and can interact with other services over HTTPS, as seen in the following configuration:
+      ```jolie
+      service AdvancedCalculatorService {
+          inputPort AdvancedCalculatorPortHTTPS {
+              location: "socket://localhost:8004"
+              protocol: https {
+                  format = "json",
+                  ssl.keyStore = "keystore.jks",
+                  ssl.keyStorePassword = "jolie!"
+              }
+              interfaces: AdvancedCalculatorInterface
+          }
+      }
+      ```
+    question: How does the service handle HTTPS communication in Jolie?
+    answer: |
+      The service handles HTTPS communication by adding an input port configured with the `https` protocol, specifying the necessary keystore and password to enable secure communication over SSL.
+  - question: How do you test the HTTPS input port after configuring it in Jolie?
+    answer: |
+      You can test the HTTPS input port by running the service and using a tool like `curl` to send a request to the service, for example: `curl https://localhost:8004/factorial?term=3`. If using a self-signed certificate, use the `--insecure` flag to bypass certificate validation.

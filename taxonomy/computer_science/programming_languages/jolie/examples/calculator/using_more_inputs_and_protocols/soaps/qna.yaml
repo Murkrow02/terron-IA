@@ -1,0 +1,53 @@
+version: 2
+task_description: 'Teach the model how to add an input port with protocol SOAPS in Jolie.'
+created_by: murkrow
+seed_examples:
+  - question: What is the first step in adding an input port with protocol SOAPS in Jolie?
+    answer: |
+      The first step is adding the inputPort to the code, specifying the location and protocol details like wsdl, wsdl.port, ssl.keyStore, and ssl.keyStorePassword.
+  - question: What parameters are required for the protocol soaps in Jolie?
+    answer: |
+      The parameters required for the protocol soaps are wsdl, wsdl.port, ssl.keyStore, and ssl.keyStorePassword.
+  - question: How do you generate the WSDL file for the protocol soaps in Jolie?
+    answer: |
+      You can generate the WSDL file using the tool jolie2wsdl with the appropriate namespace, port name, and address for the port, and then specify the output file for the WSDL document.
+  - question: What does the code for adding an input port with protocol SOAPS look like in Jolie?
+    answer: |
+      The code for adding an input port with protocol SOAPS in Jolie looks like this:
+      ```jolie
+      inputPort AdvancedCalculatorPortSOAPS {
+          location: "socket://localhost:8005"
+          protocol: soaps {
+              wsdl = "AdvancedCalculatorSOAPS.wsdl",
+              wsdl.port = "AdvancedCalculatorPortSOAPServicePort",
+              ssl.keyStore = "keystore.jks",
+              ssl.keyStorePassword = "jolie!"
+          }
+          interfaces: AdvancedCalculatorInterface
+      }
+      ```
+  - question: How can you run the Jolie service using the newly added SOAPS input port?
+    answer: |
+      You can run the Jolie service using the following command in the terminal:
+      ```bash
+      jolie AdvancedCalculatorService.ol
+      ```
+      Additionally, you will need to run another service (e.g., CalcularService.ol) in a separate shell.
+  - context: |
+      The protocol soaps in Jolie requires a keystore for security certificates. The keystore is referenced with the parameter ssl.keyStore and protected with a password provided in ssl.keyStorePassword.
+    question: Why is a keystore needed when using the protocol soaps in Jolie?
+    answer: |
+      A keystore is needed to provide a security certificate to clients when using the protocol soaps in Jolie.
+  - context: |
+      In addition to adding the input port, you must also specify the related WSDL document and port, as shown in the code example for the protocol soaps input port.
+    question: What additional configuration is required for the protocol soaps input port besides the location?
+    answer: |
+      Besides the location, you must configure the wsdl, wsdl.port, ssl.keyStore, and ssl.keyStorePassword parameters for the protocol soaps input port.
+  - question: What is the purpose of the tool jolie2wsdl in Jolie's protocol soaps configuration?
+    answer: |
+      The tool jolie2wsdl is used to generate the WSDL file for the protocol soaps, specifying the namespace, port name, and address, which is then referenced in the protocol configuration.
+  - context: |
+      The complete service example includes multiple input ports such as http, soap, sodep, and https, with the newly added protocol soaps input port.
+    question: What input ports are included in the complete service example in Jolie?
+    answer: |
+      The complete service example includes input ports for http, soap, sodep, https, and the newly added protocol soaps input port.

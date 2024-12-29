@@ -1,0 +1,23 @@
+version: 2
+task_description: 'Teach the model how to work with socket locations in Jolie.'
+created_by: murkrow
+seed_examples:
+  - question: What is a socket location in Jolie?
+    answer: |
+      A socket location in Jolie is a TCP/IP network socket defined by a URI in the form `socket://host:port/path`, where `host` represents the system running the Jolie program, `port` specifies the communication port, and `path` identifies the Jolie program within the scope of an authority.
+  - context: |
+      A socket location can either point to a local or remote socket address. A local socket address is used when the communication is directed to a program running on the same location as the sender. A remote socket address points to a program running on a different location from the sender.
+    question: What is the difference between a local and a remote socket address?
+    answer: |
+      A local socket address is used when the communication is directed to a program running on the same machine as the sender (e.g., `socket://localhost:port_number/path`). A remote socket address is used when the communication is directed to a program running on a different machine, using either a domain name or IP address (e.g., `socket://www.google.com:80/path`).
+  - question: How is a socket location expressed in Jolie?
+    answer: |
+      A socket location is expressed as a URI in the form `socket://host:port/path`, where `host` is the system running the Jolie program, `port` is the communication port, and `path` identifies the Jolie program.
+  - context: |
+      A socket location's URI can include a domain name or IP address for the host, a port number for the communication port, and a path that identifies the specific Jolie program. Local socket addresses use `localhost` or `127.0.0.1`, while remote socket addresses use domain names or IP addresses.
+    question: What does the `host:port` part represent in a Jolie socket location?
+    answer: |
+      The `host:port` part in a Jolie socket location represents the authority, where `host` is the system running the Jolie program, and `port` is the port on which the communication occurs.
+  - question: Can you give an example of a local socket address in Jolie?
+    answer: |
+      An example of a local socket address in Jolie is `socket://localhost:8080/path` or `socket://127.0.0.1:8080/path`, where the communication is directed to a program on the same machine as the sender.

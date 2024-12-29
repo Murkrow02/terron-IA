@@ -1,0 +1,63 @@
+version: 2
+task_description: 'Teach the model how to understand and work with the SODEP protocol, focusing on its structure, parameters, and message encoding in Jolie.'
+created_by: murkrow
+seed_examples:
+  - question: What is SODEP and what is it used for?
+    answer: |
+      SODEP (Simple Operation Data Exchange Protocol) is a binary protocol created for Jolie. It is designed to provide a simple, safe, and efficient protocol for service communications.
+  - question: What are the key parameters in the SodepConfiguration?
+    answer: |
+      The key parameters in the SodepConfiguration are `charset` (defines the character set for encoding and decoding strings) and `keepAlive` (defines whether the connection should be kept open).
+  - context: |
+      The `CommMessage` structure contains a `long id`, a `String resourcePath`, a `String operationName`, a `FaultException? fault`, and a `Value value`.
+    question: |
+      What are the fields in the `CommMessage` structure?
+    answer: |
+      The `CommMessage` structure contains `long id`, `String resourcePath`, `String operationName`, `FaultException? fault`, and `Value value`.
+  - context: |
+      The `FaultException` contains `String faultName` and `Value value`, representing the fault name and additional data regarding the fault.
+    question: |
+      What fields are present in a `FaultException`?
+    answer: |
+      A `FaultException` contains `String faultName` and `Value value`, representing the fault name and additional data regarding the fault.
+  - context: |
+      The `Value` structure can hold a variety of data types, including `String`, `Integer`, `Double`, and a `Map<String, Value[]>` for children vectors of the value.
+    question: |
+      What data types can be held in the `Value` structure?
+    answer: |
+      The `Value` structure can hold `String`, `Integer`, `Double`, and a `Map<String, Value[]>` for children vectors.
+  - question: How is a SODEP message structured in Jolie?
+    answer: |
+      A SODEP message is structured with a `long message id`, a `String resource path`, a `String operation name`, a `Fault`, and a `Value`.
+  - context: |
+      The formal specification of SODEP uses a BNF-like notation, where `String` elements are UTF-8 encoded, and data types such as `long`, `int`, `double`, and `byte` are used with specific definitions.
+    question: |
+      How is the formal specification of SODEP defined?
+    answer: |
+      The formal specification of SODEP uses a BNF-like notation, where `String` elements are UTF-8 encoded, and data types such as `long`, `int`, `double`, and `byte` are used with specific definitions.
+  - question: What is the role of the `SODEPMessage` in the protocol?
+    answer: |
+      The `SODEPMessage` is the encoding of a `CommMessage` object, consisting of the message id, resource path, operation name, fault, and value.
+  - context: |
+      In the SODEP protocol, the encoding of a message follows specific rules, such as using `int` for string length and `byte` for single-byte values.
+    question: |
+      What are some of the encoding rules for a SODEP message?
+    answer: |
+      The encoding rules for a SODEP message include using `int` for string length and `byte` for single-byte values.
+  - question: Can you provide an example of how to create a `SodepConfiguration` with a custom charset and keep-alive set to false?
+    answer: |
+      ```jolie
+      type SodepConfiguration:void {
+          .charset = "ISO-8859-1"
+          .keepAlive = false
+      }
+      ```
+  - question: How can you handle the `FaultException` in a SODEP message?
+    answer: |
+      The `FaultException` can be handled by checking its `faultName` and `value` fields, which contain information about the fault.
+  - context: |
+      The `Value` structure has the field `ValueContent`, which defines how different data types are encoded, including `0(byte)` for null, `1(byte)` for strings, `2(byte)` for integers, and so on.
+    question: |
+      How are different data types encoded in the `Value` structure?
+    answer: |
+      In the `Value` structure, data types are encoded with specific byte values: `0(byte)` for null, `1(byte)` for strings, `2(byte)` for integers, and so on.

@@ -1,0 +1,211 @@
+version: 2
+task_description: |
+    Teach the AI how to create and use a basic calculator service and an advanced calculator service built on top of the basic one using Jolie programming language.
+    This includes defining services, input/output ports, interfaces, and behaviors for performing arithmetic operations like sum, subtraction, multiplication, division, factorial, average, and percentage.
+created_by: murkrow
+seed_examples:
+  - question: What is the purpose of the `AdvancedCalculatorService`?
+    answer: |
+      The `AdvancedCalculatorService` provides advanced arithmetic operations like factorial, average, and percentage by using the basic operations of the `CalculatorService` such as sum, multiplication, and division.
+  - question: How do you declare the interface of the `AdvancedCalculatorService` in Jolie?
+    answer: |
+      The interface of the `AdvancedCalculatorService` is declared using the `interface` keyword followed by the operations that the service will provide, such as `factorial`, `average`, and `percentage`. Each operation has its own request and response types.
+  - question: What operations are available in the `AdvancedCalculatorService`?
+    answer: |
+      The `AdvancedCalculatorService` provides three operations: `factorial`, `average`, and `percentage`.
+  - question: How do you create a service that uses another service's operations in Jolie?
+    answer: |
+      In Jolie, you can create a service that uses another service's operations by declaring an `outputPort` to connect to the other service. This allows you to call its operations. For example, the `AdvancedCalculatorService` connects to the `CalculatorService` through an `outputPort` to use its basic operations.
+  - question: How is the `CalculatorService` defined in Jolie?
+    answer: |
+      The `CalculatorService` is defined with basic arithmetic operations like sum, subtraction, multiplication, and division. These operations are implemented using request-response messages between the client and the service.
+  - context: |
+      service AdvancedCalculatorService {
+        execution: concurrent
+        outputPort Calculator {
+            location: "socket://localhost:8000"
+            protocol: http { format = "json" }
+            interfaces: CalculatorInterface
+        }
+        inputPort AdvancedCalculatorPort {
+            location: "socket://localhost:8001"
+            protocol: http { format = "json" }
+            interfaces: AdvancedCalculatorInterface
+        }
+        main {
+            [ factorial( request )( response ) {
+                for( i = request.term, i > 0, i-- ) {
+                    req_mul.factor[ #req_mul.factor ] = i
+                }
+                mul@Calculator( req_mul )( response.factorial )
+            }]
+        }    }
+    question: What does the `outputPort` in the `AdvancedCalculatorService` do?
+    answer: |
+      The `outputPort` in the `AdvancedCalculatorService` connects the service to the `CalculatorService`, allowing the `AdvancedCalculatorService` to use basic operations like multiplication, which are needed for advanced operations like factorial.
+  - context: |
+      type FactorialRequest: void {
+          term: int
+      }
+      type FactorialResponse: void {
+          factorial: long
+      }
+    question: What is the `FactorialRequest` type used for?
+    answer: |
+      The `FactorialRequest` type is used to define the input message for the factorial operation. It contains one field, `term`, which is the number for which the factorial is to be calculated.
+  - context: |
+      main {
+          [ factorial( request )( response ) {
+              for( i = request.term, i > 0, i-- ) {
+                  req_mul.factor[ #req_mul.factor ] = i
+              }
+              mul@Calculator( req_mul )( response.factorial )
+          }]
+      }
+    question: How does the `factorial` operation in the `AdvancedCalculatorService` work?
+    answer: |
+      The `factorial` operation calculates the factorial of a given number by looping through all integers from the number down to 1 and multiplying them together using the `mul@Calculator` operation to calculate the result.
+  - context: |
+      type AverageRequest: void {
+          term*: int
+      }
+      type AverageResponse: void {
+          average: double
+      }
+    question: What is the purpose of the `AverageRequest` type?
+    answer: |
+      The `AverageRequest` type defines the input message for the average operation. It contains an array of integers, `term*`, representing the numbers to calculate the average.
+  - context: |
+      main {
+          [ average( request )( response ) {
+              sum@Calculator( request )( sum_res )
+              div@Calculator( { dividend = double( sum_res ), divisor = double( #request.term ) })( response.average )
+          }]
+      }
+    question: How does the `average` operation in the `AdvancedCalculatorService` work?
+    answer: |
+      The `average` operation calculates the average of a set of numbers by first summing them up using the `sum@Calculator` operation, and then dividing the sum by the number of terms using the `div@Calculator` operation.
+  - context: |
+      type PercentageRequest: void {
+          term: double
+          percentage: double
+      }
+      type PercentageResponse: double
+    question: What is the purpose of the `PercentageRequest` type?
+    answer: |
+      The `PercentageRequest` type defines the input message for the percentage operation. It contains two fields: `term`, the base number, and `percentage`, the percentage to be calculated.
+  - context: |
+      main {
+          [ percentage( request )( response ) {
+              div@Calculator( { dividend = request.term, divisor = 100.0 })( div_res )
+              mul@Calculator( { factor[0] = div_res, factor[1] = request.percentage })( response )
+          }]
+      }
+    question: How does the `percentage` operation in the `AdvancedCalculatorService` work?
+    answer: |
+      The `percentage` operation calculates the percentage of a number by first dividing the term by 100 to get the decimal value of 1%, and then multiplying the result by the percentage value using the `mul@Calculator` operation.
+  - context: |
+      service CalculatorService {
+          execution: concurrent
+          inputPort CalculatorPort {
+              location: "socket://localhost:8000"
+              protocol: http { format = "json" }
+              interfaces: CalculatorInterface
+          }
+          main {
+              [ sum( request )( response ) {
+                  for( t in request.term ) {
+                      response = response + t
+                  }
+              }]
+              [ sub( request )( response ) {
+                  response = request.minuend - request.subtraend
+              }]
+              [ mul( request )( response ) {
+                  response = 1
+                  for ( f in request.factor ) {
+                      response = response * f
+                  }
+              }]
+              [ div( request )( response ) {
+                  response = request.dividend / request.divisor
+              }]
+          }
+      }
+    question: What basic arithmetic operations are provided by the `CalculatorService`?
+    answer: |
+      The `CalculatorService` provides four basic arithmetic operations: sum, subtraction, multiplication, and division.
+  - context: |
+      type SumRequest: void {
+          term[1,*]: int
+      }
+      type SubRequest: void {
+          minuend: int
+          subtraend: int
+      }
+      type MulRequest: void {
+          factor*: double
+      }
+      type DivRequest: void {
+          dividend: double
+          divisor: double
+      }
+    question: What request types are used by the `CalculatorService` for basic operations?
+    answer: |
+      The `CalculatorService` uses the following request types for basic operations: `SumRequest`, `SubRequest`, `MulRequest`, and `DivRequest`, which define the input parameters for each operation.
+  - context: |
+      service CalculatorService {
+          execution: concurrent
+          main {
+              [ sum( request )( response ) {
+                  for( t in request.term ) {
+                      response = response + t
+                  }
+              }]
+          }
+      }
+    question: How is the `sum` operation implemented in the `CalculatorService`?
+    answer: |
+      The `sum` operation adds all the numbers in the `request.term` array together by iterating over each term and adding it to the `response`.
+  - context: |
+      service CalculatorService {
+          execution: concurrent
+          main {
+              [ sub( request )( response ) {
+                  response = request.minuend - request.subtraend
+              }]
+          }
+      }
+    question: How is the `sub` operation implemented in the `CalculatorService`?
+    answer: |
+      The `sub` operation subtracts the `subtraend` from the `minuend` in the `request` and stores the result in the `response`.
+  - context: |
+      service CalculatorService {
+          execution: concurrent
+          main {
+              [ mul( request )( response ) {
+                  response = 1
+                  for ( f in request.factor ) {
+                      response = response * f
+                  }
+              }]
+          }
+      }
+    question: How is the `mul` operation implemented in the `CalculatorService`?
+    answer: |
+      The `mul` operation multiplies all the factors in the `request.factor` array together by iterating over each factor and updating the `response`.
+  - context: |
+      service CalculatorService {
+          execution: concurrent
+          main {
+              [ div( request )( response ) {
+                  response = request.dividend / request.divisor
+              }]
+          }
+      }
+    question: How is the `div` operation implemented in the `CalculatorService`?
+    answer: |
+      The `div` operation divides the `dividend` by the `divisor` from the `request` and stores the result in the `response`.
+  - question: How does the `AdvancedCalculatorService` use the `CalculatorService` operations?
+    answer: |
+      The `AdvancedCalculatorService` calls the `CalculatorService` operations such as `mul` to compute the result for operations like factorial and percentage. It also uses the `sum` operation to calculate the total for the average operation.

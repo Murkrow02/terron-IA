@@ -1,0 +1,83 @@
+version: 2
+task_description: |
+    This skill helps to understand the usage of BTL2CAP in Jolie, which is built upon the L2CAP multiplexing layer and is used to transmit data via Bluetooth. It includes the BTL2CAP location format and parameters for configuring Bluetooth services.
+created_by: murkrow
+seed_examples:
+  - question: What does BTL2CAP stand for in Jolie?
+    answer: |
+      BTL2CAP stands for Bluetooth Logical Link Controller Adaptation Protocol and is used to transmit data via the Bluetooth medium.
+  - question: What is the structure of a BTL2CAP location in Jolie?
+    answer: |
+      A BTL2CAP location in Jolie follows the format `btl2cap://hostname:UUID[;param1=val1;...;paramN=valN]`, where `hostname` identifies the host system, `UUID` is the universally unique identifier for the Bluetooth service, and `param1=val1` are optional Bluetooth-specific parameters.
+  - question: What does the UUID represent in a BTL2CAP location?
+    answer: |
+      The UUID in a BTL2CAP location is a 128-bit unique identifier for the Bluetooth medium service, defined as a 32-character hexadecimal string.
+  - question: What is the default value for the `authenticate` parameter in BTL2CAP?
+    answer: |
+      The default value for the `authenticate` parameter in BTL2CAP is `true`, meaning authentication is required to provide a particular Bluetooth service.
+  - question: How can you configure encryption for Bluetooth communication in BTL2CAP?
+    answer: |
+      You can configure encryption by setting the `encrypt` parameter to `true`. By default, the encryption is set to `false`.
+  - question: How would you define a BTL2CAP service that requires authentication and encryption in Jolie?
+    answer: |
+      You would define the BTL2CAP service with the parameters `authenticate=true` and `encrypt=true` in the location string. For example:
+      ```jolie
+      btl2cap://hostname:UUID;authenticate=true;encrypt=true
+      ```
+  - context: |
+      type BTL2CAPParameters:void {
+          .authenticate?: bool
+          .encrypt?: bool
+      }
+    question: What is the purpose of the `authenticate` and `encrypt` parameters in BTL2CAP?
+    answer: |
+      The `authenticate` parameter controls whether authentication is required for the Bluetooth service, and the `encrypt` parameter controls whether the communication is encrypted among authenticated devices.
+  - context: |
+      type BTL2CAPParameters:void {
+          .receivemtu?: string
+          .transmitmtu?: string
+      }
+    question: What is the significance of the `receivemtu` and `transmitmtu` parameters in BTL2CAP?
+    answer: |
+      The `receivemtu` and `transmitmtu` parameters define the maximum transmission unit (MTU) for receiving and transmitting data, respectively. The default value for both is 672 bytes, and the supported values are 48 and 65536 bytes.
+  - context: |
+      type BTL2CAPParameters:void {
+          .name?: string
+      }
+    question: What does the `name` parameter do in BTL2CAP?
+    answer: |
+      The `name` parameter defines a "friendly" name for the Bluetooth service, which can be used for identification. The default value is an empty string.
+  - question: How would you define a BTL2CAP service with a custom name and MTU size?
+    answer: |
+      You would define the BTL2CAP service with the parameters `name="MyBluetoothService"` and `receivemtu="1024"`. For example:
+      ```jolie
+      btl2cap://hostname:UUID;name="MyBluetoothService";receivemtu="1024"
+      ```
+  - question: How do you configure the BTL2CAP service to allow communication only with authenticated devices?
+    answer: |
+      To allow communication only with authenticated devices, you would set the `authenticate` parameter to `true` and the `authorize` parameter to `false` (or omit it). For example:
+      ```jolie
+      btl2cap://hostname:UUID;authenticate=true;authorize=false
+      ```
+  - question: How would you configure a BTL2CAP service to always allow communication with a specific device?
+    answer: |
+      You can set the `authorize` parameter to `true` to allow communication with a particular authenticated device at all times. For example:
+      ```jolie
+      btl2cap://hostname:UUID;authenticate=true;authorize=true
+      ```
+  - context: |
+      type BTL2CAPParameters:void {
+          .master?: bool
+      }
+    question: What does the `master` parameter define in BTL2CAP?
+    answer: |
+      The `master` parameter defines whether the Bluetooth service acts as a master. By default, it is set to `false`.
+  - question: What happens if you set the `master` parameter to `true` in a BTL2CAP location?
+    answer: |
+      Setting the `master` parameter to `true` makes the Bluetooth service act as the master device in the connection, allowing it to control the communication.
+  - question: How can you specify the maximum MTU size for sending data in BTL2CAP?
+    answer: |
+      You can specify the maximum MTU size by setting the `transmitmtu` parameter. For example, to set the MTU size to 65536 bytes, you would use:
+      ```jolie
+      btl2cap://hostname:UUID;transmitmtu="65536"
+      ```

@@ -1,0 +1,72 @@
+version: 2
+task_description: |
+    This skill provides instructions for adding a SOAP input port to a Jolie service, including configuring the port, generating a WSDL definition, and completing the configuration to allow SOAP message handling.
+created_by: murkrow
+seed_examples:
+  - question: How do you add a SOAP input port to a Jolie service?
+    answer: |
+      You can add a SOAP input port to a Jolie service by defining the input port with the protocol set to soap and specifying the location and interface. For example:
+      ```jolie
+      inputPort AdvancedCalculatorPortSOAP {
+          location: "socket://localhost:8002"
+          protocol: soap
+          interfaces: AdvancedCalculatorInterface
+      }
+      ```
+  - context: |
+      After adding the SOAP input port, it is necessary to generate the corresponding WSDL definition. This is done using the `jolie2wsdl` command, which converts the Jolie interface into a WSDL document.
+    question: |
+      How do you generate the WSDL definition for a SOAP port in Jolie?
+    answer: |
+      To generate the WSDL definition, use the `jolie2wsdl` tool with the following command:
+      ```jolie
+      jolie2wsdl --namespace test.jolie.org --portName AdvancedCalculatorPortSOAP --portAddr http://localhost:8002 --outputFile AdvancedCalculator.wsdl AdvancedCalculatorService.ol
+      ```
+  - context: |
+      After defining the SOAP input port and generating the WSDL definition, you need to complete the configuration by attaching the WSDL file to the port and specifying the port within the WSDL.
+    question: |
+      How do you complete the configuration of the SOAP input port in Jolie?
+    answer: |
+      To complete the configuration, include the `wsdl` and `wsdl.port` parameters in the port definition, like this:
+      ```jolie
+      inputPort AdvancedCalculatorPortSOAP {
+          location: "socket://localhost:8002"
+          protocol: soap {
+              wsdl = "AdvancedCalculator.wsdl",
+              wsdl.port = "AdvancedCalculatorPortSOAPServicePort"
+          }
+          interfaces: AdvancedCalculatorInterface
+      }
+      ```
+  - context: |
+      In Jolie, a SOAP input port can be defined for a service to receive SOAP messages. The service can be extended to listen for SOAP messages at a specified port.
+    question: |
+      What is the role of the `wsdl` parameter in a SOAP input port configuration in Jolie?
+    answer: |
+      The `wsdl` parameter specifies the WSDL file to be used by the service to correctly handle SOAP messages. It ensures that the SOAP messages are properly formatted and the service can process them as defined in the WSDL.
+  - context: |
+      A complete example of configuring SOAP input ports in Jolie includes defining the input port, generating the WSDL definition, and attaching it to the port for correct SOAP message handling.
+    question: |
+      Can you provide an example of a complete Jolie service with a SOAP input port configuration?
+    answer: |
+      Here is an example of a complete Jolie service with a SOAP input port:
+      ```jolie
+      service AdvancedCalculatorService {
+          execution: concurrent
+          inputPort AdvancedCalculatorPortSOAP {
+              location: "socket://localhost:8002"
+              protocol: soap {
+                  wsdl = "AdvancedCalculator.wsdl",
+                  wsdl.port = "AdvancedCalculatorPortSOAPServicePort"
+              }
+              interfaces: AdvancedCalculatorInterface
+          }
+          main {
+              [ factorial( request )( response ) {
+                  for( i = request.term, i > 0, i-- ) {
+                      req_mul.factor[ #req_mul.factor ] = i
+                  }
+              }]
+          }
+      }
+      ```

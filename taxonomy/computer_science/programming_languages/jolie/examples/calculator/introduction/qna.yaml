@@ -1,0 +1,99 @@
+version: 2
+task_description: |
+    This QnA YAML helps train an AI model on the basics of creating a simple calculator service in the Jolie programming language, covering the process of defining interfaces, message types, service definition, input ports, and service behavior.
+created_by: murkrow
+seed_examples:
+  - question: What is the first step in creating a calculator service in Jolie?
+    answer: |
+      The first step is defining an interface for the service, which includes listing the operations such as sum, sub, mul, and div.
+  - context: |
+      The following code defines an interface in Jolie for a calculator service that includes four operations: sum, sub, mul, and div.
+      ```jolie
+      interface CalculatorInterface {
+          RequestResponse:
+              sum,
+              sub,
+              mul,
+              div
+      }
+      ```
+    question: |
+      What does the `interface CalculatorInterface` in Jolie define?
+    answer: |
+      It defines a service interface with four operations: sum, sub, mul, and div, each having a request-response type.
+  - context: |
+      The message types define the structure of the messages exchanged between the service and the clients. For example, the `SumRequest` type defines a vector of integers as the input for the sum operation.
+      ```jolie
+      type SumRequest: void {
+          term[1,*]: int
+      }
+      ```
+    question: |
+      How do message types work in Jolie?
+    answer: |
+      Message types in Jolie define the structure of the messages exchanged in an operation. For example, `SumRequest` specifies a vector of integers as the input for the sum operation.
+  - question: |
+      How do you define the service behavior for the sum operation in Jolie?
+    answer: |
+      The behavior for the sum operation is defined by adding a block of code that loops through the terms in the request and adds them to the response.
+  - context: |
+      The service behavior for the sum operation is defined as follows:
+      ```jolie
+      [ sum( request )( response ) {
+          for( t in request.term ) {
+              response = response + t
+          }
+      }]
+      ```
+    question: |
+      What does the code for the sum operation in Jolie do?
+    answer: |
+      It loops through the terms in the request and adds each term to the response, effectively calculating the sum.
+  - question: |
+      How do you define an input port for a Jolie service?
+    answer: |
+      An input port is defined with the `inputPort` keyword, specifying the location, protocol (such as HTTP), and the interface the service listens to.
+  - context: |
+      In Jolie, an input port for the calculator service can be defined like this:
+      ```jolie
+      inputPort CalculatorPort {
+          location: "socket://localhost:8000"
+          protocol: http { format = "json" }
+          interfaces: CalculatorInterface
+      }
+      ```
+    question: |
+      What is the purpose of the `inputPort CalculatorPort` in the Jolie service definition?
+    answer: |
+      It defines the listening endpoint for the service, specifying the location, protocol (HTTP with JSON format), and the interface that the service exposes.
+  - question: |
+      How do you set up a service to perform basic arithmetic operations like sum, subtraction, multiplication, and division in Jolie?
+    answer: |
+      The service is set up by defining the operations within the `main` scope, where the specific behavior for each operation is coded to handle the request and produce a response.
+  - context: |
+      In the `main` scope, the operations for sum, sub, mul, and div are implemented as follows:
+      ```jolie
+      main {
+          [ sum( request )( response ) {
+              for( t in request.term ) {
+                  response = response + t
+              }
+          }]
+          [ sub( request )( response ) {
+              response = request.minuend - request.subtraend
+          }]
+          [ mul( request )( response ) {
+              response = 1
+              for ( f in request.factor ) {
+                  response = response * f
+              }
+          }]
+          [ div( request )( response ) {
+              response = request.dividend / request.divisor
+          }]
+      }
+      ```
+    question: |
+      How is the `main` scope used to define operations in Jolie?
+    answer: |
+      The `main` scope is used to implement the behavior for each operation by specifying what happens when a request is received and how to compute the response for each operation.

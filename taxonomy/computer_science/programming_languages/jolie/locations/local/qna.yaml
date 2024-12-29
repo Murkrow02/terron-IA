@@ -1,0 +1,43 @@
+version: 2
+task_description: 'Teach the model how to use the "local" medium in Jolie for communication between services.'
+created_by: murkrow
+seed_examples:
+  - question: What is the "local" medium used for in Jolie?
+    answer: |
+      The "local" medium in Jolie is used for communication between embedded services and their embedder, utilizing shared memory for efficient message delivery.
+  - question: How can the "local" medium be defined in Jolie?
+    answer: |
+      The "local" medium can be defined statically with a specific name (e.g., "local://Calculator") or dynamically where the Jolie interpreter assigns a unique name at runtime.
+  - question: What is the difference between static and dynamic definition of the "local" medium in Jolie?
+    answer: |
+      In a static definition, a specific name like "local://MyService" is provided, while in dynamic definition, the location is assigned at runtime by the Jolie interpreter.
+  - context: |
+      The "local" medium can be used for service internal self-communications, where services communicate with each other within the same service group without requiring an external protocol.
+    question: |
+      How does the "local" medium work for service internal communication in Jolie?
+    answer: |
+      The "local" medium allows services within the same group to communicate using shared memory without the need for an external protocol.
+  - question: What is the purpose of the `getLocalLocation@Runtime()` operation in Jolie?
+    answer: |
+      The `getLocalLocation@Runtime()` operation is used to assign a unique name to input ports at runtime for services using the "local" medium.
+  - question: What does the Jolie example provided in the documentation demonstrate about the "local" medium?
+    answer: |
+      The example demonstrates how the "local" medium is used to facilitate recursive communication between local services, such as in the "hanoiSolver" operation, which calls itself recursively using the "local" medium for inter-service communication.
+  - context: |
+      The operation `hanoi` receives an external HTTP request and fires the local operation `hanoiSolver`, which uses the "local" medium for recursive calls to solve the problem.
+    question: |
+      How does the "hanoi" operation use the "local" medium in Jolie?
+    answer: |
+      The "hanoi" operation uses the "local" medium to trigger the `hanoiSolver` operation, which communicates locally to solve the problem recursively.
+  - question: What does the `hanoiSolver` operation do in the provided Jolie example?
+    answer: |
+      The `hanoiSolver` operation solves the Tower of Hanoi problem by recursively moving disks between source, auxiliary, and destination locations using the "local" medium for communication.
+  - context: |
+      The code in the example uses input ports with the "local" medium to communicate between services. The input port `Self` is used to call the `hanoiSolver` operation locally.
+    question: |
+      How is the "Self" input port used in the Jolie example?
+    answer: |
+      The "Self" input port is used to invoke the `hanoiSolver` operation locally, enabling communication between embedded services within the same service group.
+  - question: How is the "local" medium defined in Jolie when used for internal self-communication?
+    answer: |
+      The "local" medium is defined simply as "local" in the input port definition, without the need for a protocol or static location.

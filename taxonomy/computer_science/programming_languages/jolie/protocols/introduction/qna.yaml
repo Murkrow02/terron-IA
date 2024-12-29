@@ -1,0 +1,42 @@
+version: 2
+task_description: Learn about setting and using static and dynamic protocol parameters in a programming language.
+created_by: murkrow
+seed_examples:
+  - question: What is a protocol in Jolie?
+    answer: A protocol in Jolie defines how data should be encoded or decoded for sending or receiving, following an isomorphism.
+  - question: What protocols are natively supported in Jolie?
+    answer: Jolie natively supports HTTP, HTTPS, JSON/RPC, XML/RPC, SOAP, SODEP, SODEPS, and RMI.
+  - question: How are static protocol parameters defined in Jolie?
+    answer: |
+      Static protocol parameters are defined in the input/output port using an assignment `=`. For example, in an HTTP output port, the method can be set as `Protocol: http { .method = "get" }`.
+  - question: How can dynamic protocol parameters be set in Jolie?
+    answer: Dynamic protocol parameters can be set using the alias operator `->`. For example, `.format -> format` allows the parameter `format` to change dynamically at runtime.
+  - context: |
+      Protocol parameters can be static or dynamic. Static parameters are defined in the input/output port and remain unchanged during program execution, while dynamic parameters use the alias `->` operator to allow changes at runtime.
+    question: What is the difference between static and dynamic protocol parameters in Jolie?
+    answer: Static protocol parameters remain unchanged throughout the execution of the program, whereas dynamic parameters can change at runtime using the alias `->` operator.
+  - context: |
+      inputPort MyInput {
+          Protocol: http { .format = "html" }
+      }
+    question: How is the `format` parameter set for an HTTP input port statically?
+    answer: The `format` parameter is statically set using `.format = "html"` in the protocol definition of the input port.
+  - context: |
+      inputPort HTTPInput {
+          Protocol: http {
+              .keepAlive = 0;
+              .format -> format;
+          }
+      }
+    question: How does the `keepAlive` parameter differ from the `format` parameter in the HTTPInput port?
+    answer: The `keepAlive` parameter is statically set to `0`, while the `format` parameter is dynamically set using the alias `-> format`.
+  - context: |
+      Jolie supports dynamic changes to protocol parameters through the alias operator `->`. Parameters like `.format`, `.statusCode`, and `.redirect` can be aliased to variables, enabling runtime modification.
+    question: What are some examples of protocol parameters that can be dynamically modified in Jolie?
+    answer: Examples include `.format`, `.statusCode`, and `.redirect`, which can be aliased to variables for runtime modification.
+  - context: |
+      Protocol: http {
+          .default = "default";
+      }
+    question: What is the purpose of the `.default` parameter in a protocol definition?
+    answer: The `.default` parameter provides a fallback or default value for the protocol during execution.

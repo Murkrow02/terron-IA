@@ -1,0 +1,53 @@
+version: 2
+task_description: |
+    This skill helps understand the usage of RMI (Remote Method Invocation) in Jolie, allowing for communication between distributed objects over a network. The RMI protocol in Jolie is used for registering ports into the Java RMI Register service and utilizes its own internal protocol.
+created_by: murkrow
+seed_examples:
+  - question: What is RMI in Jolie?
+    answer: |
+      RMI (Remote Method Invocation) is a Java API that provides an object-oriented equivalent of remote procedure calls. In Jolie, it is used to register ports into the Java RMI Register service.
+  - question: How is the RMI location defined in Jolie?
+    answer: |
+      The RMI location in Jolie is defined in the form `rmi://hostname:port/name`, where the `name` parameter is mandatory and must be unique for each RMI service.
+  - question: What is the significance of the `name` parameter in an RMI location in Jolie?
+    answer: |
+      The `name` parameter in an RMI location is mandatory and must be unique to identify the RMI service. It helps distinguish between different services registered in the RMI register.
+  - context: |
+      When using RMI, Jolie registers the port into the Java RMI Register service. RMI locations are in the form `rmi://hostname:port/name`, where the `name` parameter is mandatory.
+    question: |
+      What must be specified in the RMI location for Jolie to register the port properly?
+    answer: |
+      In the RMI location for Jolie, the `hostname`, `port`, and `name` parameters must be specified, with `name` being mandatory and unique.
+  - context: |
+      Due to a parsing restriction in Jolie, non-local input ports require a protocol to be specified. The `Protocol: sodep` is used as a workaround.
+    question: |
+      What protocol should be used for non-local input ports in Jolie when using RMI?
+    answer: |
+      For non-local input ports in Jolie using RMI, the `Protocol: sodep` should be specified as a workaround due to a parsing restriction.
+  - question: What protocol does RMI use by default in Jolie?
+    answer: |
+      RMI uses its own internal protocol by default, meaning no other protocol is necessary for local ports. However, a protocol must be specified for non-local input ports due to Jolie's parsing restrictions.
+  - question: How do you define an RMI port in Jolie?
+    answer: |
+      To define an RMI port in Jolie, you would use the following syntax:
+      ```jolie
+      service MyRmiService {
+          output rmi://localhost:1099/myUniqueRmiName;
+      }
+      ```
+      This registers the service at `localhost` on port `1099` with the unique service name `myUniqueRmiName`.
+  - context: |
+      RMI locations are typically in the form `rmi://hostname:port/name`, and the protocol is automatically managed by RMI, but non-local ports require an explicit protocol.
+    question: |
+      Can you define multiple RMI locations in a Jolie service?
+    answer: |
+      Yes, you can define multiple RMI locations in a Jolie service by specifying different `name` values for each location. For example:
+      ```jolie
+      service MyService {
+          output rmi://localhost:1099/service1;
+          output rmi://localhost:1099/service2;
+      }
+      ```
+  - question: What is the role of the `hostname` in an RMI location in Jolie?
+    answer: |
+      The `hostname` specifies the host where the RMI service is registered, and it can be a local or remote machine. The hostname is crucial for resolving the network address of the RMI service.

@@ -1,0 +1,55 @@
+version: 2
+task_description: |
+    Teach the model how to add an input port with protocol SODEPS in Jolie, including configuration steps for adding the port, specifying the protocol and SSL settings, and running the service and client.
+created_by: murkrow
+seed_examples:
+  - question: How do you add an input port with protocol SODEPS in Jolie?
+    answer: |
+      To add an input port with protocol SODEPS, you define the inputPort with the location and protocol. For example:
+      ```jolie
+      inputPort AdvancedCalculatorPortSODEPS {
+          location: "socket://localhost:8006"
+          protocol: sodeps {
+              ssl.keyStore = "keystore.jks",
+              ssl.keyStorePassword = "jolie!"
+          }
+          interfaces: AdvancedCalculatorInterface
+      }
+      ```
+  - context: |
+      In Jolie, the inputPort definition for a service allows you to specify the protocol and SSL settings for communication.
+    question: What SSL settings are required when adding a SODEPS protocol input port in Jolie?
+    answer: |
+      When adding a SODEPS protocol input port, you must specify the `ssl.keyStore` and `ssl.keyStorePassword` to configure the SSL settings, as shown in the example:
+      ```jolie
+      protocol: sodeps {
+          ssl.keyStore = "keystore.jks",
+          ssl.keyStorePassword = "jolie!"
+      }
+      ```
+  - context: |
+      To run the service with the newly added SODEPS input port, you must execute the service in Jolie with the appropriate command.
+    question: How do you run the Jolie service after adding the SODEPS input port?
+    answer: |
+      After adding the SODEPS input port, you can run the Jolie service with the following command:
+      ```bash
+      jolie AdvancedCalculatorService.ol
+      ```
+  - context: |
+      To run a client that connects to the service using the SODEPS protocol, you also need to configure the output port in the client code.
+    question: How do you configure the output port in the Jolie client to use SODEPS protocol?
+    answer: |
+      In the Jolie client, you configure the output port for SODEPS by specifying the `ssl.trustStore` and `ssl.trustStorePassword` settings. For example:
+      ```jolie
+      outputPort AdvancedCalculatorService {
+          location: "socket://localhost:8006"
+          protocol: sodeps {
+              ssl.trustStore = "truststore.jks",
+              ssl.trustStorePassword = "jolie!"
+          }
+          interfaces: AdvancedCalculatorInterface
+      }
+      ```
+  - question: What is the purpose of `ssl.trustStore` and `ssl.trustStorePassword` in the client configuration?
+    answer: |
+      The `ssl.trustStore` and `ssl.trustStorePassword` settings in the client configuration are used to define the trust store for SSL communication, ensuring secure connections between the client and service.

@@ -1,51 +1,29 @@
 version: 2
-task_description: 'Introduction to the Jolie programming language.'
+task_description: |
+    Provide an understanding of the Jolie programming language, its features, and usage for service-oriented programming.
 created_by: murkrow
 seed_examples:
+  - question: What is Jolie designed for?
+    answer: Jolie is designed for service-oriented programming, focusing on APIs, concurrency, communication, and computation in microservice development.
+  - question: How can I run a Jolie service saved in a file?
+    answer: Save the Jolie code in a file, for example, `greeter.ol`, and run it from the terminal using the command `jolie greeter.ol`.
+  - question: How does Jolie handle data and interoperability?
+    answer: Jolie structures all data as trees, which can be semi-automatically or fully automatically converted between formats like JSON and XML, and communicated over protocols such as HTTP or binary protocols.
   - context: |
-      Jolie is a service-oriented programming language designed for reasoning effectively
-      about (micro)service development, including:
-      - What are the APIs exposed by services?
-      - How can these APIs be accessed?
-      - How are APIs implemented in terms of concurrency, communication, and computation?
-    question: What is Jolie designed for?
-    answer: Jolie is designed for reasoning about (micro)service development, including APIs, their accessibility, and their implementation.
+      Jolie provides primitives to deal directly with common concerns regarding microservices programming without relying on frameworks or external libraries.
+    question: Why is Jolie considered the first language for microservices?
+    answer: Jolie is considered the first language for microservices because it provides built-in primitives to handle service programming concerns without needing external frameworks or libraries.
+  - question: What output will you see if you run `curl http://localhost:8080/greet?name=Jolie` after starting the `greeter.ol` service?
+    answer: You will see the output `{"greeting":"Hello, Jolie"}`.
   - context: |
-      This is a simple service for greeting clients:
-
-      {{#include code/introduction.ol}}
-
-      If you have installed Jolie (get it here), you can save the code above in a file
-      called greeter.ol and then launch it from the terminal with the command:
-      `jolie greeter.ol`
-
-      Run the following command to test it:
-      `curl http://localhost:8080/greet?name=Jolie`
-
-      Expected output:
-      {"greeting":"Hello, Jolie"}
-    question: How do you run the example Jolie service for greeting clients?
-    answer: Save the code in a file named `greeter.ol`, run `jolie greeter.ol`, and test it using the command `curl http://localhost:8080/greet?name=Jolie`.
+      Jolie includes constructs for access endpoints, APIs with synchronous and asynchronous operations, communications, behavioural workflows, and multiparty sessions.
+    question: What features does Jolie offer for service-oriented programming?
+    answer: Jolie offers features such as constructs for access endpoints, synchronous and asynchronous APIs, communications, behavioural workflows, and multiparty sessions.
+  - question: Where can I find tutorials and guides for Jolie?
+    answer: Tutorials and guides for Jolie can be found in the "Getting Started" and "Tutorials" sections of its documentation.
+  - question: How can you contact the Jolie community for feedback or support?
+    answer: You can reach the Jolie community through the link [https://www.jolie-lang.org/community.html](https://www.jolie-lang.org/community.html).
   - context: |
-      Jolie is the first language for microservices and includes constructs for:
-      - Access endpoints and APIs (synchronous/asynchronous operations)
-      - Communications and workflows
-      - Multiparty sessions
-
-      It supports interoperability with:
-      - Data formats like JSON, XML, etc.
-      - Protocols like HTTP and binary protocols
-    question: What features make Jolie the first language for microservices?
-    answer: Jolie provides constructs for endpoints, APIs, workflows, multiparty sessions, and supports interoperability with various data formats and protocols.
-  - context: |
-      If you are new to Jolie:
-      - Check out the "Getting Started" section.
-      - Refer to "Tutorials" for practical scenarios.
-      - Read the "Language, Tools, and Standard Library" section for detailed information.
-    question: Where should a beginner start with Jolie?
-    answer: Beginners should start with the "Getting Started" section and refer to "Tutorials" for practical scenarios.
-  - context: |
-      For questions or comments, visit the Jolie community page:
-      https://www.jolie-lang.org/community.html
-    question: Where can you find support or provide feedback about Jolie?
-    answer: Visit the Jolie community page at https://www.jolie-lang.org/community.html.
+      Jolie aims to aid developers in producing and managing microservice systems effectively.
+    question: What is the primary aim of the Jolie programming language?
+    answer: The primary aim of Jolie is to help developers create and manage microservice systems more effectively.

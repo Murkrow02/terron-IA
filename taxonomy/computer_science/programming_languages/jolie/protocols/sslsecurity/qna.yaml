@@ -1,0 +1,104 @@
+version: 2
+task_description: 'Teach the model about SSL and secure communication protocols in Jolie, including configuration parameters for SSL, HTTPS, SOAPS, and SODEPS, with examples of code snippets.'
+created_by: murkrow
+seed_examples:
+  - question: What is required to use SSL in Jolie?
+    answer: |
+      To use SSL in Jolie, you need a valid private-key certificate stored in a Java keystore. You also need to set the `.ssl.keyStore` to point to the keystore file and `.ssl.keyStorePassword` if there is a password.
+      Example:
+      ```jolie
+      .ssl.keyStore = "path/to/keystore.jks"
+      .ssl.keyStorePassword = "password"
+      ```
+  - question: How can you inspect the content of a keystore or truststore in Jolie?
+    answer: |
+      You can inspect a keystore or truststore using the Java `keytool` command as follows:
+      ```bash
+      keytool -list -keystore <keystore/truststore>.jks -storepass <password>
+      ```
+  - question: What is the default protocol used for encryption in SSL configuration in Jolie?
+    answer: |
+      The default encryption protocol in Jolie's SSL configuration is "TLSv1".
+      Example:
+      ```jolie
+      .ssl.protocol = "TLSv1"
+      ```
+  - context: |
+      In Jolie, SSL can be used with several protocols such as SSL, TLS, and their versions. Specific parameters are defined for both the keystore and truststore.
+    question: |
+      What protocol is used by default for SSL encryption in Jolie?
+    answer: |
+      The default protocol used is "TLSv1".
+  - context: |
+      SSL configurations in Jolie also allow specifying the keystore and truststore formats like JKS, JCEKS, and PKCS12. These formats determine how keys and certificates are stored.
+    question: |
+      What are the supported keystore formats in Jolie's SSL configuration?
+    answer: |
+      The supported keystore formats are JKS, JCEKS, and PKCS12.
+      Example:
+      ```jolie
+      .ssl.keyStoreFormat = "JKS"
+      ```
+  - question: What is the difference between HTTPS and SSL?
+    answer: |
+      HTTPS is a secure version of HTTP that uses SSL/TLS encryption. SSL is the encryption protocol that ensures secure communication.
+      Example:
+      ```jolie
+      port https {
+          use ssl
+          .ssl.keyStore = "path/to/keystore.jks"
+          .ssl.keyStorePassword = "password"
+      }
+      ```
+  - context: |
+      HTTPS is the HTTP protocol wrapped in an SSL/TLS encrypted message, while SSL is the encryption protocol for secure communications.
+    question: |
+      What parameters are used in HTTPS protocol configuration in Jolie?
+    answer: |
+      HTTPS uses the same parameters as HTTP, but it is wrapped in SSL encryption.
+      Example:
+      ```jolie
+      port https {
+          use ssl
+          .ssl.keyStore = "path/to/keystore.jks"
+          .ssl.keyStorePassword = "password"
+      }
+      ```
+  - question: What should you do to avoid known HTTPS attacks like BREACH when handling sensitive data?
+    answer: |
+      To avoid attacks like BREACH, set the compression parameter to false when dealing with sensitive data.
+      Example:
+      ```jolie
+      port https {
+          use ssl
+          .ssl.compression = false
+      }
+      ```
+  - context: |
+      SOAPS is the SOAP protocol secured by SSL/TLS, with the same parameters as the SOAP protocol.
+    question: |
+      How do SOAPS parameters compare to SOAP parameters in Jolie?
+    answer: |
+      SOAPS parameters are identical to the SOAP parameters because SOAPS is SOAP wrapped in SSL encryption.
+      Example:
+      ```jolie
+      port soaps {
+          use ssl
+          .ssl.keyStore = "path/to/keystore.jks"
+          .ssl.keyStorePassword = "password"
+      }
+      ```
+  - context: |
+      SODEPS is the SODEP protocol secured by SSL/TLS, and it uses the same parameters as the SODEP protocol.
+    question: |
+      Are the parameters for SODEPS the same as those for SODEP in Jolie?
+    answer: |
+      Yes, the parameters for SODEPS are the same as those for SODEP since SODEPS is SODEP wrapped in SSL encryption.
+      Example:
+      ```jolie
+      port sodeps {
+          use ssl
+          .ssl.keyStore = "path/to/keystore.jks"
+          .ssl.keyStorePassword = "password"
+      }
+      ```
