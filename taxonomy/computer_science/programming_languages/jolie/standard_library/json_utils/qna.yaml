@@ -1,0 +1,37 @@
+version: 2
+task_description: 'Teach the model how to use the JsonUtils interface in Jolie for handling JSON operations.'
+created_by: murkrow
+seed_examples:
+  - question: How do I convert a value into a JSON string using JsonUtils?
+    answer: |
+      You can use the `getJsonString` operation. Here's a code example:
+      ```jolie
+      getJsonString@JsonUtils( request )( response )
+      ```
+      This operation returns the value converted into a JSON string.
+  - context: |
+      The `getJsonString` operation in the JsonUtils interface is used to convert values into JSON strings.
+    question: What is the request type for the `getJsonString` operation?
+    answer: |
+      The request type for `getJsonString` is `GetJsonStringRequest`, which is of type `undefined`.
+  - context: |
+      The `getJsonValue` operation in the JsonUtils interface converts a JSON string into a value. It handles nested arrays and uses helper attributes for mapping.
+    question: How do I convert a JSON string back into a value using JsonUtils?
+    answer: |
+      You can use the `getJsonValue` operation. Here's a code example:
+      ```jolie
+      getJsonValue@JsonUtils( request )( response )
+      ```
+  - context: |
+      The `GetJsonValueRequest` type allows you to specify options like `strictEncoding` and `charset` for the `getJsonValue` operation.
+    question: What fields can I use in `GetJsonValueRequest`?
+    answer: |
+      The `GetJsonValueRequest` type includes optional fields: `strictEncoding` (bool) and `charset` (string).
+  - context: |
+      Both `getJsonString` and `getJsonValue` operations can throw a `JSONCreationError` fault.
+    question: How do I handle faults thrown by `getJsonString` and `getJsonValue` operations?
+    answer: |
+      You can handle the `JSONCreationError` fault by installing a fault-handling template like this:
+      ```jolie
+      install ( JSONCreationError => /* error-handling code */ )
+      ```

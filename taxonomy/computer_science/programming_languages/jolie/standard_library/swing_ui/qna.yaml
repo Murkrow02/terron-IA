@@ -1,0 +1,53 @@
+version: 2
+task_description: |
+    This task teaches how to use the SwingUI interface in Jolie, which provides methods to display message dialogs, yes/no question dialogs, and input dialogs.
+created_by: murkrow
+seed_examples:
+  - question: How do you show a message dialog in SwingUI?
+    answer: |
+      To show a message dialog, use the `showMessageDialog` operation with a string request:
+      ```jolie
+      showMessageDialog@SwingUI("Your message here")(response)
+      ```
+      This operation doesn't return any value.
+  - question: How do you invoke a yes/no question dialog in SwingUI?
+    answer: |
+      To invoke a yes/no question dialog, use the `showYesNoQuestionDialog` operation with a string request:
+      ```jolie
+      showYesNoQuestionDialog@SwingUI("Do you want to proceed?")(response)
+      ```
+      This operation returns an integer: 1 for 'Yes' and 0 for 'No'.
+  - question: How do you request user input with SwingUI?
+    answer: |
+      To request user input, use the `showInputDialog` operation with a string request:
+      ```jolie
+      showInputDialog@SwingUI("Please enter your name:")(response)
+      ```
+      This operation returns the user input as a string.
+  - context: |
+      The SwingUI provides operations to interact with the user via dialog boxes. The `showMessageDialog` method shows a message, the `showYesNoQuestionDialog` asks the user a yes/no question, and the `showInputDialog` asks for user input.
+    question: |
+      What type of response does the `showYesNoQuestionDialog` return in SwingUI?
+    answer: |
+      The `showYesNoQuestionDialog` operation returns an integer, where 1 indicates 'Yes' and 0 indicates 'No'.
+  - context: |
+      SwingUI allows you to show dialogs for messages, yes/no questions, and user input. Each method requires a string request and returns either a string or an integer as a response.
+    question: |
+      What is the response type of `showMessageDialog` in SwingUI?
+    answer: |
+      The `showMessageDialog` operation has a response type of `void`, meaning it doesn't return any value.
+  - question: How can I show a message dialog with the text "Hello, World!" using SwingUI in Jolie?
+    answer: |
+      You can show the message dialog with the following code:
+      ```jolie
+      showMessageDialog@SwingUI("Hello, World!")(response)
+      ```
+      This will display the message "Hello, World!" without returning any value.
+  - question: How do you handle the response from the `showInputDialog` in SwingUI?
+    answer: |
+      To handle the response from `showInputDialog`, you can use the following code:
+      ```jolie
+      showInputDialog@SwingUI("Enter your name:")(response)
+      // response will contain the string input by the user
+      ```
+      The response will be the string entered by the user.

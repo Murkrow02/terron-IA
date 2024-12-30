@@ -1,0 +1,56 @@
+version: 2
+task_description: Learn how to use the console library of the programming language for input and output operations.
+created_by: murkrow
+seed_examples:
+  - question: How do you invoke the `print` operation in the console interface?
+    answer: |
+      You can invoke the `print` operation using the template:
+      ```jolie
+      print@Console( request )( response )
+      ```
+  - question: What is the purpose of the `enableTimestamp` operation in the console interface?
+    answer: |
+      The `enableTimestamp` operation enables timestamp inline printing for each console output operation call, such as `print` or `println`. You can optionally specify a timestamp format in the request.
+  - context: |
+      The `enableTimestamp` operation accepts an optional `format` parameter to specify the timestamp output format. If the format value is not allowed, "Bad Format" will be printed.
+    question: How do you enable timestamp printing with a specific format using the console library?
+    answer: |
+      You can enable timestamp printing by invoking the operation with a request like:
+      ```jolie
+      enableTimestamp@Console( { format: "YYYY-MM-DD HH:mm:ss" } )( response )
+      ```
+  - context: |
+      The `subscribeSessionListener` operation enables a service session to receive console inputs. It requires a token string as an identifier.
+    question: How can you subscribe a session to receive console inputs?
+    answer: |
+      You can subscribe a session by invoking:
+      ```jolie
+      subscribeSessionListener@Console( { token: "yourSessionToken" } )( response )
+      ```
+  - question: What is the difference between `println` and `print` in the console library?
+    answer: |
+      Both operations output text to the console, but `println` adds a new line after the output, whereas `print` does not.
+  - question: How do you read a line from the console using the console library?
+    answer: |
+      You can use the `readLine` operation to read a line from the console. The invocation template is:
+      ```jolie
+      readLine@Console( { secret: false } )( response )
+      ```
+      Set `secret` to `true` if the input should be hidden (e.g., for passwords).
+  - context: |
+      The `registerForInput` operation enables console input listening for a service session. It accepts an optional parameter `enableSessionListener` to allow multiple session listeners.
+    question: How do you enable console input listening for multiple sessions?
+    answer: |
+      You can enable console input listening for multiple sessions using:
+      ```jolie
+      registerForInput@Console( { enableSessionListener: true } )( response )
+      ```
+  - question: What is the request type for the `unsubscribeSessionListener` operation?
+    answer: |
+      The request type for `unsubscribeSessionListener` is:
+      ```jolie
+      type UnsubscribeSessionListener: void {
+          .token: string
+      }
+      ```
+      It requires a `token` string to identify the session to be unsubscribed.

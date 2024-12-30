@@ -1,0 +1,76 @@
+version: 2
+task_description: 'Teach the model how to use the Math interface and its operations in a programming language.'
+created_by: murkrow
+seed_examples:
+  - question: How can I generate a random number between 0 and 1?
+    answer: |
+      You can use the `random` operation of the Math interface to generate a random number between 0 and 1. Example:
+      ```jolie
+      random@Math( request )( response )
+      ```
+  - question: How can I get the absolute value of an integer in Jolie?
+    answer: |
+      To get the absolute value of an integer, you can use the `abs` operation. Example:
+      ```jolie
+      abs@Math( request )( response )
+      ```
+      Where the request type is an integer and the response is the absolute value.
+  - context: |
+      The `round` operation in the Math interface can round a number to a specific number of decimal places.
+    question: How do I round a number to 2 decimal places?
+    answer: |
+      You can round a number to a specific number of decimal places by using the `round` operation and passing a `RoundRequestType` with the `decimals` field set to 2. Example:
+      ```jolie
+      type RoundRequestType: double {
+          .decimals: 2
+      }
+      round@Math( request )( response )
+      ```
+  - context: |
+      The `pi` operation in the Math interface returns the constant PI.
+    question: How do I get the value of PI in Jolie?
+    answer: |
+      You can get the value of PI by invoking the `pi` operation. Example:
+      ```jolie
+      pi@Math( request )( response )
+      ```
+  - context: |
+      The `pow` operation calculates the result of raising a base to the power of an exponent.
+    question: How can I calculate the result of 2 raised to the power of 3 in Jolie?
+    answer: |
+      To calculate 2 raised to the power of 3, use the `pow` operation with a `PowRequest` containing the base and exponent. Example:
+      ```jolie
+      type PowRequest: void {
+          .base: 2
+          .exponent: 3
+      }
+      pow@Math( request )( response )
+      ```
+  - context: |
+      The `summation` operation computes the sum of integers from a specified starting value to an ending value.
+    question: How do I calculate the summation of integers from 1 to 5?
+    answer: |
+      You can use the `summation` operation and pass a `SummationRequest` with `.from` set to 1 and `.to` set to 5. Example:
+      ```jolie
+      type SummationRequest: void {
+          .from: 1
+          .to: 5
+      }
+      summation@Math( request )( response )
+      ```
+  - question: What does the `random` operation return?
+    answer: |
+      The `random` operation returns a random number of type `double` such that 0.0 <= d < 1.0.
+  - question: What type of data does the `abs` operation accept?
+    answer: |
+      The `abs` operation accepts an integer as the request type and returns an integer as the response.
+  - question: How can I raise a number to a specific power in Jolie?
+    answer: |
+      To raise a number to a specific power, use the `pow` operation with a `PowRequest` containing the base and exponent. Example:
+      ```jolie
+      type PowRequest: void {
+          .base: 5
+          .exponent: 2
+      }
+      pow@Math( request )( response )
+      ```

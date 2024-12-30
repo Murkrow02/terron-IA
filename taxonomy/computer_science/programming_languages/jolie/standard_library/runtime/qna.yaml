@@ -1,0 +1,83 @@
+version: 2
+task_description: 'Teach the model how to use the Runtime library in a programming language with examples.'
+created_by: murkrow
+seed_examples:
+  - question: What operation returns the version of the Jolie interpreter?
+    answer: |
+      The operation `getVersion` returns the version of the Jolie interpreter.
+  - context: |
+      The `getVersion` operation has no input and returns a string representing the version of the Jolie interpreter.
+    question: How do you call the `getVersion` operation?
+    answer: |
+      You can call the `getVersion` operation using the following code:
+      ```jolie
+      getVersion@Runtime( request )( response )
+      ```
+  - context: |
+      The `loadLibrary` operation dynamically loads an external `.jar` library. The request is a string representing the library name, and the response type is void.
+    question: How do you load an external library in Jolie using the `loadLibrary` operation?
+    answer: |
+      To load an external library, you can use the following code:
+      ```jolie
+      loadLibrary@Runtime( "libraryName" )( response )
+      ```
+  - context: |
+      The `setRedirection` operation sets or replaces a redirection at an input port. It requires a `SetRedirectionRequest` object with the input port name, output port name, and resource name as fields.
+    question: How do you set a redirection at an input port in Jolie?
+    answer: |
+      You can set a redirection using the following code:
+      ```jolie
+      setRedirection@Runtime( {
+          inputPortName: "inputPort",
+          outputPortName: "outputPort",
+          resourceName: "resource"
+      } )( response )
+      ```
+  - context: |
+      The `getOutputPorts` operation returns all the output ports used by the service. It does not require any input and returns a `GetOutputPortsResponse` object containing information about the ports.
+    question: How do you retrieve all output ports used by a service in Jolie?
+    answer: |
+      To get all output ports, you can call the `getOutputPorts` operation like this:
+      ```jolie
+      getOutputPorts@Runtime( request )( response )
+      ```
+  - context: |
+      The `loadEmbeddedService` operation loads an embedded service by specifying the service file path and its type, such as Jolie, Java, or JavaScript.
+    question: How can you load an embedded service in Jolie?
+    answer: |
+      You can load an embedded service using the following code:
+      ```jolie
+      loadEmbeddedService@Runtime( {
+          filepath: "path/to/service",
+          type: "Jolie"
+      } )( response )
+      ```
+  - context: |
+      The `removeOutputPort` operation removes an output port by its name. It requires a string representing the output port name and has no response type.
+    question: How do you remove an output port in Jolie?
+    answer: |
+      To remove an output port, use the following code:
+      ```jolie
+      removeOutputPort@Runtime( "portName" )( response )
+      ```
+  - context: |
+      The `getOutputPort` operation retrieves the definition of an output port and may throw an `OutputPortDoesNotExist` fault if the requested port does not exist.
+    question: What happens if the requested output port does not exist when using the `getOutputPort` operation?
+    answer: |
+      If the requested output port does not exist, the operation throws an `OutputPortDoesNotExist` fault.
+  - context: |
+      The `getLocalLocation` operation returns the local location of the service, requiring no input and returning a response of any type.
+    question: How do you get the local location of a service in Jolie?
+    answer: |
+      You can retrieve the local location using the following code:
+      ```jolie
+      getLocalLocation@Runtime( request )( response )
+      ```
+  - context: |
+      The `getenv` operation retrieves the value of an environment variable. It requires a string representing the variable name and returns a `MaybeString` as the response.
+    question: How do you retrieve the value of an environment variable in Jolie?
+    answer: |
+      You can use the `getenv` operation as follows:
+      ```jolie
+      getenv@Runtime( "ENV_VARIABLE" )( response )
+      ```

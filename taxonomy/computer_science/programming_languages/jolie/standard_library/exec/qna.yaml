@@ -1,0 +1,67 @@
+version: 2
+task_description: Learn to use the Exec standard library for executing system commands programmatically in a programming language.
+created_by: murkrow
+seed_examples:
+  - question: How do you execute a system command using the Exec interface?
+    answer: |
+      Use the `exec` operation. Provide a `CommandExecutionRequest` object with the command string, optional arguments, and settings. Example:
+      ```jolie
+      request = {
+          "value": "ls",
+          "args": [ "-l", "/home/user" ],
+          "workingDirectory": "/home/user",
+          "stdOutConsoleEnable": true,
+          "waitFor": 5000
+      }
+      exec@Exec( request )( response )
+      ```
+  - context: |
+      The `exec` operation uses a `CommandExecutionRequest` type, which includes fields for the command, arguments, working directory, console output settings, and timeout.
+    question: What fields can you include in a CommandExecutionRequest?
+    answer: The fields are `value` (the command), `args` (optional arguments), `workingDirectory` (optional), `stdOutConsoleEnable` (optional, boolean), and `waitFor` (optional, timeout in milliseconds).
+  - question: How do you handle the response of the exec operation?
+    answer: |
+      The response is a `CommandExecutionResult` object. Example handling:
+      ```jolie
+      exec@Exec( request )( response )
+      if (response.exitCode == 0) {
+          println("Command executed successfully")
+      } else {
+          println("Error: " + response.stderr)
+      }
+      ```
+  - context: |
+      The `exec` operation returns a `CommandExecutionResult` type, which includes the fields `exitCode` and `stderr`.
+    question: What does the exitCode field in the CommandExecutionResult signify?
+    answer: |
+      The `exitCode` field indicates the command's exit status: 0 for success and non-zero for errors.
+  - question: How can you execute a command in a specific working directory using the Exec interface?
+    answer: |
+      Include the `workingDirectory` field in the `CommandExecutionRequest`. Example:
+      ```jolie
+      request = {
+          "value": "pwd",
+          "workingDirectory": "/home/user"
+      }
+      exec@Exec( request )( response )
+      ```
+  - question: How can you ensure that the standard output of a command is printed to the console during execution?
+    answer: |
+      Set the `stdOutConsoleEnable` field to `true` in the `CommandExecutionRequest`. Example:
+      ```jolie
+      request = {
+          "value": "ls",
+          "stdOutConsoleEnable": true
+      }
+      exec@Exec( request )( response )
+      ```
+  - question: What happens if a command takes longer than the specified timeout in the exec operation?
+    answer: |
+      The operation will terminate the command after the specified `waitFor` timeout in milliseconds. Example:
+      ```jolie
+      request = {
+          "value": "sleep 10",
+          "waitFor": 5000
+      }
+      exec@Exec( request )( response )
+      ```

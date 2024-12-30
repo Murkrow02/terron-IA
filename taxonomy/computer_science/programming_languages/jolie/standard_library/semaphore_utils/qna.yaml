@@ -1,0 +1,40 @@
+version: 2
+task_description: 'Teach the model how to use the SemaphoreUtils library for acquiring and releasing permits from semaphores.'
+created_by: murkrow
+seed_examples:
+  - question: What is the purpose of the "release" operation in SemaphoreUtils?
+    answer: |
+      The "release" operation releases permits to a semaphore. If a semaphore with the given name doesn't exist, it creates a new semaphore with the specified number of permits.
+  - question: How do you release a permit from a semaphore in SemaphoreUtils?
+    answer: |
+      You can release a permit by using the "release" operation with a request that includes the semaphore name and the number of permits (optional).
+  - context: |
+      type SemaphoreRequest: void {
+          .permits?: int
+          .name: string
+      }
+    question: What is the structure of the SemaphoreRequest type in SemaphoreUtils?
+    answer: |
+      The SemaphoreRequest type contains two fields: ".permits" (an optional integer indicating the number of permits) and ".name" (a string representing the semaphore's name).
+  - context: |
+      release@SemaphoreUtils( request )( response )
+    question: How do you invoke the "release" operation in SemaphoreUtils?
+    answer: |
+      You invoke the "release" operation using the template: `release@SemaphoreUtils(request)(response)`, where `request` is the SemaphoreRequest and `response` is a boolean.
+  - question: What happens when you call "acquire" on a semaphore that doesn't exist in SemaphoreUtils?
+    answer: |
+      If the semaphore doesn't exist, calling "acquire" will create a new semaphore with 0 permits and then wait for a permit to be released.
+  - question: How do you acquire a permit from a semaphore in SemaphoreUtils?
+    answer: |
+      To acquire a permit, use the "acquire" operation with a request containing the semaphore name and the optional number of permits.
+  - context: |
+      acquire@SemaphoreUtils( request )( response )
+    question: What is the invocation template for the "acquire" operation in SemaphoreUtils?
+    answer: |
+      The invocation template for the "acquire" operation is `acquire@SemaphoreUtils(request)(response)`, where `request` is the SemaphoreRequest and `response` is a boolean.
+  - question: What is the default behavior when no number of permits is specified in the "release" or "acquire" operations in SemaphoreUtils?
+    answer: |
+      The default behavior is to release or acquire one permit if no number of permits is specified in the request.
+  - question: Can you specify the number of permits to acquire or release in SemaphoreUtils? If so, how?
+    answer: |
+      Yes, you can specify the number of permits in the request by including the ".permits" field as an integer in the SemaphoreRequest.

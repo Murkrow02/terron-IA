@@ -1,0 +1,65 @@
+version: 2
+task_description: Teach the model how to use the database standard library of a programming language with practical examples and code.
+created_by: murkrow
+seed_examples:
+  - question: How can you check the connection to a database using this standard library?
+    answer: |
+      Use the `checkConnection` operation. Here's an example in code:
+      ```jolie
+      checkConnection@Database()(response)
+      ```
+      This will check the connection and throw a `ConnectionError` fault if the connection is not functioning properly.
+
+  - context: |
+      The query operation allows querying the database with SQL parameters and supports custom output templates using the `_template` field.
+    question: How do you perform a query with SQL parameters to fetch weather data for a specific city and country?
+    answer: |
+      Use the `query` operation as follows:
+      ```jolie
+      queryRequest =
+          "SELECT city, country, data FROM weather " +
+          "WHERE city=:city AND country=:country";
+      queryRequest.city = "New York";
+      queryRequest.country = "USA";
+      query@Database(queryRequest)(queryResponse)
+      ```
+
+  - context: |
+      The executeTransaction operation enables executing multiple database commands in a single transaction.
+    question: How do you execute multiple commands in a transaction using this standard library?
+    answer: |
+      Use the `executeTransaction` operation like this:
+      ```jolie
+      transactionRequest = {};
+      transactionRequest.statement[0] = "INSERT INTO weather (city, country, data) VALUES ('New York', 'USA', 'Sunny')";
+      transactionRequest.statement[1] = "UPDATE weather SET data='Cloudy' WHERE city='New York' AND country='USA'";
+      executeTransaction@Database(transactionRequest)(transactionResponse)
+      ```
+
+  - question: What is the purpose of the `_template` field in the `query` operation?
+    answer: |
+      The `_template` field customizes the output structure of the query result. For example:
+      ```jolie
+      with(queryRequest._template) {
+        .mycol1 = "col1";
+        .mycol1.mycol2 = "col2";
+        .mycol1.mycol2.mycol3 = "col3";
+        .mycol4 = "col4";
+      }
+      ```
+      This would map database columns to a nested structure in the output.
+
+  - question: How can you insert new weather data into a database and handle possible faults?
+    answer: |
+      Use the `update` operation and install fault-handling code for `SQLException` and `ConnectionError`. Example:
+      ```jolie
+      updateRequest =
+          "INSERT INTO weather(city, country, data) " +
+          "VALUES (:city, :country, :data)";
+      updateRequest.city = "Los Angeles";
+      updateRequest.country = "USA";
+      updateRequest.data = "Rainy";
+      install(SQLException => println("SQL Error!"))
+      install(ConnectionError => println("Connection Error!"))
+      update@Database(updateRequest)(updateResponse)
+      ```

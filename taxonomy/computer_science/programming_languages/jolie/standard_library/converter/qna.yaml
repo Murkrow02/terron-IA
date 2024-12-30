@@ -1,0 +1,44 @@
+version: 2
+task_description: Learn to use the Converter standard library for string and raw data conversion in a programming language.
+created_by: murkrow
+seed_examples:
+  - question: How do you convert a string to raw bytes using the Converter interface?
+    answer: |
+      Use the `stringToRaw` operation. Invoke it with a request of type `StringToRawRequest`, specifying the string to convert. Optionally, you can set the charset using the `.charset` attribute. Example:
+      ```jolie
+      stringToRaw@Converter( request )( response )
+      ```
+  - context: |
+      The `stringToRaw` operation requires a request of type `StringToRawRequest` with an optional charset. The response is of type `raw`.
+    question: What is the default charset when converting a string to raw bytes using the stringToRaw operation?
+    answer: The default charset is the system's default, such as UTF-8 for Unix-like operating systems.
+  - question: How do you handle an IOException fault in the Converter operations?
+    answer: |
+      Use the `install` block to handle the `IOException` fault. Example:
+      ```jolie
+      install ( IOException => /* error-handling code */ )
+      ```
+  - context: |
+      The `base64ToRaw` operation converts a base64 string to raw bytes. It requires a string as the request and returns raw as the response. Faults of type `IOException` may occur.
+    question: What operation should you use to convert a base64 string to raw bytes?
+    answer: Use the `base64ToRaw` operation in the Converter interface.
+  - question: How do you convert raw bytes back into a string using the Converter interface?
+    answer: |
+      Use the `rawToString` operation. Provide a request of type `RawToStringRequest`, which includes the raw bytes and an optional charset. Example:
+      ```jolie
+      rawToString@Converter( request )( response )
+      ```
+  - context: |
+      The `rawToBase64` operation converts raw bytes to a base64 string. It requires raw data as input and outputs a string.
+    question: Which operation converts raw bytes to a base64 string?
+    answer: Use the `rawToBase64` operation in the Converter interface.
+  - question: What type is used to define a JavaExceptionType in the Converter library?
+    answer: |
+      The `JavaExceptionType` is a string with an additional `.stackTrace` attribute. Example:
+      ```jolie
+      type JavaExceptionType: string { .stackTrace: string }
+      ```
+  - context: |
+      The `rawToString` operation converts raw bytes to a string. It requires a request of type `RawToStringRequest`, and the charset can be optionally specified.
+    question: What request type is required for the rawToString operation?
+    answer: The request type is `RawToStringRequest`, which includes the raw data and an optional `.charset` attribute.

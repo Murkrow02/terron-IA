@@ -1,0 +1,50 @@
+version: 2
+task_description: |
+  Teach the model how to use the MessageDigest interface to perform operations like generating an MD5 hash using the provided templates and fault-handling mechanisms.
+created_by: murkrow
+seed_examples:
+  - question: How do you perform an MD5 hash operation using the MessageDigest interface?
+    answer: |
+      You can perform an MD5 hash operation using the following Jolie invocation template:
+      ```jolie
+      md5@MessageDigest( request )( response )
+      ```
+      The `request` is of type `MD5Request` and contains an optional `radix` field. The `response` will be a string containing the MD5 hash.
+  - context: |
+      type MD5Request: string {
+          .radix?: int
+      } | raw {
+          .radix?: int
+      }
+    question: What is the type definition for the `MD5Request` used in the md5 operation?
+    answer: |
+      The `MD5Request` type is defined as follows:
+      ```jolie
+      type MD5Request: string {
+          .radix?: int
+      } | raw {
+          .radix?: int
+      }
+      ```
+      It can either be a string or raw data, with an optional `radix` integer field.
+  - context: |
+      md5@MessageDigest( request )( response )
+    question: What does the invocation `md5@MessageDigest( request )( response )` do?
+    answer: |
+      This invocation performs the MD5 hash operation. It takes a `request` of type `MD5Request` and outputs the result in the `response` as a string containing the MD5 hash.
+  - context: |
+      install ( UnsupportedOperation => /* error-handling code */ )
+    question: How do you handle faults when an unsupported operation is encountered in the MessageDigest interface?
+    answer: |
+      To handle faults, you can use the `install` fault-handling template, like this:
+      ```jolie
+      install ( UnsupportedOperation => /* error-handling code */ )
+      ```
+      This handles the `UnsupportedOperation` fault, which is thrown when the operation is not supported.
+  - context: |
+      type JavaExceptionType: string {
+          .stackTrace: string
+      }
+    question: What is the `JavaExceptionType` used for in the MessageDigest interface?
+    answer: |
+      The `JavaExceptionType` is used to describe an exception that may be thrown, containing a `stackTrace` field of type string. This type is used for handling Java-related exceptions in the MessageDigest interface.

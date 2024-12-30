@@ -1,0 +1,70 @@
+version: 2
+task_description: 'Teach the model how to use the SecurityUtils interface for generating secure random values and creating secure tokens.'
+created_by: murkrow
+seed_examples:
+  - question: How do I generate a secure random value with a specified size using SecurityUtils?
+    answer: |
+      You can generate a secure random value using the `secureRandom` operation in the `SecurityUtils` interface. Here is an example:
+      ```jolie
+      secureRandom@SecurityUtils( request )( response )
+      ```
+      The `request` should specify the size of the random value:
+      ```jolie
+      type SecureRandomRequest: void {
+          .size: int
+      }
+      ```
+      Example invocation:
+      ```jolie
+      request.size = 16;
+      secureRandom@SecurityUtils( request )( response );
+      ```
+      This will generate a secure random value of 16 bytes.
+
+  - question: How do I create a secure token using the SecurityUtils interface?
+    answer: |
+      To create a secure token, you can use the `createSecureToken` operation in the `SecurityUtils` interface. Here's an example:
+      ```jolie
+      createSecureToken@SecurityUtils( request )( response )
+      ```
+      The `request` is void, and the response will contain the generated secure token as a string:
+      ```jolie
+      string : string
+      ```
+      Example invocation:
+      ```jolie
+      createSecureToken@SecurityUtils( void )( response );
+      print(response);
+      ```
+      This will generate and print a secure token.
+
+  - context: |
+      The `SecurityUtils` interface includes operations like `secureRandom` for generating random data and `createSecureToken` for creating secure tokens. Below is an example of how to use the `secureRandom` operation.
+    question: How can I call the `secureRandom` operation to generate a random value of size 32?
+    answer: |
+      To call the `secureRandom` operation to generate a random value of size 32, you would create a request with a size of 32 and invoke the operation like this:
+      ```jolie
+      request.size = 32;
+      secureRandom@SecurityUtils( request )( response );
+      ```
+      This will generate a random value of 32 bytes.
+
+  - context: |
+      The `createSecureToken` operation generates a secure token as a string. The request does not need to pass any data, and the response will contain the token.
+    question: How do I generate a secure token in Jolie?
+    answer: |
+      To generate a secure token, you can use the following code:
+      ```jolie
+      createSecureToken@SecurityUtils( void )( response );
+      print(response);
+      ```
+      This will create a secure token and print it.
+
+  - question: What type does the `secureRandom` operation return?
+    answer: |
+      The `secureRandom` operation returns a type `raw`, which represents raw binary data.
+  - context: |
+      The `SecurityUtilsInterface` includes operations like `secureRandom` that work with specific types like `SecureRandomRequest`. You can use these operations to interact with the system.
+    question: What type is used for the request in `secureRandom`?
+    answer: |
+      The request type for `secureRandom` is `SecureRandomRequest`, which contains a single field `size` of type `int`.

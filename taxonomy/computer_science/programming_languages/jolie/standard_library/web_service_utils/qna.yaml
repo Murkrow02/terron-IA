@@ -1,0 +1,49 @@
+version: 2
+task_description: 'Teach the model how to use the WebServicesUtils interface in Jolie for working with WSDL to Jolie conversion and handling errors.'
+created_by: murkrow
+seed_examples:
+  - question: How do you convert a WSDL to Jolie using the WebServicesUtils interface?
+    answer: |
+      You can convert a WSDL to Jolie by using the `wsdlToJolie` operation from the `WebServicesUtils` interface.
+      Example usage in Jolie:
+      ```jolie
+      wsdlToJolie@WebServicesUtils( request )( response )
+      ```
+  - question: What is the request type for the `wsdlToJolie` operation?
+    answer: |
+      The request type for the `wsdlToJolie` operation is `string`. The input should be a string value.
+  - question: What is the response type for the `wsdlToJolie` operation?
+    answer: |
+      The response type for the `wsdlToJolie` operation is `string`. The output will be a string value.
+  - question: What faults can be thrown by the `wsdlToJolie` operation?
+    answer: |
+      The `wsdlToJolie` operation can throw an `IOException`. You should handle this fault using the `IOExceptionType`.
+  - context: |
+      The `wsdlToJolie` operation has the following fault-handling installation template:
+      ```jolie
+      install ( IOException => /* error-handling code */ )
+      ```
+    question: How do you handle an IOException in Jolie?
+    answer: |
+      To handle an `IOException`, you can use the following fault-handling template in Jolie:
+      ```jolie
+      install ( IOException => /* error-handling code */ )
+      ```
+  - context: |
+      The `JavaExceptionType` is a subtype used in the `IOExceptionType`. It is defined as:
+      ```jolie
+      type JavaExceptionType: string { .stackTrace: string }
+      ```
+    question: What is the `JavaExceptionType` in Jolie?
+    answer: |
+      The `JavaExceptionType` is a subtype of `IOExceptionType`, defined as a string with a `stackTrace` field that is also a string.
+  - question: What is the fault type associated with the `IOException` fault in the `wsdlToJolie` operation?
+    answer: |
+      The fault type associated with the `IOException` in the `wsdlToJolie` operation is `IOExceptionType`, which is defined as `JavaExceptionType`.
+  - question: How do you specify a fault type in Jolie when dealing with an exception?
+    answer: |
+      You can specify a fault type in Jolie by defining a custom type, such as:
+      ```jolie
+      type IOExceptionType: JavaExceptionType
+      ```
+      This links `IOExceptionType` to `JavaExceptionType`.

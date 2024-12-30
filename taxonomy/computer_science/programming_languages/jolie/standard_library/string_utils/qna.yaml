@@ -1,0 +1,112 @@
+version: 2
+task_description: |
+  This QnA file provides examples of how to use the StringUtils interface, including string manipulation operations like leftPad, toLowerCase, length, match, replaceFirst, and others with code samples.
+created_by: murkrow
+seed_examples:
+  - question: How do you left pad a string to a specific length in Jolie?
+    answer: |
+      You can left pad a string in Jolie using the `leftPad` operation. Here is an example:
+      ```jolie
+      leftPad@StringUtils({
+          length: 10,
+          char: "0"
+      })(response)
+      ```
+  - question: How do you convert a string to lowercase in Jolie?
+    answer: |
+      To convert a string to lowercase in Jolie, use the `toLowerCase` operation. Example:
+      ```jolie
+      toLowerCase@StringUtils("HELLO")(response)
+      ```
+  - question: How can I get the length of a string in Jolie?
+    answer: |
+      You can get the length of a string using the `length` operation. Example:
+      ```jolie
+      length@StringUtils("Hello, World!")(response)
+      ```
+  - question: How do you check if a string matches a regular expression in Jolie?
+    answer: |
+      To check if a string matches a regular expression, use the `match` operation. Example:
+      ```jolie
+      match@StringUtils({
+          regex: "^[A-Za-z]+$"
+      })(response)
+      ```
+  - question: How do you replace the first occurrence of a substring in Jolie?
+    answer: |
+      To replace the first occurrence of a substring in a string, use the `replaceFirst` operation. Example:
+      ```jolie
+      replaceFirst@StringUtils({
+          regex: "world",
+          replacement: "Jolie"
+      })(response)
+      ```
+  - context: |
+      The `replaceAll` operation in Jolie allows you to replace all occurrences of a substring in a string.
+    question: How do you replace all occurrences of a substring in a string in Jolie?
+    answer: |
+      Use the `replaceAll` operation to replace all occurrences of a substring in a string. Example:
+      ```jolie
+      replaceAll@StringUtils({
+          regex: "apple",
+          replacement: "orange"
+      })(response)
+      ```
+  - context: |
+      The `substring` operation extracts a substring from a given string. It takes the `end` parameter to define where the substring should end.
+    question: How do you extract a substring from a string in Jolie?
+    answer: |
+      Use the `substring` operation to extract a substring from a string. Example:
+      ```jolie
+      substring@StringUtils({
+          end: 5
+      })("Hello, World!")(response)
+      ```
+  - context: |
+      The `split` operation divides a string into multiple parts based on a delimiter.
+    question: How do you split a string by a delimiter in Jolie?
+    answer: |
+      To split a string by a delimiter, use the `split` operation. Example:
+      ```jolie
+      split@StringUtils({
+          delimiter: ","
+      })("apple,banana,orange")(response)
+      ```
+  - context: |
+      The `join` operation combines an array of strings into a single string with a delimiter.
+    question: How do you join an array of strings in Jolie?
+    answer: |
+      To join an array of strings, use the `join` operation. Example:
+      ```jolie
+      join@StringUtils({
+          delimiter: "-"
+      })({"apple", "banana", "cherry"})(response)
+      ```
+  - context: |
+      The `toUpperCase` operation in Jolie converts a string to uppercase.
+    question: How do you convert a string to uppercase in Jolie?
+    answer: |
+      Use the `toUpperCase` operation to convert a string to uppercase. Example:
+      ```jolie
+      toUpperCase@StringUtils("hello world")(response)
+      ```
+  - context: |
+      The `endsWith` operation checks if a string ends with a specific substring.
+    question: How do you check if a string ends with a specific substring in Jolie?
+    answer: |
+      To check if a string ends with a specific substring, use the `endsWith` operation. Example:
+      ```jolie
+      endsWith@StringUtils({
+          substring: "World!"
+      })("Hello, World!")(response)
+      ```
+  - context: |
+      The `indexOf` operation returns the index of the first occurrence of a substring.
+    question: How do you find the index of a substring in a string in Jolie?
+    answer: |
+      Use the `indexOf` operation to find the index of a substring. Example:
+      ```jolie
+      indexOf@StringUtils({
+          substring: "World"
+      })("Hello, World!")(response)
+      ```

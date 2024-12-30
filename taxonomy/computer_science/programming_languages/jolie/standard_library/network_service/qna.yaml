@@ -1,0 +1,43 @@
+version: 2
+task_description: |
+    Teach the model how to interact with the NetworkService API and use its available operations to retrieve network interface names and IP addresses.
+created_by: murkrow
+seed_examples:
+  - question: How do you invoke the `getNetworkInterfaceNames` operation in Jolie?
+    answer: |
+      The `getNetworkInterfaceNames` operation is invoked using the following Jolie code:
+      ```jolie
+      getNetworkInterfaceNames@NetworkService( request )( response )
+      ```
+  - context: |
+      The `getNetworkInterfaceNames` operation retrieves network interface names and their corresponding display names.
+    question: What is the request type for `getNetworkInterfaceNames`?
+    answer: |
+      The request type for `getNetworkInterfaceNames` is `GetNetworkInterfaceNamesRequest`, which does not have any parameters.
+  - context: |
+      The response to `getNetworkInterfaceNames` includes a list of interface names with their respective display names.
+    question: What is the response type for `getNetworkInterfaceNames` and what fields does it contain?
+    answer: |
+      The response type for `getNetworkInterfaceNames` is `GetNetworkInterfaceNamesResponse`. It contains a list of `interfaceName` strings, each with a `displayName` string.
+  - question: How do you handle the `InterfaceNotFound` fault in Jolie when using `getIPAddresses`?
+    answer: |
+      To handle the `InterfaceNotFound` fault in Jolie, use the following fault-handling template:
+      ```jolie
+      install ( InterfaceNotFound => /* error-handling code */ )
+      ```
+  - context: |
+      The `getIPAddresses` operation retrieves IPv4 and IPv6 addresses for a specified network interface.
+    question: What is the request type for `getIPAddresses` and what field does it contain?
+    answer: |
+      The request type for `getIPAddresses` is `GetIPAddressesRequest`. It contains the `interfaceName` field, which is a string specifying the interface to retrieve IP addresses for.
+  - context: |
+      The response to `getIPAddresses` includes optional fields for both IPv4 (`ip4`) and IPv6 (`ip6`) addresses.
+    question: What fields are included in the response for `getIPAddresses`?
+    answer: |
+      The response for `getIPAddresses` includes the optional fields `ip4` and `ip6`, which are strings containing the respective IP addresses.
+  - question: How do you invoke the `getIPAddresses` operation in Jolie?
+    answer: |
+      The `getIPAddresses` operation is invoked using the following Jolie code:
+      ```jolie
+      getIPAddresses@NetworkService( request )( response )
+      ```

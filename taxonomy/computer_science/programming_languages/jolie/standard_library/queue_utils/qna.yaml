@@ -1,0 +1,52 @@
+version: 2
+task_description: 'Teach the model how to use the QueueUtils interface in Jolie for queue management operations.'
+created_by: murkrow
+seed_examples:
+  - question: How do I check the size of a queue in Jolie?
+    answer: |
+      To check the size of a queue, use the `size` operation with the queue name as the request:
+      ```jolie
+      size@QueueUtils("myQueue")(response)
+      ```
+  - question: How can I remove and return the head of a queue in Jolie?
+    answer: |
+      To remove and return the head of a queue, use the `poll` operation with the queue name as the request:
+      ```jolie
+      poll@QueueUtils("myQueue")(response)
+      ```
+  - question: How do I create a new queue in Jolie?
+    answer: |
+      To create a new queue, use the `new_queue` operation and provide the queue name as the request:
+      ```jolie
+      new_queue@QueueUtils("newQueue")(response)
+      ```
+  - question: How can I delete an existing queue in Jolie?
+    answer: |
+      To delete an existing queue, use the `delete_queue` operation with the queue name as the request:
+      ```jolie
+      delete_queue@QueueUtils("myQueue")(response)
+      ```
+  - question: How do I push an element to a queue in Jolie?
+    answer: |
+      To push an element to an existing queue, use the `push` operation and provide a `QueueRequest` object with the queue name and the element:
+      ```jolie
+      push@QueueUtils({
+          .queue_name: "myQueue",
+          .element: "myElement"
+      })(response)
+      ```
+  - context: |
+      The `push` operation requires a `QueueRequest` object with a `queue_name` and `element`. The request type for the `push` operation is a custom type `QueueRequest` where:
+      - `queue_name`: The name of the queue (string).
+      - `element`: The element to push into the queue (any type).
+    question: What is the structure of the `QueueRequest` object in Jolie for pushing an element to a queue?
+    answer: |
+      The `QueueRequest` object has two fields:
+      - `queue_name`: A string representing the queue name.
+      - `element`: The element to push into the queue, which can be of any type.
+  - question: How do I retrieve the head of a queue without removing it in Jolie?
+    answer: |
+      To retrieve the head of a queue without removing it, use the `peek` operation with the queue name as the request:
+      ```jolie
+      peek@QueueUtils("myQueue")(response)
+      ```

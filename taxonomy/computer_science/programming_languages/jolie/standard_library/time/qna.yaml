@@ -1,0 +1,85 @@
+version: 2
+task_description: 'Teach the model how to use the Time module from the programming language documentation, including the usage of its various operations with code samples.'
+created_by: murkrow
+seed_examples:
+  - question: How do I schedule a timeout in this system?
+    answer: |
+      To schedule a timeout, you can use the `scheduleTimeout` operation. Here's an example:
+      ```jolie
+      scheduleTimeout@Time( request )( response )
+      ```
+      The request must include the time in milliseconds, and optionally a message, operation type, and time unit. For instance:
+      ```jolie
+      request {
+          .message = "Timeout reached"
+          .operation = "timeout"
+          .timeunit = "MILLISECONDS"
+      }
+      ```
+
+  - context: |
+      The `scheduleTimeout` operation is used to schedule a timeout, which can be cancelled using the `cancelTimeout` operation. It takes a `ScheduleTimeOutRequest` and returns a long indicating the timeout ID.
+    question: How can I cancel a timeout?
+    answer: |
+      To cancel a timeout, use the `cancelTimeout` operation and provide the timeout ID. Here's an example:
+      ```jolie
+      cancelTimeout@Time( 12345 )( response )
+      ```
+
+  - question: How do I convert a string to a date in this system?
+    answer: |
+      To convert a string to a date, use the `getDateValues` operation. For example:
+      ```jolie
+      getDateValues@Time( request )( response )
+      ```
+      The request should include the string you want to convert, and optionally, a date format. Here's an example request:
+      ```jolie
+      request {
+          .format = "YYYY-MM-DD"
+          .date = "2024-12-30"
+      }
+      ```
+      The response will return a `DateValuesType` with the parsed day, month, and year.
+
+  - context: |
+      The `getDateValues` operation is used to convert a string into a date, returning the day, month, and year. It takes a `DateValuesRequestType` with a string input and a format, and returns a `DateValuesType`.
+    question: How do I get the current date and time in this system?
+    answer: |
+      To get the current date and time, use the `getDateTime` operation. Here's an example:
+      ```jolie
+      getDateTime@Time( request )( response )
+      ```
+      The request should include the timestamp, and optionally, a format for the date-time response:
+      ```jolie
+      request {
+          .timestamp = 1672444874000
+          .format = "YYYY-MM-DD HH:mm:ss"
+      }
+      ```
+      The response will return the date and time in the requested format.
+
+  - question: How do I calculate the difference between two dates in this system?
+    answer: |
+      To calculate the difference between two dates, use the `getDateDiff` operation. For example:
+      ```jolie
+      getDateDiff@Time( request )( response )
+      ```
+      The request must include two date strings, and optionally, a format. Here's an example:
+      ```jolie
+      request {
+          .date1 = "2024-12-30"
+          .date2 = "2024-01-01"
+          .format = "YYYY-MM-DD"
+      }
+      ```
+      The response will return the difference as an integer in days.
+
+  - context: |
+      The `getDateDiff` operation calculates the difference between two dates and returns an integer value. It takes a `DiffDateRequestType` containing the dates and an optional format.
+    question: How do I get the current time in milliseconds?
+    answer: |
+      To get the current time in milliseconds, use the `getCurrentTimeMillis` operation:
+      ```jolie
+      getCurrentTimeMillis@Time( request )( response )
+      ```
+      The request has no parameters, and the response will return the current time in milliseconds as a long value.

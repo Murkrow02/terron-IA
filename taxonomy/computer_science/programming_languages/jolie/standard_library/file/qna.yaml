@@ -1,0 +1,166 @@
+version: 2
+task_description: 'Teach the model how to use the FileInterface for handling file operations like reading, writing, and managing directories in a programming language.'
+created_by: murkrow
+seed_examples:
+  - question: How can I convert a Base64 string to binary in this language?
+    answer: |
+      You can use the `convertFromBase64ToBinaryValue` operation from the `FileInterface`. Here's an example:
+      ```
+      convertFromBase64ToBinaryValue@File("yourBase64String")(response)
+      ```
+  - context: |
+      You want to convert a Base64 encoded string to a binary format, but the operation is deprecated. The new method to use for this is `base64ToRaw@Converter()`.
+    question: How can I convert a Base64 string to binary using the new method?
+    answer: |
+      Use the `base64ToRaw@Converter()` operation. Example usage:
+      ```
+      base64ToRaw@Converter("yourBase64String")(response)
+      ```
+  - question: How do I get the MIME type of a file?
+    answer: |
+      You can use the `getMimeType` operation. Here’s an example:
+      ```
+      getMimeType@File("path/to/file")(response)
+      ```
+  - context: |
+      The operation `getMimeType` will test if the specified file or directory exists and return its MIME type.
+    question: What should I do if I encounter a "FileNotFound" error when calling `getMimeType`?
+    answer: |
+      Handle the error using the following fault handling template:
+      ```
+      install ( FileNotFound => /* error-handling code */ )
+      ```
+  - question: How can I get the absolute path of a file or directory?
+    answer: |
+      Use the `toAbsolutePath` operation. Example usage:
+      ```
+      toAbsolutePath@File("relative/path")(response)
+      ```
+  - context: |
+      The `toAbsolutePath` operation constructs an absolute path to the target file or directory, even for non-existent files. If an invalid relative path is provided, it throws an `InvalidPathException`.
+    question: How should I handle an `InvalidPathException` when calling `toAbsolutePath`?
+    answer: |
+      You can handle the `InvalidPathException` like this:
+      ```
+      install ( InvalidPathException => /* error-handling code */ )
+      ```
+  - question: How can I list all the files in a directory recursively?
+    answer: |
+      Use the `list` operation with the `recursive` parameter set to `true`. Example:
+      ```
+      list@File({ directory: "path/to/directory", recursive: true })(response)
+      ```
+  - question: How can I copy a directory to another location?
+    answer: |
+      You can use the `copyDir` operation. Here's an example:
+      ```
+      copyDir@File({ from: "sourceDirectory", to: "destinationDirectory" })(response)
+      ```
+  - question: How do I check if a file or directory exists?
+    answer: |
+      Use the `exists` operation. Example:
+      ```
+      exists@File("path/to/file")(response)
+      ```
+  - question: How can I delete a file or directory?
+    answer: |
+      Use the `delete` operation. Example:
+      ```
+      delete@File("path/to/fileOrDirectory")(response)
+      ```
+  - question: How can I get the size of a file?
+    answer: |
+      You can use the `getSize` operation to get the size of a file. Example:
+      ```
+      getSize@File("path/to/file")(response)
+      ```
+  - question: How can I rename a file or directory?
+    answer: |
+      Use the `rename` operation. Here's an example:
+      ```
+      rename@File({ oldName: "oldPath", newName: "newPath" })(response)
+      ```
+  - question: How do you read a file in Jolie?
+    answer: |
+      You can use the `ReadFileRequest` type to read a file in Jolie. Here is an example:
+      ```jolie
+      ReadFileRequest request = { .filename: "example.txt" }
+      ReadFileRequest@File(request)
+      ```
+  - question: How do you check if a file exists in Jolie?
+    answer: |
+      You can use the `exists` operation to check if a file or directory exists. Here's an example:
+      ```jolie
+      string request = "example.txt"
+      exists@File(request)(response)
+      ```
+  - question: How can you handle faults when a file is not found in Jolie?
+    answer: |
+      You can handle the `FileNotFound` fault like this:
+      ```jolie
+      install (FileNotFound => /* error-handling code */)
+      ```
+  - question: How do you write data to a file in Jolie?
+    answer: |
+      You can use the `writeFile` operation to write data to a file. Here’s an example of writing text to a file:
+      ```jolie
+      WriteFileRequest request = {
+        .filename: "output.txt",
+        .format: "text",
+        .content: "Hello, World!"
+      }
+      writeFile@File(request)
+      ```
+  - question: What happens if you try to write to a file that doesn't exist?
+    answer: |
+      If the file does not exist, a `FileNotFound` fault will be thrown. You can handle this by using the following fault-handling code:
+      ```jolie
+      install (FileNotFound => /* error-handling code */)
+      ```
+  - context: |
+      The `mkdir` operation is used to create a new directory.
+    question: How do you create a directory in Jolie?
+    answer: |
+      You can create a directory using the `mkdir` operation. Here's an example:
+      ```jolie
+      string request = "new_directory"
+      mkdir@File(request)(response)
+      ```
+  - context: |
+      The `deleteDir` operation removes a directory and its contents.
+    question: How do you delete a directory in Jolie?
+    answer: |
+      You can delete a directory using the `deleteDir` operation. Here's an example:
+      ```jolie
+      string request = "old_directory"
+      deleteDir@File(request)(response)
+      ```
+  - context: |
+      The `setMimeTypeFile` operation is used to set the MIME type for a file.
+    question: How do you set the MIME type of a file in Jolie?
+    answer: |
+      You can set the MIME type using the `setMimeTypeFile` operation. Here’s an example:
+      ```jolie
+      string request = "file.txt"
+      setMimeTypeFile@File(request)(response)
+      ```
+  - context: |
+      The `isDirectory` operation checks if a given path is a directory.
+    question: How do you check if a path is a directory in Jolie?
+    answer: |
+      You can check if a path is a directory using the `isDirectory` operation. Here's an example:
+      ```jolie
+      string request = "some_directory"
+      isDirectory@File(request)(response)
+      ```
+  - question: How do you write a file in JSON format in Jolie?
+    answer: |
+      You can write a file in JSON format by specifying the format as `json`. Here’s an example:
+      ```jolie
+      WriteFileRequest request = {
+        .filename: "data.json",
+        .format: "json",
+        .content: { "name": "John", "age": 30 }
+      }
+      writeFile@File(request)
+      ```
