@@ -53,6 +53,11 @@ sudo sysctl iogpu.wired_limit_mb=12288
 ilab data generate --gpus=1 --pipeline simple
 ```
 
+### Download base model for training
+```bash
+ilab model download --repository instructlab/granite-7b-lab
+```
+
 ### TRAIN
 ```bash
 ilab -v model train --pipeline simple --local --num-epochs 1 --iters 10 --optimize-memory
