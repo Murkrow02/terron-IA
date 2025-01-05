@@ -43,11 +43,6 @@ ilab model download --hf-token=
 ilab model serve --model-path ./models/granite-7b-lab-Q4_K_M.gguf
 ```
 
-### Update mac RAM usage for faster generate (this will reset to 0 at reboot)
-```bash
-sudo sysctl iogpu.wired_limit_mb=12288
-```
-
 ### Generate data from provided taxonomy
 ```bash
 ilab data generate --gpus=1 --pipeline simple
@@ -58,13 +53,24 @@ ilab data generate --gpus=1 --pipeline simple
 ilab model download --repository instructlab/granite-7b-lab
 ```
 
+### Update mac RAM usage for faster generate (this will reset to 0 at reboot)
+```bash
+sudo sysctl iogpu.wired_limit_mb=12288
+```
+
 ### TRAIN
 ```bash
 ilab -v model train --pipeline simple --local --num-epochs 1 --iters 10 --optimize-memory
 ```
+
+### Update mac RAM usage for faster generate (this will reset to 0 at reboot)
+```bash
+sudo sysctl iogpu.wired_limit_mb=12288
+```
+
 ### Convert model to GGUF
 ```bash
-ilab model convert --model-dir /Users/murkrow/.local/share/instructlab/checkpoints/-Users-murkrow-.cache-instructlab-models-instructlab-granite-7b-lab-mlx-q/ --model-name jolie -sd
+ilab model convert --model-dir /Users/murkrow/.local/share/instructlab/checkpoints/-Users-murkrow-.cache-instructlab-models-instructlab-granite-7b-lab-mlx-q/ --model-name jolie
 ```
 
 ### Serve the newly created model
