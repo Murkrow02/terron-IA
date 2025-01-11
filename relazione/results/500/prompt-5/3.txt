@@ -1,0 +1,68 @@
+Here's an example of how you can create a simple calculator in Jolie:
+
+```jolie
+// define the interface for the calculator
+interface Calculator {
+  function add(int a, int b): int;
+  function subtract(int a, int b): int;
+  function divide(int a, int b): int;
+  function multiply(int a, int b): int;
+}
+
+// implementation of the calculator functions
+impl Calculator {
+  // add
+  function add(int a: number, int b: number) {
+    return a + b;
+  }
+
+  // subtract
+  function subtract(int a: number, int b: number) {
+    return a - b;
+  }
+
+  // divide
+  function divide(int a: number, int b: number) {
+    if (b != 0) {
+      return a / b;
+    } else {
+      throw new Error("Division by zero not possible.");
+    }
+  }
+
+  // multiply
+  function multiply(int a: number, int b: number) {
+    return a * b;
+  }
+}
+```
+
+To interact with the calculator, you can create a `Client` that communicates with the `Calculator` interface:
+
+```jolie
+// client.js
+const client = new Client(new Calculator);
+
+function printResult(result: any) {
+  console.log(`Calculation result: ${result}`);
+}
+
+client.on('message', (msg: string, reply: Function) => {
+  if (msg === "Add") {
+    client.sendMessage("5", (result: number) => printResult(result + 4));
+  } else if (msg === "Subtract") {
+    client.sendMessage("3", (result: number) => printResult(result - 2));
+  } else if (msg === "Divide") {
+    client.sendMessage("5", (result: number) => printResult(result / 2));
+  } else if (msg === "Multiply") {
+    client.sendMessage("3", (result: number) => printResult(result * 2));
+  }
+});
+
+client.start();
+```
+
+In this example, the `Client` class takes an instance of the `Calculator` and creates a new connection with it. The
+`Client` has an event listener for incoming messages (`on('message')`). When a message is received, the
+corresponding operation is performed on the calculator and the result is sent back to the client as a response
+(`reply`).

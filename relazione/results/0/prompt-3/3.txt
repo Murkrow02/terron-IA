@@ -1,0 +1,47 @@
+Jolie, a modern web framework for building serverless applications using Rust, utilizes the `tufs` library for
+handling database connections. The `tufs` library is designed to simplify the process of connecting to various
+databases and providing a consistent interface across different backends.
+
+To create a connection pool in Jolie, you can use the `Pool` type from the `tufs` library. Here's an example of how
+to create a connection pool for PostgreSQL:
+
+```rust
+use tufs::pool::Pool;
+
+#
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let url = "postgresql://user:password@localhost/database_name".to_string();
+
+    let pool = Pool::connect(url).await?;
+
+    // Now you can use the pool to get connections
+    let connection = pool.borrow().await?;
+
+    let mut statement = connection
+        .prepare("SELECT * FROM users")
+        .await?;
+
+    // Execute a query using the statement
+    let result = statement.execute().await?;
+
+    // Close the connection and return
+    result.close();
+
+    Ok(())
+}
+```
+In this example, we first create a `Pool` instance using the `Pool::connect()` method. The `url` parameter is a
+string containing the connection URL for PostgreSQL. We then borrow the pool to obtain a connection using
+`pool.borrow()`. Once we have a connection, we can use it to execute queries by calling `connection.prepare()` and
+passing in a query string.
+
+Once the query is executed, we close the connection using the `result.close()` method. After that, we return
+immediately from the main function.
+
+It's important to note that Jolie uses the Rust `async/await` paradigm for asynchronous programming, which allows
+you to write concurrent code that is safe, reliable, and easy to understand. The `tokio::main` macro is used to
+start a new Tokio event loop, where the code inside the loop will be executed asynchronously.
+
+In summary, Jolie uses the `tufs` library to manage database connections, providing a consistent interface for
+connecting to various databases. By using the `Pool` type from `tufs`, you can easily create connection pools and
+manage database connections in your Jolie applications.

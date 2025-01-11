@@ -1,0 +1,22 @@
+different components within a distributed application or system.
+
+A **process** is an instance of a program running on a single machine. It has its own memory space, file
+descriptors, and resources. Processes communicate through channels, which allow them to send and receive data
+without sharing their memory space directly. Channels can be either synchronous (using the `receive` or `send`
+operations) or asynchronous (using message queues).
+
+On the other hand, **sessions** are a higher-level abstraction that enables communication and coordination between
+multiple processes in different machines. Sessions allow for communication with remote peers and enable the
+exchange of data across processes running on different hosts. Jolie provides built-in support for session-based
+communication through its `Session` type.
+
+To elaborate further, sessions in Jolie are implemented using reliable message queues or other messaging middleware
+such as RabbitMQ or Apache Kafka. These middleware ensure that messages are delivered reliably and in the correct
+order, even when dealing with network-related issues like packet loss or latency. Sessions enable communication
+between processes by providing a mechanism to establish and manage connections, send and receive messages, and
+handle fault tolerance and recovery.
+
+In summary, processes and sessions in Jolie are related but distinct concepts that help manage communication and
+coordination within distributed systems. Processes are instances of running programs on a single machine, while
+sessions enable communication between processes running on different hosts using messaging queues or other
+middleware.

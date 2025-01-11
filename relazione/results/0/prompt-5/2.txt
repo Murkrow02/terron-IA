@@ -1,0 +1,83 @@
+Certainly! Here's an example of how you can create a simple Jolie calculator that supports basic arithmetic
+operations:
+
+```jolie
+// Calculator component
+import jolie.runtime.Component;
+import jolie.runtime.Expression;
+import jolie.runtime.Invocation;
+import jolie.runtime.Literal;
+import jolie.runtime.Named;
+import jolie.runtime.Primitive;
+import jolie.runtime.Record;
+import jolie.runtime.Stack;
+import jolie.runtime.Var;
+
+@Component(name = "calculator", description = "A simple calculator component that supports basic arithmetic
+operations.")
+public interface Calculator extends Named {
+  @Named("add")
+  Expression add(Expression left, Expression right);
+
+  @Named("subtract")
+  Expression subtract(Expression left, Expression right);
+
+  @Named("divide")
+  Expression divide(Expression left, Expression right);
+
+  @Named("multiply")
+  Expression multiply(Expression left, Expression right);
+}
+```
+
+To use this calculator, you can create a `Stack` to store the expressions and perform the calculations. Here's an
+example of how to use the `Calculator`:
+
+```jolie
+// Usage example:
+import jolie.runtime.Invocation;
+import jolie.runtime.Stack;
+import jolie.runtime.Var;
+import jolie.runtime.Workbook;
+import jolie.runtime.Workspace;
+
+public record UsageExample(String input) {
+  @Named("calculator")
+  Calculator calculator = new Calculator();
+  @Named("stack")
+  Stack stack = new Stack<>();
+
+  @Named("workspace")
+  Workspace workspace = new Workspace();
+
+  @Named("expression")
+  Expression expression = workspace.createExpression();
+
+  @Named("input")
+  Var inputVar = workspace.createVariable();
+
+  @Named("result")
+  Var resultVar = workspace.createVariable();
+}
+
+public void execute(UsageExample example) {
+  example.inputVar.setString(example.input);
+
+  Invocation<Calculator, Expression> invokeCalculator = example.calculator.add(example.expression,
+example.inputVar);
+
+  stack.push(invokeCalculator.getResult());
+}
+```
+
+This code defines a `UsageExample` record that represents the usage scenario for the calculator. The `execute`
+method creates an instance of the `UsageExample` record, sets the input string to the `inputVar`, and invokes the
+`add` operation on the calculator with the current expression and the input variable. The result is then pushed
+onto the stack.
+
+You can extend this example to support other arithmetic operations or add more features to the calculator as
+needed.
+
+Keep in mind that this is just an example, and you may need to adjust the code to fit your specific use case. Make
+sure to follow the best practices for Jolie component development, such as using descriptive names, separating
+concerns, and testing your components thoroughly.

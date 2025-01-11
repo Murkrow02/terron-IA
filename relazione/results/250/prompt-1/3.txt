@@ -1,0 +1,48 @@
+Jolie, a statically typed, high-performance programming language developed by Red Hat and IBM Research, supports
+the implementation of RESTful APIs through its built-in support for web services. Jolie provides a simple and
+intuitive syntax for creating RESTful API endpoints, making it easy to define resources, methods, and parameters.
+
+When implementing RESTful APIs in Jolie, you can use the `rest` keyword to declare a resource interface, which
+contains all the methods for interacting with that resource. For example:
+```jolie
+import web
+import rest
+
+resource MyResource {
+  method GET : Response<string> {
+    return "Hello World!"
+  }
+}
+```
+In this example, we define a `MyResource` interface with a GET method that returns a string. This is a simple
+RESTful API endpoint for the `MyResource` resource.
+
+Jolie also provides built-in support for handling HTTP requests and responses using its `http` library. You can use
+this library to implement more advanced features like authentication, rate limiting, and caching. Here's an example
+of how to handle a GET request with basic authentication:
+```jolie
+import http
+import web
+
+resource MyResource {
+  method GET : Response<string> {
+    on Request {
+      if (request.auth != "Basic " && request.auth != "Bearer ") {
+        return Failure("Invalid authentication")
+      }
+
+      return "Hello World!"
+    }
+  }
+}
+```
+In this example, we add an authorization check to the GET method using the `http` library's `on Request` event. We
+require a basic or bearer token for access. Jolie also supports JSON Web Tokens (JWT) for authentication.
+
+To implement rate limiting and caching, you can use additional libraries like `jolie-rate-limiting` and
+`jolie-caching`. These libraries provide built-in support for implementing various rate limiting strategies and
+caching policies.
+
+In summary, Jolie simplifies the process of implementing RESTful APIs by providing a simple and intuitive syntax
+for defining resources and methods, built-in support for web services and HTTP requests/responses, and additional
+libraries for advanced features like authentication, rate limiting, and caching.

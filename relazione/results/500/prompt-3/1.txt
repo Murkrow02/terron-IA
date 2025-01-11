@@ -1,0 +1,69 @@
+Jolie, as an Object-Oriented Programming Language (OOPL), provides support for connecting databases using its
+built-in Database module. This allows developers to interact with relational and NoSQL databases alike. Here's a
+more detailed explanation of how Jolie handles database connections and some practical examples.
+
+Jolie's Database module enables the creation of database connections through the `Database` keyword, which is a
+part of the core language. A connection can be established using a URI string or an object that implements the
+`ConnectionFactory` interface.
+
+Example 1: Establishing a connection using a URI string:
+```jolie
+import Database
+import java.sql.*
+
+database "postgresql://username:password@localhost/dbname?driver=org.postgresql.Driver"
+```
+In this example, we are connecting to a PostgreSQL database named `dbname` at localhost with the specified username
+and password.
+
+Example 2: Establishing a connection using an object implementing the ConnectionFactory interface:
+```jolie
+import Database
+import java.sql.*
+
+class MyConnectionFactory implements ConnectionFactory {
+    static final String JDBC_DRIVER = "org.postgresql.Driver";
+    static final String URL_FORMAT = "jdbc:postgresql://localhost/dbname";
+
+    public Connection createConnection() {
+        return DriverManager.getConnection(URL_FORMAT, new Properties());
+    }
+}
+
+database MyConnectionFactory // Instantiate the connection factory object
+```
+In this example, we are connecting to a PostgreSQL database named `dbname` at localhost by implementing the
+ConnectionFactory interface and providing a custom implementation that loads the JDBC driver and sets up the URL
+format.
+
+Once connected, you can interact with the database using Jolie's built-in SQL dialect:
+
+Example 3: Selecting data from a table:
+```jolie
+database "postgresql://username:password@localhost/dbname?driver=org.postgresql.Driver"
+import Database.SQL
+
+sql "SELECT * FROM users;", // Select all columns from the `users` table
+     // Print the selected rows
+```
+In this example, we are selecting all rows from the `users` table using Jolie's SQL dialect. The `print` keyword is
+used to print the values of each column in the result set.
+
+Additionally, you can use Jolie's `Database.Transaction` class to manage transactions and ensure data consistency:
+
+Example 4: Executing a transaction and committing it:
+```jolie
+database "postgresql://username:password@localhost/dbname?driver=org.postgresql.Driver"
+import Database.SQL
+import Database.Transaction
+
+transaction {
+    sql "INSERT INTO users (name, age) VALUES (?)", // Insert a new row into the `users` table
+        ; // Begin a new transaction
+
+    sql "SELECT COUNT(*) FROM users;", // Select the number of rows in the `users` table
+         // Commit the transaction and update the result set with the count of rows
+}
+```
+In this example, we are inserting a new row into the `users` table using Jolie's SQL dialect and then committing
+the transaction to ensure that the data is stored persistently in the database.

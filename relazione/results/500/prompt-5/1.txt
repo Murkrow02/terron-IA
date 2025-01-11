@@ -1,0 +1,51 @@
+Here is an example of how you can implement a simple calculator in Jolie using the built-in `calculator` library:
+
+```jolie
+library(calculator)
+
+// define the calculator interface
+interface Calculator {
+    function sum(number1, number2): int
+    function subtract(number1, number2): int
+    function divide(number1, number2): int
+    function multiply(number1, number2): int
+}
+
+// implementation of the calculator functions
+implementation Calculator {
+    function sum(number1, number2) {
+        return (number1 + number2).intValue()
+    }
+
+    function subtract(number1, number2) {
+        return (number1 - number2).intValue()
+    }
+
+    function divide(number1, number2) {
+        if (number1 == 0 || number2 == 0) throw "Invalid division by zero"
+        return (number1 / number2).intValue()
+    }
+
+    function multiply(number1, number2) {
+        if (number1 == 0 || number2 == 0) throw "Invalid multiplication by zero"
+        return (number1 * number2).intValue()
+    }
+}
+```
+
+To use the calculator, you can write Jolie code that interacts with it as follows:
+
+```jolie
+// start the calculator instance
+instance Calculator
+
+// perform calculations
+let result1 = calculator.sum(3, 4)
+let result2 = calculator.subtract(5, 6)
+let result3 = calculator.divide(7, 8)
+let result4 = calculator.multiply(9, 10)
+```
+
+This code snippet starts an instance of the `Calculator` interface and then uses its functions to compute the sum,
+difference, quotient, and product of the given numbers. The results are stored in `result1`, `result2`, `result3`,
+and `result4`.

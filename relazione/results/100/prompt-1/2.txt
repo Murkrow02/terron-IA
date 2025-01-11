@@ -1,0 +1,75 @@
+Jolie is a statically typed language for building distributed applications with excellent support for RESTful APIs.
+It simplifies the process of creating APIs by offering built-in features for handling HTTP requests and responses,
+making it easy to create web services or integrate your application with existing ones.
+
+In Jolie, you can define endpoints for handling different API methods using the `service` statement. This service
+acts as an entry point for clients to interact with your application through its defined endpoints.
+
+Here's an example of how you could use Jolie to define a simple RESTful API for managing books:
+
+```jolie
+// Define a book service
+service BookService {
+  // Method to create a new book
+  operation postBook(
+    string name,
+    integer authorId = null,
+    date publishedDate = null
+  ) returns Book {
+    // Implement the logic for creating a new book here
+  }
+
+  // Method to get all books by an author
+  operation getAllBooksByAuthor(
+    int authorId
+  ) returns [Book] {
+    // Implement the logic for retrieving books by an author here
+  }
+}
+```
+
+In this example, we have a `BookService` that exposes two methods: one to create a new book and another to get all
+books by an author. The `operation` keyword is used to define each method, and the `returns` clause specifies the
+data type of the response (a `Book` in this case).
+
+To implement the API endpoints, you can use the built-in `http` module that comes with Jolie. This allows you to
+send HTTP requests using the `send` method and receive responses using the `receive` method.
+
+For instance, to create a new book, you could use the following code:
+
+```jolie
+// Implementation for postBook method
+import http = require("http");
+import BookService = require("./BookService");
+
+BookService.postBook(
+  "My Awesome Book",
+  authorId,
+  publishedDate
+).send().receive((result: Book) => {
+  console.log("New book created with ID:", result.id);
+});
+```
+
+This code sends an HTTP POST request to the `/books` endpoint defined in the `BookService`, passing in the name of
+the book, the author's ID, and the publication date as JSON payload. The `receive` method is used to handle the
+response from the server, which should return a new `Book` object with an ID.
+
+Similarly, to get all books by an author, you could use:
+
+```jolie
+// Implementation for getAllBooksByAuthor method
+import http = require("http");
+import BookService = require("./BookService");
+
+BookService.getAllBooksByAuthor(authorId).send().receive((results: [Book]) => {
+  console.log("List of books by author", results);
+});
+```
+
+This code sends an HTTP GET request to the `/books` endpoint, passing in the author ID as a query parameter. The
+`receive` method is used again to handle the response from the server, which should return a list of books by the
+specified author.
+
+By using Jolie and its built-in support for RESTful APIs, you can create powerful distributed applications that
+integrate seamlessly with existing web services or other systems.

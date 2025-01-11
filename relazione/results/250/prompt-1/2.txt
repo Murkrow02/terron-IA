@@ -1,0 +1,40 @@
+Jolie is a statically typed programming language built on top of Rust, which provides support for writing safe and
+efficient concurrent programs. It offers features like first-class functions, macros, and pattern matching to build
+high-level abstractions. Jolie can be used to define RESTful APIs using the `jolie-rest` library, which allows you
+to create HTTP endpoints and handle requests and responses easily.
+
+When implementing a REST API in Jolie, you first need to import the `jolie-rest` library. Here's an example of how
+to create a simple GET endpoint for a resource:
+
+```jolie
+#import jolie-rest as rest
+
+// Define a handler function
+fn handler(req: &mut Request<rest::Http>, resp: Response<rest::Http>) -> Result<(), rest::Error> {
+    // Handle the request here...
+}
+
+// Create a GET endpoint using the `GET` method provided by jolie-rest
+rest::GET("/resource") => handler,
+```
+
+In this example, we import the `jolie-rest` library and define a handler function named `handler`. The `GET` method
+is used to create a new endpoint for the `/resource` path. Inside the handler function, we handle the request and
+response as needed.
+
+Here's an example of how to handle the request:
+
+```jolie
+let url_params = req.url().query();
+let name = match url_params.get("name") {
+    Some(value) => value,
+    None => "Unknown",
+};
+
+resp.status(200).body(name);
+```
+
+In this example, we use the `req.url().query()` method to access query parameters from the request URL. The
+`resp.status()` and `resp.body()` methods are used to set the status code and body for the response, respectively.
+
+By using Jolie and the `jolie-rest` library, you can create safe, efficient, and maintainable REST APIs with ease.

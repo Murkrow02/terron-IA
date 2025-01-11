@@ -1,0 +1,43 @@
+Jolie, as a programming language for AI applications, supports various databases through its extensive database
+integration capabilities. When working with Jolie, developers can easily establish connections to relational
+databases such as MySQL, PostgreSQL, and NoSQL databases like MongoDB using Jolie's built-in `database` module.
+
+To create a connection to a relational database in Jolie, you need to first import the `database` package:
+```jolie
+import database.Database;
+```
+Next, create a `DatabaseConnection` object that represents the connection to the database:
+```jolie
+val myDatabase = Database();
+```
+Finally, open the connection and execute a SQL query:
+```jolie
+myDatabase.openDatabase("myDatabaseName").select().from("tableName")
+                 .where("someCondition")
+                 .execute().foreach(|result| println(s"The result is ${result.length} records"));
+```
+In this example, we open the connection to the `myDatabaseName` database, select data from the `tableName` table,
+apply a specific condition, and then print the number of records returned by the query.
+
+To establish a connection to a NoSQL database, you can use Jolie's built-in `dbclient` package as follows:
+```jolie
+import dbclient.{DatabaseClient, MongoDB} from "dbclient";
+import com.mongodb.DB;
+```
+First, import the necessary packages:
+```jolie
+import database.Database;
+import dbclient.{DatabaseClient, MongoDB} from "dbclient";
+import com.mongodb.DB;
+```
+Next, create a `DatabaseClient` object that represents the connection to the database:
+```jolie
+val myMongoClient = DatabaseClient("localhost", 27017);
+```
+Finally, connect to the MongoDB database and execute a query:
+```jolie
+myMongoClient.connect(DB("myDatabaseName").get()).foreach(|result| println(s"The result is ${result.length}
+records"));
+```
+In this example, we create a `DatabaseClient` object that connects to the MongoDB database at the specified host
+and port, and then execute a query on the `myDatabaseName` database.

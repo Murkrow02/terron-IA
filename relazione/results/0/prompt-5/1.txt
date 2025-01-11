@@ -1,0 +1,111 @@
+Certainly! Here's an example of how you can create a simple calculator in Jolie that supports basic arithmetic
+operations:
+
+```jolie
+class Calculator {
+  string operator; // Operator used for the current operation
+  int number1, number2; // Input values for the current operation
+  int result;      // Result of the current operation
+
+  // Initialize the calculator with empty input values and zero as default result
+  void init() {
+    operator = "";
+    number1 = 0;
+    number2 = 0;
+    result = 0;
+  }
+
+  // Function to process addition operations
+  int add(int x, int y) {
+    result += x + y;
+    return result;
+  }
+
+  // Function to process subtraction operations
+  int subtract(int x, int y) {
+    result -= x - y;
+    return result;
+  }
+
+  // Function to process multiplication operations
+  int multiply(int x, int y) {
+    result *= x + y;
+    return result;
+  }
+
+  // Function to process division operations
+  int divide(int numerator, int denominator) {
+    if (numerator > 0 && denominator > 0) {
+      result = numerator / denominator;
+    } else {
+      throw Exception("Invalid division operation. Please ensure both numbers are greater than zero.");
+    }
+    return result;
+  }
+
+  // Function to process various arithmetic operations based on the input operator
+  int processOperation(string operatorStr) {
+    if (operatorStr == "+") {
+      return add(number1, number2);
+    } else if (operatorStr == "-") {
+      return subtract(number1, number2);
+    } else if (operatorStr == ".") {
+      string op2Str = getNextWord(); // Check for second word as the decimal point
+      if (op2Str.isEmpty()) {
+        throw Exception("Invalid operation. Please provide a decimal point.");
+      }
+      float resultF = parseFloat(result) * parseFloat(getNextWord()); // Multiply result by second number after
+decimal point
+      int resultI = Math.round(resultF);
+      return resultI;
+    } else if (operatorStr == "x") {
+      return divide(number1, number2); // Check for division operator
+    } else {
+      throw Exception("Invalid operation. Please provide a valid arithmetic operator.");
+    }
+  }
+
+  // Function to get the next word from the input stream
+  string getNextWord() {
+    string currentLine = getNextLine();
+    if (currentLine.isEmpty()) {
+      return "";
+    }
+    StringTokenizer st = new StringTokenizer(currentLine, " ");
+    return st.nextToken();
+  }
+
+  // Function to parse a floating-point number from the input stream
+  float parseFloat(String str) {
+    StringTokenizer st = new StringTokenizer(str, ".");
+    if (st.countTokens() < 2) {
+      throw Exception("Invalid floating-point number. Please provide a decimal point.");
+    }
+    return Float.parseFloat(st.nextToken());
+  }
+
+  // Function to handle input and display output
+  void handleInputAndOutput() throws Exception {
+    while (!inputStream.eof()) {
+      string inputLine = inputStream.readLine();
+      if (inputLine.isEmpty()) {
+        break;
+      }
+      processOperation(inputLine);
+    }
+  }
+
+  // Main function to start the calculator
+  void main() throws Exception {
+    init();
+    handleInputAndOutput();
+  }
+}
+```
+
+To interact with this calculator, you can use a command-line interface. Here's an example of how you can use the
+calculator:
+
+```bash
+$ jolie --exec=Calculator "345 + 237"
+1682

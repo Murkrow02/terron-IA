@@ -1,0 +1,82 @@
+Jolie, an open-source web development framework, supports various databases through its built-in database drivers.
+These drivers enable developers to interact with different types of databases, such as SQLite, MySQL, PostgreSQL,
+and Oracle. In this answer, I will explain how Jolie handles database connections and provide some practical
+examples.
+
+Jolie uses a connection pooling mechanism to manage database connections efficiently. Connection pooling is a
+technique that allows the framework to reuse existing connections instead of creating new ones for each request.
+This strategy reduces overhead and improves performance by minimizing the time spent on establishing and tearing
+down connections.
+
+To use Jolie for database operations, you first need to install the appropriate database driver package. For
+SQLite, the package name is `jolie-sqlite`. After installing the package, you can import it into your Jolie
+application:
+```
+import sqlite3 from 'sqlite3'
+```
+Once the SQLite driver is imported, you can create a connection pool and establish a connection to the SQLite
+database using the following code snippet:
+```jolie
+let pool = new ConnectionPool {
+  name: "sqlite",
+  url: "sqlite:///database.db",
+  driver: sqlite3
+}
+
+ConnectionPool.with(pool) {
+  useConnection(() => {
+    // Use the SQLite connection here
+    const query = 'SELECT * FROM table_name';
+    const result = SQLite.query(query);
+  });
+}
+```
+In this example, you created a connection pool with a name `sqlite` and an URL pointing to the SQLite database file
+`database.db`. The `useConnection` function is used to establish a connection to the SQLite database when the
+connection pool is exhausted or when a new connection is required.
+
+To perform CRUD (Create, Read, Update, Delete) operations on the SQLite database, you can use the `SQLite` class
+provided by Jolie:
+```jolie
+// Create a new row in the table
+SQLite.execute("INSERT INTO table_name (column1, column2) VALUES (:value1, :value2)")
+  .then(() => {
+    // The new row has been inserted successfully
+  })
+  .catch((error) => {
+    // Handle the error
+  });
+
+// Read all rows from the table
+SQLite.query("SELECT * FROM table_name")
+  .then(result => {
+    // Iterate through the result set and print each row
+    result.forEach((row) => {
+      console.log(`Row: ${row}`);
+    });
+  })
+  .catch((error) => {
+    // Handle the error
+  });
+
+// Update a specific row in the table
+SQLite.execute("UPDATE table_name SET column1 = :value1, column2 = :value2 WHERE id = :id")
+  .then(() => {
+    // The update has been applied successfully
+  })
+  .catch((error) => {
+    // Handle the error
+  });
+
+// Delete a specific row from the table
+SQLite.execute("DELETE FROM table_name WHERE id = :id")
+  .then(() => {
+    // The row has been deleted successfully
+  })
+  .catch((error) => {
+    // Handle the error
+  });
+```
+In summary, Jolie handles database connections using a connection pooling mechanism, which allows developers to
+reuse existing connections and improve performance. To interact with different databases, you need to install the
+appropriate driver package and use the built-in `SQLite` class provided by Jolie for CRUD operations.

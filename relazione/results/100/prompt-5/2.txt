@@ -1,0 +1,119 @@
+Certainly! To create a calculator in Jolie that supports basic arithmetic operations, you can follow these steps:
+
+1. Create a `calculator` component with a `function` property that contains the available operations.
+2. Define a `performOperation` method for each operation in the `functions` array.
+3. Create a `runCalculation` method that executes the chosen operation using the `performOperation` method.
+4. Create a `listenForUserInput` event listener to handle user input and update the calculator's state accordingly.
+5. Add a `printResults` method to display the calculated result.
+
+Here's an example of how you can implement these steps:
+
+```jolie
+// calculate.js
+import 'jolie-runtime' as jr;
+
+export class Calculator {
+  constructor(public functions: string[], public operator: string) {
+    this.result = '';
+    this.currentOperation = null;
+    this.operatorStack = ;
+
+    // Add performOperation methods for each operation
+    this.functions.forEach((functionName) => {
+      const method = jr.getGlobal()[`calculator_${functionName}`];
+      this.operatorStack.push(functionName);
+      this = method;
+    });
+
+    // Reset the calculator
+    this.reset();
+  }
+
+  performOperation(event: any, index: number) {
+    const functionName = this.operatorStack;
+    const arguments = [].slice.call(arguments);
+    let result;
+
+    switch (functionName) {
+      case 'add':
+        result = this.functions[arguments[0]].bind(this)(...arguments).result;
+        break;
+      case 'subtract':
+        result = this.functions[arguments[0]].bind(this)(...arguments).result;
+        break;
+      case 'multiply':
+        result = this.functions[arguments[0]].bind(this)(...arguments).result;
+        break;
+      case 'divide':
+        result = this.functions[arguments[0]].bind(this)(...arguments).result;
+        break;
+    }
+
+    return result;
+  }
+
+  runCalculation() {
+    const userInput = this.getUserInput();
+    let operation;
+
+    if (userInput !== '') {
+      operation = userInput.split(' ')[0];
+      userInput = userInput.split(' ')[1];
+    } else {
+      operation = ' ';
+      userInput = '';
+    }
+
+    switch (operation) {
+      case 'add':
+        this.result += this.performOperation(userInput);
+        break;
+      case 'subtract':
+        this.result -= this.performOperation(userInput);
+        break;
+      case 'multiply':
+        this.result *= this.performOperation(userInput);
+        break;
+      case 'divide':
+        this.result /= this.performOperation(userInput);
+        break;
+    }
+  }
+
+  getUserInput() {
+    const input = jr.getGlobal()['console']!.log();
+    return input.split(' ')[1];
+  }
+
+  reset() {
+    this.result = '';
+    this.currentOperation = null;
+    this.operatorStack = [' '];
+  }
+}
+```
+
+Now, you can use the `Calculator` component as follows:
+
+```jolie
+// main.js
+import calculate from './calculate';
+
+const calculator = new calculate.Calculator(['add', 'subtract', 'multiply', 'divide'], ['+', '-', '*', '/']);
+
+// Example usage
+calculator.runCalculation();
+```
+
+This will create a calculator component with the following functionality:
+
+- Addition (+)
+- Subtraction (-)
+- Multiplication (*)
+- Division (/)
+
+To use these functions, simply call the `runCalculation` method on the `calculator` component. The calculated
+result will be printed to the console.
+
+Keep in mind that this is a basic implementation and you can further customize it to add more operations or
+features as needed.

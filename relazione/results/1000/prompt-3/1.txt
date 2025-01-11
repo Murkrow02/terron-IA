@@ -1,0 +1,45 @@
+Jolie, an open-source web framework based on JavaScript and HTML5, utilizes the `database` module to manage
+database connections. The `database` module supports various databases, such as MySQL, PostgreSQL, and MongoDB. In
+this answer, we will discuss how Jolie handles database connections and provide practical examples for connecting
+to a relational database management system (RDBMS) called MySQL.
+
+Jolie uses the `Database/MySQL` module to interact with MySQL databases. This module provides an Object-Relational
+Mapping (ORM) interface, allowing developers to query and manipulate data in a more intuitive way than using raw
+SQL statements. The `Database/MySQL` module is loaded automatically when you use Jolie's `database` package.
+
+To connect to a MySQL database with Jolie, you need to create an instance of the `Database/MySQL` class and provide
+it with the connection details. Here's an example:
+```javascript
+import Database from 'Database';
+
+const MySQLDatabase = Database('mysql://username:password@localhost/database_name');
+
+// Create a new instance of the `Database/MySQL` object with the provided credentials
+let mysqlDatabaseInstance = new MySQLDatabase();
+
+// Connect to the database and return an ORM interface object
+if (mysqlDatabaseInstance.connect()) {
+  console.log('Connected successfully!');
+} else {
+  console.error('Failed to connect to the database:', mysqlDatabaseInstance.error);
+}
+```
+Now that you have a connection to your MySQL database, you can use the ORM interface provided by the
+`Database/MySQL` module to interact with it. For example, you can query a table and retrieve data using the
+`select` method:
+
+```javascript
+// Define a table in your database schema called "users" with columns "id", "username", and "email"
+mysqlDatabaseInstance.select('*')
+  .from('users')
+  .where({ username: 'john' }) // Use the `where` method to filter records based on specific conditions
+  .execute(function(error, result) {
+    if (error) {
+      console.error('Error when querying the database:', error);
+    } else {
+      for (const userData of result) {
+        console.log(`${userData.id}, ${userData.username}, ${userData.email}`);
+      }
+    }
+  });
+```

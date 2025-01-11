@@ -1,0 +1,67 @@
+In Jolie, database connection management is handled through the use of connection pools, which are essentially
+predefined lists of open connections to a database. These pools help manage and optimize the use of database
+resources by reusing existing connections instead of creating new ones for each request. This can lead to improved
+performance, reduced resource usage, and lower latency when working with multiple database connections in Jolie
+applications.
+
+To create and utilize database connection pools in Jolie, you can follow these steps:
+
+1. First, define a connection pool interface in your application module:
+
+```jolie
+interface DatabaseConnectionPool {
+    openConnection(connectionPoolName: String): Connection;
+    closeConnection(connection: Connection): Unit;
+}
+```
+
+Replace `connectionPoolName` with the name of the desired connection pool.
+
+2. Implement your own connection pool class, implementing the above interface and providing methods to open a new
+connection or close an existing one:
+
+```jolie
+class SQLiteConnectionPool implements DatabaseConnectionPool {
+    private val databasePath: String;
+    private val databaseVersion: String;
+
+    // Other code
+
+    override fun openConnection(connectionPoolName: String): Connection {
+        // Open a new connection to the specified database path and version
+        // ...
+    }
+
+    override fun closeConnection(connection: Connection): Unit {
+        // Close the specified connection
+        // ...
+    }
+}
+```
+
+3. In your main Jolie module, create an instance of the connection pool and configure it with the appropriate
+database path and version:
+
+```jolie
+class MyMainModule {
+    private val databaseConnectionPool = SQLiteConnectionPool(// config
+)
+
+// Use the databaseConnectionPool as needed in other parts of your application
+
+fun openConnection() -> Connection {
+    return databaseConnectionPool.openConnection("my_database")
+}
+```
+
+4. In other parts of your application, use the `openConnection()` function to obtain a connection from the pool:
+
+```jolie
+import MyMainModule as mod;
+
+fun main() {
+    // Get a connection from the pool
+    val connection = mod.openConnection();
+    // Use the connection here ...
+}
+```

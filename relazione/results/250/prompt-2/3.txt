@@ -1,0 +1,28 @@
+In Jolie, both `process` and `session` are used to define separate instances of code that can communicate with each
+other. However, there are some subtle differences between them.
+
+A `process` is an independent instance of code running within a container or a virtual machine. Each process has
+its own memory space, file system, and network stack, allowing them to run independently without interfering with
+one another. Processes can communicate with each other using various mechanisms, such as pipes or sockets, but they
+are isolated from the outside world.
+
+On the other hand, a `session` is a more lightweight and ephemeral form of communication between two processes. A
+session is created by establishing a connection between two processes and lasts until the connection is closed.
+Sessions allow processes to exchange data in real-time without the overhead of creating a full-blown container or
+virtual machine for each transaction.
+
+To elaborate on sessions, they are used to facilitate communication between multiple processes within the same
+container or virtual machine. In Jolie, sessions can be used for various purposes, such as:
+
+1. Communication between different components of an application running in a single container. For example, a
+server and a client can communicate with each other using a session.
+2. Inter-process communication (IPC) within a multi-node distributed system. Sessions can be used to enable
+processes running on different nodes to communicate with each other.
+3. Secure communication channels. By implementing encryption and authentication mechanisms, sessions can be used to
+create secure communication channels between processes.
+4. Message passing between processes. Sessions can be used to send and receive messages between processes
+asynchronously.
+
+In summary, while both `processes` and `sessions` are used to define separate instances of code in Jolie, processes
+are independent instances with their own memory space, and sessions are lightweight and ephemeral connections that
+allow processes to communicate with each other in real-time.

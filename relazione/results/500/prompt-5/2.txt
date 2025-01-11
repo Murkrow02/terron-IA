@@ -1,0 +1,105 @@
+Certainly! Here's the code for a simple calculator in Jolie that supports basic arithmetic operations:
+
+```jolie
+package calculator;
+import java.util.HashMap;
+import java.util.Map;
+import org.w32.jolie.runtime.JolieObject;
+import org.w32.jolie.runtime.RuntimeException;
+import org.w32.jolie.runtime.Value;
+import org.w32.jolie.types.IntType;
+import org.w32.jolie.types.StringType;
+
+public class Calculator {
+    public static void main(String[] args) throws RuntimeException {
+        Map<String, Value> operands = new HashMap<>();
+        String operation = "";
+
+        // Set the operands
+        if (args.length > 0) {
+            for (int i = 0; i < args.length; i++) {
+                String arg1 = args;
+                operands.put(arg1, Value.IntValue(Integer.parse(arg1)));
+            }
+        } else {
+            throw new RuntimeException("Please provide the operands.");
+        }
+
+        // Set the operation (e.g., '+', '-', '/', '*')
+        if (args[0].equalsIgnoreCase("add")) {
+            operation = "add";
+        } else if (args[0].equalsIgnoreCase("sub")) {
+            operation = "sub";
+        } else if (args[0].equalsIgnoreCase("divide")) {
+            operation = "divide";
+        } else if (args[0].equalsIgnoreCase("multiply")) {
+            operation = "multiply";
+        } else {
+            throw new RuntimeException("Invalid operation. Please use 'add', 'sub', 'divide', or 'multiply'.");
+        }
+
+        // Perform the arithmetic operation
+        Value result = calculate(operands, operation);
+
+        if (result == Value.IntValue()) {
+            System.out.println(result);
+        } else if (result == Value.StringValue()) {
+            System.out.println("Result is a string: " + result);
+        } else {
+            throw new RuntimeException("Unexpected result type. Please ensure the operation was correctly set.");
+        }
+    }
+
+    private static Value calculate(Map<String, Value> operands, String operation) throws RuntimeException {
+        switch (operation) {
+            case "add":
+                Value sum = Value.IntValue(0);
+                for (String key : operands.keySet()) {
+                    Value value = operands.get(key);
+                    sum += Value.IntValue(value);
+                }
+                break;
+
+            case "sub":
+                Value difference = Value.IntValue(0);
+                for (String key : operands.keySet()) {
+                    Value value = operands.get(key);
+                    difference -= Value.IntValue(value);
+                }
+                break;
+
+            case "divide":
+                Value quotient = Value.IntValue(0);
+                for (String key : operands.keySet()) {
+                    Value dividend = operands.get(key);
+                    if (dividend == Value.IntValue(0)) continue;
+                    Value divisor = operands.get("divisor");
+                    if (divisor == Value.IntValue(0)) continue;
+                    quotient += Value.IntValue(((dividend / divisor) * 10) % 10);
+                }
+                break;
+
+            case "multiply":
+                Value product = Value.IntValue(0);
+                for (String key : operands.keySet()) {
+                    Value value = operands.get(key);
+                    if (value == Value.IntValue(0)) continue;
+                    product += Value.IntValue(value * 10);
+                }
+                break;
+            default:
+                throw new RuntimeException("Invalid operation. Please use 'add', 'sub', 'divide', or 'multiply'.");
+        }
+
+        return Value.IntValue(product == Value.IntValue(0) ? 0 : product);
+    }
+}
+```
+
+To interact with the calculator, you can send Jolie messages to its main method as follows:
+
+```jolie
+Calculator cal = new Calculator();
+cal.main(new String[] {"1", "2", "+"}); // Result will be printed to the console
+cal.main(new String[] {"3", "4", "*"}); // Result will be printed to the console
+```

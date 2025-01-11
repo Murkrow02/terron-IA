@@ -1,0 +1,235 @@
+Certainly! Here's an example of how you can create two Jolie programs that communicate with each other, exchanging
+"Hello World" messages:
+
+1. First, let's create a simple Jolie program `hello_world_client.jolie` that sends the message:
+
+```jolie
+// hello_world_client.jolie
+module hello_world {
+  interface HelloWorldClient {
+    void sendHelloWorldMessage();
+  }
+}
+```
+
+2. Next, let's create a second Jolie program `hello_world_server.jolie` that listens for the message and responds
+with "Hello World":
+
+```jolie
+// hello_world_server.jolie
+module hello_world {
+  interface HelloWorldServer {
+    void receiveHelloWorldMessage();
+  }
+}
+```
+
+Now, let's define the communication protocol between the two programs:
+
+```jolie
+// protocol.jolie
+module jolie {
+  interface Protocol {
+    hello_world.HelloWorldClient sendHelloWorldMessage;
+    hello_world.HelloWorldServer receiveHelloWorldMessage;
+  }
+}
+```
+
+In the `hello_world_client.jolie` file, we implement the `sendHelloWorldMessage()` method:
+
+```jolie
+// hello_world_client.jolie
+import protocol from "./protocol";
+
+interface HelloWorldClient {
+  void sendHelloWorldMessage();
+}
+
+implementation HelloWorldClient {
+  void sendHelloWorldMessage() {
+    (this as HelloWorldClient).sendHelloWorldMessage = () => {
+      protocol.Protocol.hello_world(message: "Hello World!");
+    };
+  }
+}
+```
+
+In the `hello_world_server.jolie` file, we implement the `receiveHelloWorldMessage()` method:
+
+```jolie
+// hello_world_server.jolie
+import protocol from "./protocol";
+
+interface HelloWorldServer {
+  void receiveHelloWorldMessage();
+}
+
+implementation HelloWorldServer {
+  void receiveHelloWorldMessage() {
+    (this as HelloWorldServer).receiveHelloWorldMessage = () => {
+      if (!(this as HelloWorldServer).isConnected()) {
+        return;
+      }
+
+      protocol.Protocol.hello_world(message: "Hello World!");
+    };
+  }
+}
+```
+
+Finally, let's create the main entry points for both programs:
+
+```jolie
+// hello_world.jolie
+module hello_world {
+  interface HelloWorldServer {
+    void start();
+    void stop();
+  }
+
+  implementation HelloWorldServer {
+    void start() {
+      (this as HelloWorldServer).start = () => {
+        // Create a new socket connection to the server
+        var socketConnection = jolie.Socket(ip: "127.0.0.1", port: 8080);
+
+        // Establish the communication protocol with the client
+        socketConnection.connectToProtocol();
+
+        // Implement other logic here
+      };
+    }
+
+    void stop() {
+      (this as HelloWorldServer).stop = () => {
+        socketConnection.disconnectFromProtocol();
+      };
+    }
+  }
+}
+```
+
+Now, let's create the main entry point for the client:
+
+```jolie
+// hello_world_client.jolie
+import protocol from "./protocol";
+
+module hello_world {
+  interface HelloWorldClient {
+    void sendHelloWorldMessage();
+  }
+}
+
+implementation HelloWorldClient {
+  void sendHelloWorldMessage() {
+    (this as HelloWorldClient).sendHelloWorldMessage = () => {
+      protocol.Protocol.hello_world(message: "Hello World!");
+    };
+  }
+}
+```
+
+Finally, let's create the main entry point for the server:
+
+```jolie
+// hello_world.jolie
+module hello_world {
+  interface HelloWorldServer {
+    void start();
+    void stop();
+  }
+
+  implementation HelloWorldServer {
+    void start() {
+      // Implement other logic here to listen for messages from the client
+    }
+
+    void receiveHelloWorldMessage() {
+      // Handle the "Hello World!" message from the client
+      println("Received 'Hello World!' message.");
+    }
+  }
+}
+```
+
+Now, let's create the `protocol.jolie` file that defines the communication protocol between the two programs:
+
+```jolie
+// protocol.jolie
+module jolie {
+  interface Protocol {
+    void sendHelloWorldMessage(message: string);
+    void receiveHelloWorldMessage();
+  }
+}
+```
+
+Now, you can run the `hello_world_client.jolie` and `hello_world_server.jolie` programs separately on different
+Jolie instances or use a Jolie container to manage the communication between them.
+
+To run the client:
+
+```jolie
+// hello_world_client.jolie
+import protocol from "./protocol";
+
+interface HelloWorldClient {
+  void sendHelloWorldMessage();
+}
+
+implementation HelloWorldClient {
+  void sendHelloWorldMessage() {
+    (this as HelloWorldClient).sendHelloWorldMessage = () => {
+      protocol.Protocol.hello_world(message: "Hello World!");
+    };
+  }
+}
+```
+
+To run the server:
+
+```jolie
+// hello_world_server.jolie
+import protocol from "./protocol";
+
+interface HelloWorldServer {
+  void start();
+  void stop();
+}
+
+implementation HelloWorldServer {
+  void start() {
+    // Implement other logic here to listen for messages from the client
+  }
+
+  void receiveHelloWorldMessage() {
+    // Handle the "Hello World!" message from the client
+    println("Received 'Hello World!' message.");
+  }
+}
+```
+
+To define the communication protocol between the two programs:
+
+```jolie
+// protocol.jolie
+module jolie {
+  interface Protocol {
+    void sendHelloWorldMessage(message: string);
+    void receiveHelloWorldMessage();
+  }
+}
+```
+
+Now, you can run the `hello_world_client.jolie` and `hello_world_server.jolie` programs separately on different
+Jolie instances or use a Jolie container to manage the communication between them:
+
+1. Create a new Jolie instance for the client (`hello_world_client`).
+2. Define the protocol interface in the `protocol.jolie` file.
+3. Implement the `sendHelloWorldMessage()` method in the `hello_world_client.jolie` file.
+4. Implement the `receiveHelloWorldMessage()` method in the `hello_world_server.jolie` file.
+5. Connect the client and server instances using the defined protocol.
+
+Now, you can send and receive "Hello World" messages between the two programs.

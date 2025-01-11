@@ -1,0 +1,19 @@
+In Jolie, processes and sessions are two distinct but interrelated concepts.
+
+A process is an instance of a task or a program running in a JVM (Just-In-Time) container. It has its own memory
+space, resources, and execution context. Processes are isolated from each other, ensuring that any failures within
+one process do not affect others. However, they can communicate through explicit messages and share data between
+their address spaces using Jolie's built-in message passing mechanism.
+
+On the other hand, a session is a runtime container for multiple related processes, providing shared resources such
+as network connections, databases, or other external services. Sessions allow multiple processes to coordinate and
+collaborate more efficiently by sharing common state and data structures. They are also isolated from each other,
+ensuring that any failures within one process do not affect the others in the same session.
+
+Sessions in Jolie can be thought of as a communication layer between related processes, enabling them to interact
+and exchange information securely and efficiently. This abstraction simplifies the development of distributed
+systems and microservices by allowing developers to focus on the specific tasks of each process while still
+ensuring loose coupling and fault tolerance.
+
+In summary, a Jolie process is an isolated instance of a task or program, while a session is a runtime container
+for multiple related processes that share common resources and coordinate their execution.

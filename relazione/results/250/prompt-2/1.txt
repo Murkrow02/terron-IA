@@ -1,0 +1,24 @@
+In Jolie, both `Process` and `Session` are abstractions that represent separate instances of your application
+running concurrently or independently. However, they differ in their functionality and use cases:
+
+1. **Processes:** A `Process` is an independent instance of your application, running in its own address space with
+its own system libraries and resources. It can interact with other processes through communication channels, but it
+does not share the same memory space or have direct access to system resources outside of its own environment.
+Processes are useful for isolating specific parts of your application and ensuring they do not interfere with each
+other's state or behavior.
+
+2. **Sessions:** A `Session` is a shared context between related processes, allowing them to communicate and
+synchronize their actions in real-time. Sessions provide an abstraction layer that enables multiple processes to
+interact as if they were part of the same conversation, without needing to share memory or resources directly. This
+makes sessions particularly useful when dealing with complex applications that require coordinated behavior across
+different components.
+
+To elaborate on `sessions`, a session is an entity that manages communication between related processes. It
+provides a simple and efficient way to send and receive messages, ensuring proper order and delivery. Sessions can
+be used for various purposes, such as passing data between services, coordinating actions in distributed systems,
+or implementing concurrency control mechanisms.
+
+In Jolie, sessions are implemented using the `Session` type, which defines a set of operations that can be
+performed on the session, such as sending messages, receiving responses, and managing session state. By using
+sessions, developers can create more modular and scalable applications that can easily adapt to changing
+requirements or architectural patterns.

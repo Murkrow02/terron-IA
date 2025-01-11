@@ -1,0 +1,50 @@
+Certainly! Here are the codes for a simple Jolie program that sends and receives an "Hello World" message:
+
+Program 1 (Sender):
+```jolie
+import com.example.message_sender._
+
+// Define the sender component
+component MessageSender {
+    // Function to send a message
+    function sendMessage(message: String) -> Unit {
+        print("Sending message: " + message);
+        // Use Jolie's built-in serialization library to convert the message into a byte array and write it to
+stdout
+        println(serialization.toBytes(message));
+    }
+}
+```
+
+Program 2 (Receiver):
+```jolie
+import com.example.message_receiver._
+
+// Define the receiver component
+component MessageReceiver {
+    // Function to receive a message
+    function receiveMessage() -> String {
+        // Read messages from stdout using Jolie's built-in serialization library
+        let messageBytes: Array[Byte] = reading.readString();
+        // Convert the byte array into a string and extract the message
+        let message: String = deserialization.deserialize(messageBytes);
+        println("Received message: " + message);
+        return message;
+    }
+}
+```
+
+To use these programs, you can run them separately and share the stdout between them using a pipe. For example, to
+send a message from Program 1 to Program 2, you can execute:
+
+Program 1: `java -jar message_sender.jar > < (echo "Hello World")`
+
+Then, to receive the message in Program 2, you can execute:
+
+Program 2: `java -jar message_receiver.jar < (java -jar message_sender.jar)>`
+
+This will create a pipeline that sends the message from Program 1 to Program 2 and reads it in real-time. The
+result will be printed to stdout in both programs.
+
+Keep in mind that you might need to adjust the command lines depending on your operating system and programming
+environment.

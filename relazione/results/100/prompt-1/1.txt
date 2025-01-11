@@ -1,0 +1,47 @@
+Jolie is a high-performance, low-level programming language designed for building scalable and efficient
+applications. It provides support for developing RESTful APIs using its built-in `net` package. Here's a
+step-by-step explanation of how Jolie handles REST APIs:
+
+1. **Defining the API structure**: To create a RESTful API in Jolie, you first need to define a server module. This
+module should include endpoints for each resource that will be accessible through the API. Each endpoint should
+have a method (GET, POST, PUT, DELETE) and an implementation.
+
+2. **Request handling**: When a client sends a request to the API, the `net` package parses the request and passes
+it to the corresponding endpoint method. The endpoint then processes the request and returns a response. Jolie's
+built-in HTTP client can be used to make requests directly from the language level.
+
+3. **Modeling data**: In Jolie, you can define models for each resource in your API using its `types` package.
+These models should include fields for all the attributes of the resource and methods for handling CRUD operations.
+The `net` package provides a built-in serializer/deserializer to convert these models into JSON format for
+communication with the server.
+
+4. **Error handling**: REST APIs must return meaningful error messages when requests fail. Jolie's `types` package
+includes an `Error` type that can be used to define custom error codes and messages. The `net` package handles
+error propagation automatically, so you don't have to write any error-checking code in your endpoint methods.
+
+Here's an example of how a simple GET request might look:
+```jolie
+import net.http
+import net.types.rest
+import net.types.status
+
+// Define a model for the resource
+type MyResource = {
+    id: int,
+    name: string
+}
+
+// Define an endpoint for the resource
+net.Endpoint module MyApi {
+    method GET /myresource/{id}: return MyResource {
+        id: int(req.params.id),
+        name: string("My Resource")
+    }
+}
+```
+In this example, the `MyApi` module defines an endpoint that handles requests to the `/myresource` endpoint with a
+specific ID. The `net` package automatically serializes and deserializes the request/response JSON data for you.
+
+Jolie's built-in support for RESTful APIs simplifies the development process and ensures consistency across
+different services. By defining models, endpoints, and handling errors in a single language, Jolie makes it easier
+to maintain and scale your APIs as your application grows.

@@ -1,0 +1,29 @@
+Jolie is a high-level programming language that offers a convenient and expressive syntax for building concurrent
+and parallel systems, including RESTful APIs. When implementing RESTful APIs in Jolie, developers can take
+advantage of its built-in support for asynchronous operations, data serialization, and error handling.
+
+Here's an example of how to create a simple GET request using Jolie:
+```jolie
+import http from "http/lib"
+
+function main() {
+  let req = new Request("GET", "/api/v1/users")
+  async fetchData(response) {
+    if (response.status == 200) {
+      // Process data in the response payload
+      let users = json.decode(response.payload)
+      print "Number of users: ", users.length
+    } else {
+      print "Error: ", response.reason
+    }
+  }
+  await fetchData(req)
+}
+```
+In this example, we first import the `http` library from Jolie's standard library. We then create a new request
+object (`Request`), specifying the HTTP method (`GET`) and the endpoint `/api/v1/users`. The `fetchData` function
+is defined to handle the response payload when the GET operation completes successfully.
+
+Jolie also provides built-in support for data serialization through its `json` package. This allows developers to
+easily convert between Jolie's native types and JSON data formats. Additionally, Jolie offers features such as
+automatic error handling and concurrency management to make it easier to build scalable and reliable systems.

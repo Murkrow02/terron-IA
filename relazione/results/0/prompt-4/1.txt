@@ -1,0 +1,80 @@
+Certainly! To create a simple communication channel between two Jolie programs, follow these steps:
+
+1. Create a new Jolie program called `sender.jolie` and define a function called `send_message` that takes a string
+as an argument and returns a Jolie message containing the string.
+
+```jolie
+import jolie.io.Message;
+import jolie.runtime.Runtime;
+
+// Create a new sender program
+def sender(runtime):
+    // Define the send_message function
+    def send_message(message: String): Message {
+        // Create an empty message object
+        var message_obj = runtime.create_message();
+
+        // Add the "Hello World" string to the message
+        message_obj.add_text("Hello World");
+
+        return message_obj;
+    }
+
+    // Return the send_message function
+    return {send_message};
+}
+```
+
+2. Create a new Jolie program called `receiver.jolie` and define a function called `receive_message` that listens
+for incoming messages and prints them to the console.
+
+```jolie
+import jolie.io.Message;
+import jolie.runtime.Runtime;
+
+// Create a new receiver program
+def receiver(runtime):
+    // Define the receive_message function
+    def receive_message(message: Message): void {
+        // Print the message to the console
+        console.log("Received message: " + message.text);
+    }
+
+    // Register the receive_message function
+    runtime.register_function("receive_message", receive_message);
+
+    // Return the receive_message function
+    return {receive_message};
+}
+```
+
+3. Start the sender program and send a message to the receiver program:
+
+```bash
+jolie --runtime=granite-7b-base --exec=sender sender.jolie
+```
+
+4. Start the receiver program and wait for incoming messages:
+
+```bash
+jolie --runtime=granite-7b-base --exec=receiver receiver.jolie
+```
+
+5. Send a message from the sender program to the receiver program:
+
+```bash
+sender.jolie send_message "Hello World"
+```
+
+6. The receiver program should print the following message to the console:
+
+```
+Received message: Hello World
+```
+
+This example demonstrates how to create a simple communication channel between two Jolie programs using the
+`send_message` and `receive_message` functions. You can modify and expand this example to create more complex
+communication scenarios between multiple Jolie programs.
+
+Keep in mind that the code examples provided are for educational purposes and should be adapted to your specific
+use case. Make sure to follow best practices for secure and reliable communication between Jolie programs.

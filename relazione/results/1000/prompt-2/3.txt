@@ -1,0 +1,17 @@
+In Jolie, processes are the fundamental units of execution for code and can be thought of as independent running
+instances. A process has its own memory space, stack, and execution context. It is responsible for executing
+specific tasks or functionalities within a system. Sessions, on the other hand, provide communication channels
+between processes. They allow processes to exchange data and synchronize their execution in a coordinated manner.
+
+A session can be thought of as a virtual "conversation" between two processes, enabling them to interact with each
+other by sharing data or invoking shared operations. Sessions use a protocol, defined within Jolie using the
+`Protocol` type, which specifies how messages are exchanged and what actions should be taken on incoming messages.
+
+Sessions offer several benefits in terms of system design and programming:
+
+1. Decoupling: By separating communication logic from process logic, sessions allow for greater modularity and
+maintainability in large-scale systems.
+2. Scalability: Sessions enable multiple processes to communicate with each other simultaneously, making them
+suitable for building scalable and distributed applications.
+3. Flexibility: Sessions support various types of communication channels, such as message-oriented or synchronous,
+allowing developers to choose the best approach based on their specific use case.

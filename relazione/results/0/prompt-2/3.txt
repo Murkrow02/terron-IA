@@ -1,0 +1,16 @@
+In Jolie, processes are independent entities that can execute code and manage resources. They have their own memory
+space, execution context, and system resources. Processes communicate with each other through messages or channels,
+which are explicit communication endpoints. Processes can be spawned from a single parent process or created
+independently.
+
+Sessions, on the other hand, represent a shared communication context between two processes. Sessions provide a
+more secure and isolated way of communicating compared to direct process-to-process communication. By using
+sessions, you can ensure that messages are only accessible to the intended recipient, enhancing security and data
+privacy.
+
+A session is created when two processes establish a connection and agree on the communication protocols. Once a
+session is established, the participating processes can exchange messages and synchronize their actions. Sessions
+can be used to coordinate between multiple processes, manage resources, or implement distributed algorithms.
+
+In summary, processes are independent entities that communicate through channels, while sessions provide a shared
+communication context for multiple processes to collaborate securely.

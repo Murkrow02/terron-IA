@@ -1,0 +1,20 @@
+In Jolie, a process is an isolated environment where a specific task or set of tasks are executed. It serves as a
+container for code, libraries, and resources that are necessary for the task at hand. Processes are independent of
+each other, and they communicate with each other through well-defined interfaces, such as APIs or message queues.
+This isolation allows for better modularity, scalability, and security in Jolie applications.
+
+A session, on the other hand, is a more abstract concept that represents a coordinated interaction between multiple
+processes. Sessions are responsible for managing the flow of data and messages between processes, ensuring that
+they are delivered in the correct order and that duplicate or out-of-order messages are handled appropriately.
+
+In Jolie, sessions are implemented using a combination of language features, libraries, and runtime services. The
+language provides support for asynchronous communication, while libraries and runtime services offer additional
+features, such as message serialization and deserialization, message routing, and session management.
+
+To elaborate further, sessions in Jolie can be used to implement various coordination patterns, such as message
+passing, remote procedure calls, or event-driven architectures. By using sessions, developers can create
+applications that are more flexible, scalable, and resilient to failures.
+
+In summary, processes and sessions in Jolie serve different purposes. Processes provide an isolated environment for
+executing tasks, while sessions manage the flow of data and messages between multiple processes, enabling
+coordinated interactions and improving the overall design and functionality of Jolie applications.

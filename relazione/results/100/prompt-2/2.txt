@@ -1,0 +1,14 @@
+In Jolie, processes represent the runtimes of applications written in Jolie. They are independent entities that
+execute specific tasks, interact with other processes, and manage resources. Sessions, on the other hand, represent
+a collaboration between different processes. Sessions allow processes to communicate with each other using message
+passing or shared memory, enabling them to coordinate their actions and exchange data.
+
+Sessions provide a convenient way for multiple processes to work together as a cohesive system. By establishing a
+session between two processes, they can create a unified environment where they can interact and share information
+seamlessly. Sessions act as a communication channel, allowing processes to send and receive messages, making it
+easier to coordinate their actions and manage shared resources.
+
+In addition to process-to-process communication, sessions in Jolie also enable inter-process communication (IPC)
+with other languages, such as C or Python, through libraries like libyolie or jolie-cpp. This feature allows
+developers to write components in different languages and integrate them into a Jolie application, enhancing the
+system's flexibility and modularity.

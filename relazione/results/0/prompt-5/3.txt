@@ -1,0 +1,100 @@
+Certainly! Here's an example of how you could implement a simple calculator in Jolie that supports basic arithmetic
+operations:
+
+```jolie
+class Calculator {
+  string input;
+  int number1, number2, result;
+
+  // Initialize the calculator with empty inputs
+  void start() {
+    input = "";
+    number1 = 0;
+    number2 = 0;
+    result = 0;
+  }
+
+  // Handle enter key press
+  void enterKeyPressed() {
+    if (input.length() > 0) {
+      String operation = input.substring(0, 1);
+      input = input.substring(1);
+
+      switch (operation) {
+        case "+":
+          result = number1 + number2;
+          break;
+        case "-":
+          result = number1 - number2;
+          break;
+        case "/":
+          if (number2 == 0) {
+            throw new JolieException("Invalid operation, divide by zero not allowed.");
+          }
+          result = number1 / number2;
+          break;
+        case "*":
+          if (number2 == 0) {
+            throw new JolieException("Invalid operation, multiply by zero not allowed.");
+          }
+          result = number1 * number2;
+          break;
+      }
+    }
+  }
+
+  // Handle arrow up key press
+  void arrowUpKeyPressed() {
+    if (input.length() > 0) {
+      result = result - Integer.parseInt(input);
+      input = "";
+    }
+  }
+
+  // Handle arrow down key press
+  void arrowDownKeyPressed() {
+    if (input.length() > 0) {
+      result = result + Integer.parseInt(input);
+      input = "";
+    }
+  }
+
+  // Display the current result
+  void displayResult() {
+    System.out.println("Current Result: " + result);
+  }
+}
+```
+
+To use this calculator, you can create an instance of the `Calculator` class and call its methods to perform
+arithmetic operations. For example, to add two numbers, you could call `calculator.add()`. To subtract one number
+from another, you could call `calculator.subtract()`. To divide one number by another, you could call
+`calculator.divide()`, and so on.
+
+To communicate with the calculator, you can create a Jolie application that creates an instance of the `Calculator`
+class and calls its methods to perform arithmetic operations. Here's an example of how you could do this:
+
+```jolie
+// Create an instance of the Calculator class
+val calculator = Calculator()
+
+// Add two numbers
+calculator.add("+", "2", "3")
+
+// Subtract one number from another
+calculator.subtract("/", "2", "1")
+
+// Divide one number by another (note that this will throw an exception if the denominator is zero)
+try {
+  calculator.divide("-", "2", "0")
+} catch (e: JolieException) {
+  println("Error dividing by zero.")
+}
+
+// Multiply one number by another
+calculator.multiply("*", "2", "3")
+```
+
+This example demonstrates how you can create a Jolie application that communicates with the `Calculator` class to
+perform basic arithmetic operations. Note that this is just one possible way to interact with the calculator, and
+there are many other ways you could implement this functionality in Jolie.

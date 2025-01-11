@@ -1,0 +1,25 @@
+In Jolie, a process is an instance of a task that runs independently in the system. It has its own memory space,
+and it can have multiple children processes to help it accomplish its goals. Processes are used to encapsulate the
+business logic of an application, and they communicate with each other through a mechanism called communication
+endpoints.
+
+A session, on the other hand, is a coordination point between two or more processes. It provides a shared
+communication space where these processes can exchange data and synchronize their actions. Sessions are essential
+for building distributed applications that require coordinated execution of multiple tasks.
+
+In Jolie, sessions are implemented as channels, which are bidirectional communication endpoints. Channels allow
+processes to send messages to each other, and they can also be used for exchanging data between processes in a way
+that is transparent to the application code. Sessions can be used to coordinate the execution of multiple tasks,
+manage resources, and ensure data consistency across the system.
+
+To elaborate further, sessions in Jolie are implemented using the Reliable Connections (RC) protocol, which
+provides a reliable and efficient way for processes to communicate with each other. The RC protocol ensures that
+messages are delivered in the correct order, even in the presence of network failures or high latency. It also
+supports message acknowledgements, flow control, and connection termination, making it suitable for building
+scalable and fault-tolerant systems.
+
+In summary, processes and sessions in Jolie serve different purposes. Processes encapsulate the business logic of
+an application, while sessions provide a coordination point between multiple processes, enabling them to
+communicate and synchronize their actions in a distributed system. The use of sessions and processes in Jolie
+allows developers to build scalable, fault-tolerant, and efficient applications that can run on a wide range of
+platforms and environments.

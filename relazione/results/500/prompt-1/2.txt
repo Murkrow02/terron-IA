@@ -1,0 +1,51 @@
+Jolie, developed by Google, is a statically typed, object-oriented programming language designed for building
+efficient and maintainable systems. It has built-in support for handling RESTful APIs and can be used to define
+HTTP endpoints and requests using the `rest` module.
+
+To implement a REST API in Jolie, you first need to import the `net` and `rest` modules in your code. The `net`
+module provides network-related functionality, while the `rest` module contains classes for handling HTTP endpoints
+and requests.
+
+Here is an example of how to define a RESTful API for a simple resource called "users":
+```jolie
+import net._TCP;
+import rest._RESTServer;
+import rest._HTTPEndpoint;
+
+class UserResource extends _RESTServer {
+  // Define the endpoint for the users resource
+  private _usersEndpoint: _HTTPEndpoint = {
+    method(GET): _RESPONSE[200]() => {
+      // Retrieve a list of all users
+      return [
+        [1, "Alice", "alice@example.com"],
+        [2, "Bob", "bob@example.com"]
+      ];
+    },
+
+    method(POST): _RESPONSE[201]() => {
+      // Create a new user
+      let user = _User();
+      user["name"] = _request["name"];
+      user["email"] = _request["email"];
+      return [
+
+      ];
+    }
+  };
+}
+```
+In this example, the `UserResource` is an instance of the `RESTServer` class and defines a RESTful API for a
+resource called "users". The `_usersEndpoint` is an HTTP endpoint that responds to GET requests with a list of all
+users and accepts POST requests with new user data.
+
+To use this API, you can create a TCP server listening on a specific port and import the `UserResource` into your
+code. Then, start the server using the `TCPServer` class:
+```jolie
+import net._TCP;
+
+let app = new _TCPServer(8080, UserResource);
+app.start();
+```
+This will create a TCP server listening on port 8080 and run the specified `UserResource` instance. Clients can
+then connect to this server and interact with the API using HTTP GET or POST requests.

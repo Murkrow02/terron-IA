@@ -1,0 +1,21 @@
+In Jolie, processes are instances of an application that can execute concurrently with other processes. They have
+their own memory space and resources, allowing them to run independently without interfering with each other.
+Processes are the fundamental units of execution in Jolie.
+
+Sessions, on the other hand, represent a communication channel between two or more processes. Sessions allow
+processes to exchange data and coordinate actions as if they were interacting directly with each other. They enable
+process-to-process communication, making it easy to build distributed applications using Jolie.
+
+To elaborate further, sessions in Jolie are implemented using the `session` type, which defines a connection
+between two processes. Sessions can be either synchronous (blocking) or asynchronous (non-blocking). In a
+synchronous session, a process sends a message to another process and waits for a response before proceeding. This
+type of communication is useful for implementing producer-consumer patterns or coordinating actions between
+different components of an application.
+
+Asynchronous sessions, on the other hand, allow processes to send messages without waiting for a response. This
+type of communication is ideal for building scalable and high-performance applications where real-time interaction
+is not required.
+
+In summary, while processes and sessions in Jolie share some similarities, they serve different purposes: processes
+represent the independent entities that can execute concurrently, while sessions provide a communication channel
+between processes to facilitate coordination and data exchange.

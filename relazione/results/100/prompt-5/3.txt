@@ -1,0 +1,141 @@
+Here is an example of how you can create a simple calculator application in Jolie that supports basic arithmetic
+operations:
+
+```jolie
+// calculator.js
+import jolie_core as jc;
+import jolie_compiler as jc;
+
+const Calculator = new class {
+  constructor() {
+    this.registerName('calculator');
+    this.addName('setNumber');
+    this.addName('performOperation');
+    this.addName('printResult');
+    this.registerEvent('ready', 'Calculator');
+  }
+
+  ready(event) {
+    // Initialize the calculator's state
+    this.state = {
+      numbers: [],
+      currentOp: '',
+      result: '',
+      operations: []
+    };
+
+    // Bind event listeners
+    this.bindEventHandlers();
+  }
+
+  setNumber(event, data) {
+    if (this.state.numbers.length === 0) {
+      alert('Please enter a number to start the calculation');
+      return;
+    }
+
+    this.state.numbers.push(Number(data));
+    // Clear any previously entered operations
+    this.state.operations = [];
+  }
+
+  performOperation(event, data) {
+    const currentOp = this.state.currentOp;
+    if (data === '+') {
+      const numbers = this.state.numbers;
+      this.state.result += numbers;
+      this.setState('');
+    } else if (data === '-') {
+      const numbers = this.state.numbers;
+      this.state.result -= numbers;
+      this.setState('');
+    } else if (data === '*') {
+      const numbers = this.state.numbers;
+      this.state.result *= numbers;
+      this.setState('');
+    } else if (data === '/') {
+      const numbers = this.state.numbers;
+      this.state.result /= numbers;
+      this.setState('');
+    } else {
+      alert('Invalid operation, please use "+" for addition, "-" for subtraction, "*" for multiplication and "/"
+for division');
+      return;
+    }
+
+    // Reset the current operator to an empty string
+    this.state.currentOp = '';
+  }
+
+  printResult(event) {
+    if (this.state.result !== '') {
+      alert('The result is: ' + this.state.result);
+    } else {
+      alert('No numbers have been entered to perform the calculation');
+    }
+  }
+
+  bindEventHandlers() {
+    this.$on('ready', (event, data) => {
+      // Add event listeners for input fields and buttons
+      const inputs = document.getElementsByTagName('input');
+      for (let i = 0; i < inputs.length; i++) {
+        if (inputs.type === 'text' && inputs.name === 'number') {
+          this.registerEventHandler(inputs, 'change', this.setNumber);
+        }
+      }
+
+      const buttons = document.getElementsByTagName('button');
+      for (let i = 0; i < buttons.length; i++) {
+        if (buttons.id === 'add' || buttons.id === 'subtract' || buttons.id === 'multiply' || buttons.id ===
+'divide') {
+          this.registerEventHandler(buttons, 'click', this.performOperation);
+        }
+      }
+
+      // Add a global event listener for the printResult button
+      const printResultBtn = document.getElementById('print-result');
+      if (printResultBtn) {
+        this.registerEventHandler(printResultBtn, 'click', this.printResult);
+      }
+    });
+  }
+
+  registerEventHandler(target, event, callback) {
+    target.addEventListener(event, () => {
+      callback();
+    });
+  }
+};
+
+const calculator = new Calculator();
+```
+
+The `calculator.js` file initializes the calculator application and registers event listeners for input fields and
+buttons. The `ready` event is used to initialize the calculator's state and bind event listeners.
+
+The `setNumber` function handles the submission of a number and appends it to the list of available numbers. It
+also resets the current operator to an empty string.
+
+The `performOperation` function handles the click event of an arithmetic button and performs the corresponding
+operation on the current set of numbers.
+
+The `printResult` function handles the click event of the "Print Result" button and displays the result of the
+calculation.
+
+To use this calculator, you can embed it in a Jolie application as follows:
+
+```jolie
+// main.js
+import jolie_core as jc;
+import jolie_compiler as jc;
+import 'calculator';
+
+const calculator = new Calculator();
+
+// Create an app with the calculator component
+const app = jc.createApp('My App', ['calculator']);
+```
+
+This will create a Jolie application with a single component, which is the calculator. The `Calculator` component
+will be automatically wired to the `calculator` service provided by Jolie.

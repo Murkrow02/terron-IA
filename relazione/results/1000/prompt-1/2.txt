@@ -1,0 +1,59 @@
+Jolie provides built-in support for RESTful APIs through its `rest` module, which simplifies the process of
+creating web services and interacting with APIs. The `rest` module allows developers to define endpoints, request
+methods, response formats, and data types using a declarative and concise syntax.
+
+When implementing REST APIs in Jolie, you can define endpoints using the `resource` statement followed by a list of
+endpoints that correspond to different HTTP methods (GET, POST, PUT, DELETE). Each endpoint can include parameters,
+query strings, and headers for controlling the behavior of the API.
+
+Here's an example of how to define a GET endpoint in Jolie:
+```jolie
+module myapp {
+  import rest = jolie.rest;
+
+  resource MyResource {
+    / Some endpoint that corresponds to the GET HTTP method
+    endpoint /myendpoint(id : int) -> (result : string) {
+      // Handle the request and return a response
+    }
+
+    / Another endpoint that corresponds to the POST HTTP method
+    endpoint /anotherendpoint(data : any) -> (status : int, message : string) {
+      // Handle the request and return a response
+    }
+  }
+}
+```
+In this example, `MyResource` is an abstraction that defines two endpoints: `/myendpoint` which corresponds to the
+GET HTTP method and `/anotherendpoint` which corresponds to the POST HTTP method. The `import rest = jolie.rest;`
+statement imports the `rest` module from Jolie's standard library, allowing developers to use its functionality for
+implementing REST APIs.
+
+To handle the request and return a response, you can define methods inside the resource definition using the
+`@method` and `@response` annotations. These annotations provide information about the HTTP method and response
+format for each endpoint. For example, in `/myendpoint`, the `@method` annotation specifies that this endpoint
+corresponds to the GET HTTP method, and the `@response` annotation specifies that the response should be of type
+`string`.
+
+Similarly, in `/anotherendpoint`, the `@method` annotation specifies that this endpoint corresponds to the POST
+HTTP method, and the `@response` annotation specifies that the response should include two elements: a `status`
+integer and a `message` string.
+
+Here's an example of how to handle the request and return a response in `/myendpoint`:
+```jolie
+import rest = jolie.rest;
+
+resource MyResource {
+  @method GET /myendpoint(id : int) -> (result : string) {
+    // Handle the request and return a response
+    let id = request.params.id;
+
+    result = "Hello, " + id;
+    return result;
+  }
+}
+```
+In this example, the `MyResource` resource defines an endpoint `@method GET /myendpoint(id : int)` that corresponds
+to the GET HTTP method. When a request is made to this endpoint, the `@handleRequest` method is called, which
+retrieves the ID from the request's parameters (`request.params.id`). The response is then constructed and returned
+using the `@response` annotation and the `result` variable.

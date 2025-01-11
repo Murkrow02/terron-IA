@@ -1,0 +1,53 @@
+Jolie, as a general-purpose programming language, supports various database connection methods through its
+extensive support for external libraries and modules. The most common way to establish a database connection in
+Jolie is by using the `Database` class from the `jolie.database` library. This library provides an abstraction
+layer for connecting to different relational databases, such as MySQL, PostgreSQL, or SQLite.
+
+Here's a simple example of how to use the `Database` class to connect to a MySQL database:
+```jolie
+import jolie.database as Database
+import jolie.sql as Sql
+
+// Define connection parameters
+const CONNECTION_STRING = 'mysql://user:password@localhost/database_name'
+
+// Create a new database connection
+DatabaseConnection dbConn = Database.connect(CONNECTION_STRING)
+
+// Perform a query on the database
+Sql.queryString("SELECT * FROM table_name")
+    .execute(dbConn)
+    .then(data => {
+        // Process the retrieved data
+        println("Data:", data)
+    })
+    .catch(error => {
+        println("Error:", error)
+    })
+```
+In this example, we first import the necessary modules and define a connection string for the MySQL database. We
+then create a new `DatabaseConnection` using the `connect()` method provided by the `Database` class. Finally, we
+execute a query on the database using the `queryString()` method and handle the results accordingly.
+
+For other databases, you can use similar methods and libraries. For instance, to connect to a PostgreSQL database,
+you can use the `Postgres` library from the same repository:
+```jolie
+import jolie.database as Database
+import jolie.postgres as Postgres
+
+const CONNECTION_STRING = 'postgresql://user:password@localhost/database_name'
+
+DatabaseConnection dbConn = Database.connect(CONNECTION_STRING)
+
+Postgres.queryString("SELECT * FROM table_name")
+    .execute(dbConn)
+    .then(data => {
+        println("Data:", data)
+    })
+    .catch(error => {
+        println("Error:", error)
+    })
+```
+
+These examples demonstrate how to handle database connections in Jolie using the provided libraries. However, you
+can also implement custom connection strategies and handle specific database features using Jolie's low-level APIs.

@@ -1,0 +1,88 @@
+In Jolie, a session is a mechanism that enables communication between different components or processes of a
+system. It allows these components to exchange data and coordinate their actions, providing a high level of
+abstraction for building concurrent and distributed applications. Sessions in Jolie are similar to communication
+endpoints, enabling components to send and receive messages from other components within the same session.
+
+Sessions can be used to create a dialogue between two or more components, allowing them to share data and
+coordinate their actions. This is particularly useful for building user interfaces that involve multiple parts of
+an application, such as a web application with multiple tabs or pages. By using sessions, you can ensure that
+components are able to communicate effectively and maintain the state of their interactions.
+
+A session in Jolie consists of a set of messages exchanged between its components. Each message is identified by a
+unique identifier (ID) and contains data to be processed by the receiving component. Components can also use
+session-scoped variables to store data that is accessible to all messages within the same session.
+
+To create a session in Jolie, you can define a new type of process called a "session manager" or simply a
+"session". This session manager will be responsible for managing the interactions between its components using the
+session API. The session can be initialized with some parameters, such as a unique name or a list of participants.
+Once started, components can join or leave the session by sending messages to the session manager.
+
+Here's an example of how to create a simple session in Jolie:
+```jolie
+module Sessions {
+    export type Session = {
+        name: string;
+        participants: map<string, any>;
+    };
+
+    process SessionManager {
+        import Event;
+        import Timeout;
+        import Message;
+
+        on Initialize() {
+            emit Event.create("Session", null);
+        }
+
+        on Join(name: string) {
+            // Add participant to session
+            emit Message.create("Adding participant", name);
+            emit Timeout.create(500ms, () => {
+                if (typeof participants === "undefined") {
+                    emit Event.create("Session error: participant not found");
+                    return;
+                }
+
+                // Update session data
+                emit Message.create("Participant has joined", name);
+                emit Timeout.create(500ms, () => {
+                    if (typeof participants !== "undefined") {
+                        emit Event.create("Session error: participant already present");
+                        return;
+                    }
+
+                    participants = true;
+                });
+            });
+
+            emit Message.create("Participants map", participants);
+        }
+
+        on Leave(name: string) {
+            if (typeof participants === "undefined") return;
+
+            // Remove participant from session
+            delete participants;
+            emit Timeout.create(500ms, () => {
+                if (typeof participants !== "undefined") {
+                    emit Event.create("Session error: participant not found");
+                    return;
+                }
+
+                emit Message.create("Participant has left", name);
+            });
+        }
+    };
+}
+```
+In this example, the `SessionManager` process is responsible for managing the interactions between participants in
+a session using the `Join` and `Leave` methods. When a participant joins, it sends its name to the
+`SessionManager`. If the participant is not found, an error event is emitted. If the participant is already
+present, another error event is emitted. Once the participant has joined, its name is added to the `participants`
+map, and a success event is emitted.
+
+When a participant leaves, it sends its name to the `SessionManager`. The `SessionManager` then removes the
+participant from the `participants` map and emits a success event if there are still participants in the session.
+
+By using sessions, you can ensure that components in your system can communicate effectively and coordinate their
+actions in a distributed and concurrent environment.

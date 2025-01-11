@@ -1,0 +1,60 @@
+Jolie, as an open-source programming language, supports the creation of RESTful APIs (Representational State
+Transfer) for web services and applications. Here's a step-by-step explanation of how Jolie handles REST APIs:
+
+1. Resource Identification: In Jolie, you identify resources and their endpoints using the `@resource` directive
+and specifying the resource type. For example, if your API is for a web service, you can use the `@service`
+directive along with the `@resource` to define a resource type.
+```jolie
+// Service definition
+service MyService {
+  // Resource definition
+  @resource(type = "users")
+  interface UsersResource extends HttpInterface {
+    method GET("/users", Response<List<User>>) {}
+    method PUT("/users", Request(body = Map(key = "name", value = "John Doe")), Response(400)) {}
+  }
+}
+```
+2. Method Implementation: Jolie provides a built-in library for implementing RESTful HTTP methods such as GET,
+POST, PUT, DELETE, and others. For example, you can implement a `GET` method using the `@http` directive followed
+by the requested HTTP method and the endpoint URL.
+```jolie
+// User resource implementation
+// Implement GET method to get all users from an API
+@http(method = "GET", url = "/users")
+function getAllUsers(response: Response<List<User>>) {}
+```
+3. Modeling Data: Jolie allows you to define data models using its built-in `@type` directive for enums and
+`@model` directive for structs (data types with fields). This enables you to model the payload and response
+structures in your API.
+```jolie
+// Define user data type
+enum User {
+  JOHN(id = 1, name = "John Doe", email = "john@example.com"),
+}
+
+data UserResource = {
+  @model User,
+};
+```
+4. Request/Response Handling: Jolie provides built-in support for handling requests and responses in your API. You
+can define request bodies using the `@body` directive, response status codes using the `@code` directive, and error
+handling using `@error` directive.
+```jolie
+// Implement PUT method to update a user
+@http(method = "PUT", url = "/users", body = "@model UserResource")
+function putUser(request: Request(body = Map(key = "name", value = "John Doe"))) {
+  // Update the user
+}
+```
+5. Error Handling: Jolie allows you to define custom error messages using the `@error` directive for specific HTTP
+methods. This enables you to handle errors gracefully and provide meaningful feedback to the client.
+```jolie
+// Implement PUT method to update a user with an invalid body
+@http(method = "PUT", url = "/users", body = "@model UserResource")
+function putUser(@error status = 400) {
+  // Handle error
+}
+```
+By using Jolie, you can create well-structured, maintainable, and performant RESTful APIs for web services and
+applications.

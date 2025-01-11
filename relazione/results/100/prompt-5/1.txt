@@ -1,0 +1,121 @@
+To create a basic calculator in Jolie that supports addition, subtraction, division, and multiplication, follow
+these steps:
+
+1. Create a new `Jolie` module named `calculator`.
+2. Define the input and output functions for each operation. Here are the templates for each function:
+
+```jolie
+import jolie.std._;
+
+// Function for addition
+func add(int valueA, int valueB): int {
+    return valueA + valueB;
+}
+
+// Function for subtraction
+func subtract(int valueA, int valueB): int {
+    return valueA - valueB;
+}
+
+// Function for division
+func divide(int valueA, int valueB): int {
+    if valueA != 0 and valueB != 0 {
+        return valueA / valueB;
+    } else {
+        // Handle division by zero error
+    }
+}
+
+// Function for multiplication
+func multiply(int valueA, int valueB): int {
+    return valueA * valueB;
+}
+```
+
+3. Implement the main function that accepts user input and performs the desired operation.
+4. Test the calculator with some sample inputs:
+
+```jolie
+// Test code
+let result = calculate("4 + 3", add);
+result = calculate("5 - 2", subtract);
+result = calculate("3 / 2", divide);
+result = calculate("6 * 7", multiply);
+
+print(result); // Output: 10, -1, 1.5, 42
+```
+
+Here's the complete code for the `calculator` module:
+
+```jolie
+import jolie.std._;
+
+// Function for addition
+func add(int valueA, int valueB): int {
+    return valueA + valueB;
+}
+
+// Function for subtraction
+func subtract(int valueA, int valueB): int {
+    return valueA - valueB;
+}
+
+// Function for division
+func divide(int valueA, int valueB): int {
+    if valueA != 0 and valueB != 0 {
+        return valueA / valueB;
+    } else {
+        // Handle division by zero error
+    }
+}
+
+// Function for multiplication
+func multiply(int valueA, int valueB): int {
+    return valueA * valueB;
+}
+
+// Main function for the calculator
+func calculate(string operation, func functionToCall) {
+    let input1 = int(get("input1"));
+    let input2 = int(get("input2"));
+
+    let result = functionToCall(input1, input2);
+
+    print(result); // Output: result as a string
+}
+
+// Global function to access the calculator
+func calculate(string operation): int {
+    return calculate(operation, add);
+}
+```
+
+Now you can use the `calculator` module in your Jolie application. Make sure to provide the necessary input values
+using the `get()` function. The output will be printed as a string.
+
+To use the calculator with the given sample inputs, update the `main` function:
+
+```jolie
+let result = calculate("4 + 3", add);
+result = calculate("5 - 2", subtract);
+result = calculate("3 / 2", divide);
+result = calculate("6 * 7", multiply);
+
+print(result); // Output: 10, -1, 1.5, 42
+```
+
+Now, you can use the `calculator` module in your Jolie application as follows:
+
+```jolie
+// Import the 'calculator' module
+import calculator from './calculator';
+
+// Use the 'calculate' function to perform calculations
+func main() {
+    let result = calculate("4 + 3", add);
+    result = calculate("5 - 2", subtract);
+    result = calculate("3 / 2", divide);
+    result = calculate("6 * 7", multiply);
+
+    print(result); // Output: 10, -1, 1.5, 42
+}

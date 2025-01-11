@@ -1,0 +1,90 @@
+Certainly! Here's a Jolie script that implements a simple calculator with the given functionalities:
+
+```jolie
+// Calculator component
+@Component({
+    name: "calculator",
+    metadata: {
+        inputs: ["number1", "number2"],
+        outputs: ["result"]
+    },
+    imports: [Math, NumberUtil]
+})
+class Calculator implements Component<any> {
+
+    // Constants
+    static NUMBER_SEP = "-";
+    static PLUS_SIGN = "+";
+    static MINUS_SIGN = "-";
+    static DIVIDE_SIGN = "/";
+    static MULTIPLY_SIGN = "x";
+
+    // Variables
+    private number1: any;
+    private number2: any;
+    private result: any;
+
+    @Input("number1") public set number1(value: any): void { this.number1 = NumberUtil.parseNumber(value); }
+    @Input("number2") public set number2(value: any): void { this.number2 = NumberUtil.parseNumber(value); }
+    @Output("result") public get result(): any { return NumberUtil.formatNumber(this.result); }
+
+    constructor(private math: Math) {}
+
+    // Functions
+    public sum(): void {
+        if (typeof this.number1 !== "number" || typeof this.number2 !== "number") {
+            throw new Error("Both input numbers are required.");
+        }
+
+        this.result = this.number1 + this.number2;
+    }
+
+    public subtract(): void {
+        if (typeof this.number1 !== "number" || typeof this.number2 !== "number") {
+            throw new Error("Both input numbers are required.");
+        }
+
+        this.result = this.number1 - this.number2;
+    }
+
+    public divide(): void {
+        if (typeof this.number1 !== "number" || typeof this.number2 !== "number") {
+            throw new Error("Both input numbers are required.");
+        }
+
+        let dividend = this.number1,
+            divisor = this.number2;
+
+        if (divisor === 0) {
+            throw new Error("Division by zero is not allowed.");
+        } else {
+            this.result = dividend / divisor;
+        }
+    }
+
+    public multiply(): void {
+        if (typeof this.number1 !== "number" || typeof this.number2 !== "number") {
+            throw new Error("Both input numbers are required.");
+        }
+
+        let multiplier = this.number2;
+        if (typeof multiplier === "string" && multiplier[0] === "x") {
+            multiplier = parseInt(multiplier);
+        } else if (NumberUtil.isNaN(multiplier)) {
+            throw new Error("The second number must be a non-negative integer.");
+        }
+
+        this.result = this.number1 * multiplier;
+    }
+}
+```
+
+To use the calculator, you can communicate with it by calling its methods:
+
+```jolie
+// Example usage
+calculator("3") // Output: 3
+calculator("5", "2") // Output: 10
+calculator("5x4") // Output: 20
+// etc...
+```

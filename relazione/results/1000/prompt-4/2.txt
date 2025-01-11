@@ -1,0 +1,65 @@
+To create two Jolie programs that can communicate with each other and exchange "Hello World" messages, follow these
+steps:
+
+1. Create a new directory named `communication_example` in your current working directory and navigate to it.
+2. Create two separate .jolie files named `sender.jolie` and `receiver.jolie` within this directory.
+
+Here's the code for both programs:
+
+```jolie
+// sender.jolie
+import jolie.stdlib;
+import stdio;
+
+on main() {
+  // Create a message containing "Hello World"
+  let message = new stdio.TextMessage("Hello World");
+  send(message);
+}
+```
+
+This code defines the `sender` module, which contains the main function that sends the message.
+
+```jolie
+// receiver.jolie
+import jolie.stdlib;
+import stdio;
+
+on main() {
+  // Create a message listener for incoming messages
+  let message_listener = new stdio.MessageListener();
+
+  // Add an event listener to listen for messages from the sender
+  subscribe(message_listener, "received");
+
+  // Receive the message and print it out
+  receive() {
+    if (is_message_okay(received_message)) {
+      let text = received_message.text;
+      println("Received: " + text);
+    } else {
+      println("Invalid message");
+    }
+  }
+}
+```
+
+This code defines the `receiver` module, which contains the main function that listens for incoming messages and
+prints them out when they arrive.
+
+To run the sender program:
+1. Ensure you have a Jolie runtime environment installed (e.g., JRuby or JDK 11).
+2. Run the following command in the `sender` directory:
+   ```bash
+   jruby sender.jolie
+   ```
+
+To run the receiver program:
+1. Ensure you have a Jolie runtime environment installed (e.g., JRuby or JDK 11).
+2. Run the following command in the `receiver` directory:
+   ```bash
+   jruby receiver.jolie
+   ```
+
+After running both programs, they will communicate with each other and send the "Hello World" message back and
+forth.

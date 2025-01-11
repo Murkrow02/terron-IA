@@ -1,0 +1,24 @@
+In Jolie, both processes and sessions are essential components of a system architecture, but they serve different
+purposes. Here's a detailed explanation of their differences:
+
+1. Processes: A process is an instance of running code that has its own memory space, resources, and execution
+context. It can interact with other processes in the system by sending messages or performing remote function
+calls. Processes are isolated from each other, which helps prevent errors in one process from affecting others.
+This isolation allows for more secure and stable system operation.
+
+2. Sessions: A session is a communication channel between two processes or components within the same process.
+Sessions provide a mechanism for exchanging data and coordinating actions between these entities. They are not
+isolated like processes, meaning that changes made in one session can affect others if they share resources or
+manipulate shared state.
+
+To elaborate on sessions in Jolie:
+
+Sessions are used to manage the interaction between different components or processes within a single system. They
+allow multiple parties to exchange data and coordinate actions while maintaining a clear separation of concerns.
+Sessions are created on demand when needed and can be destroyed once their purpose is served. This modularity
+promotes maintainability, scalability, and fault tolerance in the system design.
+
+Jolie supports both persistent and non-persistent sessions, depending on the specific use case. Persistent sessions
+allow for state preservation across multiple invocations, while non-persistent sessions discard all data upon
+termination. The choice between persistent and non-persistent sessions depends on whether it is necessary to
+maintain state or not.

@@ -1,0 +1,93 @@
+Here's an example of how you can create a simple calculator in Jolie using the built-in libraries for input
+handling and arithmetic operations:
+
+```jolie
+// Define the calculator service interface
+service calculator {
+    // Input functions
+    function intInput(input: String): Int =
+        try ParseInt(input)
+        catch Error() -> 0
+
+    function floatInput(input: String): Float =
+        try ParseFloat(input)
+        catch Error() -> 0.0
+
+    // Arithmetic functions
+    function add(x: Int, y: Int): Int = x + y
+
+    function subtract(x: Int, y: Int): Int = x - y
+
+    function divide(x: Int, y: Int): Int = x / y if y > 0 else error("Division by zero")
+
+    function multiply(x: Int, y: Int): Int = x * y
+}
+```
+
+This calculator service has the following functions:
+
+1. `intInput`: Parses and returns an integer value from a user input string.
+2. `floatInput`: Parses and returns a floating-point number (decimal) from a user input string.
+3. `add`, `subtract`, `divide`, and `multiply`: Perform arithmetic operations using the input values.
+
+To use this calculator, you can create a client that communicates with the service as follows:
+
+```jolie
+// Create the calculator client
+service calculatorClient {
+    import calculator
+
+    // Initialize the calculator
+    int x = 0;
+    int y = 0;
+
+    function start() {
+        try {
+            x = intInput("Enter first value: ")
+            y = intInput("Enter second value: ")
+        } catch Error() -> {
+            print("Invalid input, try again.");
+        }
+
+        // Perform operations using the calculator service
+        function addOperation(op: String) {
+            if op == "+" or op == "-") {
+                x = calculateOperation(x, y, op);
+            } else if op == "/") {
+                y = calculateOperation(x, y, "/");
+            } else if op == "*") {
+                x = calculateOperation(x, y, "*");
+            } else {
+                print("Unknown operation, try again.");
+            }
+        }
+
+        function calculateOperation(currentValue: Int, denominator: Int, op: String) {
+            switch op {
+                case "+":
+                    return currentValue + denominator;
+                case "-":
+                    return currentValue - denominator;
+                case "/":
+                    if denominator == 0 {
+                        print("Division by zero");
+                        return 0;
+                    } else {
+                        return currentValue / denominator;
+                    }
+                case "*":
+                    if denominator == 0 {
+                        print("Multiplication by zero");
+                        return 0.0;
+                    } else {
+                        return currentValue * denominator;
+                    }
+            }
+        }
+    }
+}
+```
+
+This calculator client initializes the input variables and provides a user interface for performing arithmetic
+operations using the `calculateOperation` function. The `addOperation` function handles the different arithmetic
+operators (+, -, /, *). The code handles invalid inputs and provides error messages accordingly.

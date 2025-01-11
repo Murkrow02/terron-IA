@@ -1,0 +1,55 @@
+Certainly! Here's a simple example of how you can create two Jolie programs that communicate with each other using
+the `PubSub` library:
+
+Jolie program to publish a message:
+```jolie
+import std.stdio;
+import std.net;
+import jolie.lib.pubsub.PubSub;
+
+// Define a topic for the message
+topic "my_topic" {
+    // Publish a message when the application starts
+    on_start {
+        publish("Hello World!", this);
+    }
+}
+
+program main() {
+    // Initialize the PubSub library and bind to the "my_topic" topic
+    pubsub = PubSub();
+    pubsub.bind("my_topic", |topic, message| {
+        // Print the received message
+        println("Got: " + message);
+    });
+
+    // Start the application
+    start();
+}
+```
+
+Jolie program to subscribe and receive messages:
+```jolie
+import std.stdio;
+import std.net;
+import jolie.lib.pubsub.PubSub;
+
+// Define a subscriber for the "my_topic" topic
+subscriber "my_subscriber" {
+    // Subscribe to the "my_topic" topic
+    subscribe("my_topic", this);
+}
+
+program main() {
+    // Initialize the PubSub library and subscribe to the "my_topic" topic
+    pubsub = PubSub();
+    subscriber = pubsub.subscribe("my_topic");
+
+    // Start the application
+    start();
+}
+```
+
+To run these programs, create two Jolie projects: one for the publisher and another for the subscriber. Compile and
+run each project separately. The publisher will print "Hello World!" when it starts, and the subscriber will print
+the same message in response.

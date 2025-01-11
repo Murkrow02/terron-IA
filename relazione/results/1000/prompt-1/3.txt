@@ -1,0 +1,21 @@
+Jolie, formerly known as JSR233, is a statically typed functional programming language that supports both
+procedural and object-oriented programming paradigms. It was designed for building scalable, high-performance
+applications and APIs. When dealing with RESTful APIs in Jolie, you can use the built-in `net` library to create
+and manage HTTP requests and responses. Here's a simple example of how to implement a GET request using Jolie:
+```jolie
+import net from "net";
+
+myService: net.HTTPServer {
+  on Request {
+    let url = "https://api.example.com/users";
+    println(url);
+    response: net.HTTPResponse {
+      statusCode: 200;
+      body: String["Hello, Jolie!");
+    };
+  }
+}
+```
+In this example, a new HTTP server is created using the `myService` label and a GET request is defined to the URL
+`https://api.example.com/users`. The response will be a JSON object with the message "Hello, Jolie!" if the request
+is successful.

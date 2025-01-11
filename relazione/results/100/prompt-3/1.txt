@@ -1,0 +1,75 @@
+Jolie, a modern open-source web framework for developing user interfaces, supports database connections using the
+`database` module. This module provides various connection types and classes to manage interactions with different
+databases. In this answer, I will explain how Jolie handles database connections and provide practical examples to
+demonstrate their usage.
+
+### Database Connection Types in Jolie
+
+Jolie supports several connection types for different databases, including:
+
+- SQLite
+- PostgreSQL
+- MySQL
+- MariaDB
+
+To use a specific database connection type, you can import the corresponding class from the `database` module. For
+example, to connect to a PostgreSQL database, you can import the `PostgreSQL` class as follows:
+```jolie
+from jolie.database import PostgreSQL
+```
+### Establishing a Database Connection
+
+To establish a connection to a database using Jolie, you need to create an instance of the desired connection type
+and configure its properties. Here's an example for a SQLite database:
+```jolie
+import SQLite
+
+class SQLiteConnection(SQLite):
+    @init()
+    def __init__(self, database_file):
+        self.database_file = database_file
+```
+To connect to a PostgreSQL database, you would use the `PostgreSQL` class as follows:
+```jolie
+import PostgreSQL
+
+class PostgreSQLConnection(PostgreSQL):
+    @init()
+    def __init__(self, database_host, database_name, database_user, database_password):
+        self.database_host = database_host
+        self.database_name = database_name
+        self.database_user = database_user
+        self.database_password = database_password
+```
+### Database Connection Properties
+
+When creating a connection instance, you can configure various properties such as the database file or connection
+URL for SQLite and PostgreSQL, respectively. For SQLite, you can specify the database file as follows:
+```jolie
+sqliteConnection = SQLiteConnection(database_file="mydatabase.db")
+```
+For PostgreSQL, you can specify the connection URL, host, name, user, and password as follows:
+```jolie
+postgresqlConnection = PostgreSQLConnection("host=localhost dbname=mydatabase user=postgres password=secret")
+```
+### Performing Database Operations
+
+Once you have established a database connection, you can perform various database operations using the `Database`
+class provided by Jolie. For example, to execute a SQL query in SQLite:
+```jolie
+sqliteConnection = SQLiteConnection("database_file=mydatabase.db")
+query = "SELECT * FROM mytable"
+print(sqliteConnection.execute(query))
+```
+For PostgreSQL, you can execute SQL queries using the `postgres` class provided by Jolie:
+```jolie
+postgresqlConnection = PostgreSQLConnection("host=localhost dbname=mydatabase user=postgres password=secret")
+query = "SELECT * FROM mytable"
+print(postgresConnection.execute(query))
+```
+### Conclusion
+
+In summary, Jolie handles database connections using the `database` module, which provides various connection types
+and classes to manage interactions with different databases. By establishing a connection instance and configuring
+its properties, you can perform various database operations in Jolie. The examples provided above demonstrate how
+to use SQLite and PostgreSQL connections to execute SQL queries.

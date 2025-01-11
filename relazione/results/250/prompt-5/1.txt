@@ -1,0 +1,73 @@
+Certainly! Here's an example of how you can create a simple calculator in Jolie using its built-in `number` type:
+
+```jolie
+module Calculator {
+    function add(a, b: number) -> number {
+        return a + b;
+    }
+
+    function subtract(a, b: number) -> number {
+        return a - b;
+    }
+
+    function divide(a, b: number) -> number {
+        if (b !== 0) {
+            return a / b;
+        } else {
+            return "Error: Division by zero.";
+        }
+    }
+
+    function multiply(a, b: number) -> number {
+        if (a === undefined || a === null || b === undefined || b === null) {
+            return "Error: Invalid input for multiplication.";
+        } else {
+            return a * b;
+        }
+    }
+}
+```
+To use the calculator, you can create a `Jolie` instance and call the desired function. Here's an example of how to
+interact with the calculator:
+
+```jolie
+import Calculator as c from './Calculator';
+
+let result;
+
+function onInput(input: string) {
+    result = "";
+}
+
+function onResult(result: number) {
+    console.log("The result is: " + result);
+}
+
+c.add(10, 20).then((a) -> {
+    onResult(a);
+}).catch((e) -> {
+    console.error("Error: ", e);
+});
+
+c.subtract(42, 35).then((b) -> {
+    onResult(b);
+}).catch((e) -> {
+    console.error("Error: ", e);
+});
+
+c.divide(123, 45).then((c) -> {
+    onResult(c);
+}).catch((e) -> {
+    console.error("Error: ", e);
+});
+
+c.multiply(6789, 10).then((d) -> {
+    onResult(d);
+}).catch((e) -> {
+    console.error("Error: ", e);
+});
+```
+
+This example demonstrates how to create a basic calculator in Jolie and interact with it using event-driven
+programming. The `Jolie` instance is created with the necessary functions, and then their results are logged to the
+console when an input or result is received.

@@ -1,0 +1,83 @@
+Jolie, the open-source web framework for building serverless applications with Rust, manages database connections
+using the "sql" crate. The sql crate provides an SQL query compiler that translates higher-level SQL statements
+into a series of native calls to the underlying database driver. This abstraction enables Jolie to work with
+various databases by wrapping their proprietary APIs with a consistent interface.
+
+To use the sql crate in your Jolie application, follow these steps:
+
+1. Add the sql crate to your `Cargo.toml` file:
+```toml
+
+sql = "0.37.0"
+```
+2. Import the `sql::{Database, Query}` modules in your source code:
+```rust
+use sql::Database;
+use sql::Query;
+```
+3. Create a database connection pool using the `Database` class. This pool can be shared across multiple functions
+or modules.
+```rust
+let mut db = Database::connect("mysql://user:password@localhost/database").unwrap();
+db_pool = db.unwrap();
+```
+4. Wrap your database queries with the `Query` struct to ensure proper transaction management and error handling.
+```rust
+let result = Query::new(
+    "SELECT * FROM users WHERE age > 18",
+    &mut db_pool,
+).execute().unwrap();
+```
+5. Perform other operations on the database connection pool as needed.
+
+In the examples below, I'll demonstrate how to use the `sql` crate to interact with a SQLite database.
+
+Example 1: Connecting to a SQLite database
+
+```rust
+use sql::{Database, Query};
+
+fn main() {
+    let mut db = Database::connect("sqlite:///example.db").unwrap();
+
+    db_pool = db.unwrap();
+
+    let result = Query::new(
+        "SELECT * FROM users",
+        &mut db_pool,
+    ).execute().unwrap();
+}
+```
+
+In this example, we create a `Database` instance and connect to the SQLite database named `example.db`. We then
+wrap the query with the `Query` struct and execute it using the `execute()` method.
+
+Example 2: Performing a SQL DELETE operation
+
+```rust
+use sql::{Database, Query};
+
+fn main() {
+    let mut db = Database::connect("sqlite:///example.db").unwrap();
+
+    db_pool = db.unwrap();
+
+    let query = Query::new(
+        "DELETE FROM users WHERE id = 1",
+        &mut db_pool,
+    ).unwrap();
+
+    let result = query.execute().unwrap();
+}
+```
+
+In this example, we create a `Query` instance with a DELETE statement and wrap it with the `Query` struct. We then
+execute the query using the `execute()` method.
+
+These examples demonstrate how to use the `sql` crate in Jolie to manage database connections. You can adapt these
+examples to work with different databases by changing the connection string and adjusting the query statements
+accordingly.
+
+Keep in mind that the `sql` crate supports various advanced features, such as transaction management, statement
+caching, and more. For a complete list of features and APIs, consult the official documentation:
+https://docs.rs/sql/0.37.0/sql/index.html

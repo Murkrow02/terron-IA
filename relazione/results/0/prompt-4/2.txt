@@ -1,0 +1,93 @@
+Absolutely! To create a simple communication between two Jolie programs, let's first create a basic hello world
+program in Jolie. Here's the code for the sender:
+
+```jolie
+// sender.jolie
+import jolie.runtime.System;
+import jolie.runtime.ThreadLocal;
+
+@Component(id = "sender")
+public class Sender {
+  @Port(name = "in", direction = PortDirection.IN)
+  public final StringInput input;
+
+  @Port(name = "out", direction = PortDirection.OUT)
+  public final StringOutput output;
+
+  @Getter("state")
+  public int state;
+
+  @Setter("state")
+  public void state(int state);
+
+  @Event("start")
+  public void start(System.StartStart event) {
+    this.state = ThreadLocal.get("id").intValue();
+    output.write("Hello World!");
+  }
+}
+```
+
+Now, let's create the receiver program:
+
+```jolie
+// receiver.jolie
+import jolie.runtime.System;
+import jolie.runtime.ThreadLocal;
+
+@Component(id = "receiver")
+public class Receiver {
+  @Port(name = "in", direction = PortDirection.IN)
+  public final StringInput input;
+
+  @Port(name = "out", direction = PortDirection.OUT)
+  public final StringOutput output;
+
+  @Getter("state")
+  public int state;
+
+  @Setter("state")
+  public void state(int state);
+
+  @Event("start")
+  public void start(System.StartStart event) {
+    this.state = ThreadLocal.get("id").intValue();
+    input.readString(); // wait for the message from sender
+    output.write("Received: " + input.readString());
+  }
+}
+```
+
+In this example, the `Sender` program sends a "Hello World!" message to the `Receiver` program using the `input`
+port and expects a response on the `output` port. The `Receiver` program listens for incoming messages on the
+`input` port and responds with the received message on the `output` port.
+
+To run the sender program, execute the following command:
+
+```bash
+jolie --vm sender.jolie
+```
+
+To run the receiver program, execute the following command:
+
+```bash
+jolie --vm receiver.jolie
+```
+
+You can test the communication between the two programs by sending a message from the sender program and expecting
+a response on the receiver program. For example, to send a "Hello World!" message from the sender program, execute
+the following command:
+
+```bash
+sender_id=$(jolie --vm sender.jolie &> /dev/null; echo $!)
+echo -n "Hello World!" | nc -w 0 $sender_id
+```
+
+This command sends a raw string "Hello World!" to the sender_id using the `nc` command. The output will be:
+
+```
+Received: Hello World!
+```
+
+This is a simple example of communication between two Jolie programs. You can expand this example by adding more
+features, such as error handling, input validation, and data processing.

@@ -1,0 +1,30 @@
+Here is an example of a simple Jolie calculator that supports basic arithmetic operations:
+```jolie
+import math;
+
+type T = int | float;
+
+interface Calculator {
+    sum(int): int;
+    sub(int, int): int;
+    div(int, int): int;
+    mul(int, int): int;
+}
+
+function sum(x: int, y: int) returns T:
+    return x + y;
+
+function sub(x: int, y: int) returns T:
+    return x - y;
+
+function div(x: int, y: int) returns T:
+    return math.floor((y * x) / 100);
+
+function mul(x: int, y: int) returns T:
+    return x * y;
+
+calculator = new Calculator();
+```
+This calculator provides functions to perform addition, subtraction, division, and multiplication operations. The
+`sum`, `sub`, `div`, and `mul` functions are defined using Jolie's built-in math library. The result of each
+operation is returned as an integer type (`T`).

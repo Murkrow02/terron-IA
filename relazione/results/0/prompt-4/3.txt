@@ -1,0 +1,67 @@
+Certainly! Here's a simple example of how you can create two Jolie programs that exchange "Hello World" messages
+using the `jolie/std.stream` and `jolie/std.message` packages:
+
+First, let's create the sender program:
+
+```jolie
+// sender.jl
+import jolie.std.stream as s
+import jolie.std.message as m
+
+func main() {
+    // Create a sender channel
+    channel = s.connect("localhost", 8080)
+
+    // Send a message to the channel
+    m.message("Hello World") >>= (reply, error) ->
+        println("Received: ", reply)
+        if error is not nil
+            println("Error: ", error)
+    channel <<=" 'Hello World'"
+}
+```
+
+Next, let's create the receiver program:
+
+```jolie
+// receiver.jl
+import jolie.std.stream as s
+import jolie.std.message as m
+
+func main() {
+    // Create a receiver channel
+    channel = s.connect("localhost", 8080)
+
+    // Receive messages from the channel
+    m.message >>= (reply, error) ->
+        println("Received: ", reply)
+        if error is not nil
+            println("Error: ", error)
+    channel <<=" 'Hello World'"
+}
+```
+
+In this example, both programs use the `s.connect` function to create a TCP/IP connection to the local host on port
+8080. The `channel` variable is used to represent the connection.
+
+The `sender.jl` program sends a "Hello World" message to the channel using the `channel <<=" 'Hello World'"`
+expression. The `receiver.jl` program listens for messages on the channel using the `m.message >>= (reply, error)
+->` expression and prints the received message.
+
+To run the sender program:
+
+```jolie
+julia sender.jl
+```
+
+To run the receiver program:
+
+```jolie
+julia receiver.jl
+```
+
+This will create a TCP/IP connection to the local host on port 8080 and send a "Hello World" message to the other
+program. The other program will then print "Received: Hello World".
+
+Keep in mind that you may need to adjust the port number if the default port (8080) is already in use on your
+machine. You can find the current list of open ports using the `lsof` command in your terminal or shell.

@@ -1,0 +1,72 @@
+Jolie, an open-source web server and framework for building scalable and efficient web applications, uses a
+connection pooling mechanism to manage database connections. This mechanism helps optimize resource usage by
+reusing existing connections instead of creating new ones for each request. In Jolie, you can create and configure
+database connections using the `database` module.
+
+To demonstrate how to use Jolie's database connection pooling, let's consider an example of connecting to a SQLite3
+database. First, install the necessary dependencies:
+```bash
+sudo apt-get update
+sudo apt-get install jolie-sqlite3
+```
+Now, create a simple `DatabasePool` class that extends Jolie's `ConnectionPool` base class:
+
+```python
+from jolie.database import SQLite3ConnectionPool
+from jolie.core import ConnectionPool
+
+class SQLite3DatabasePool(SQLite3ConnectionPool, ConnectionPool):
+    def __init__(self, database_file, max_connections=10):
+        SQLite3ConnectionPool.__init__(self, database_file, max_connections)
+
+    def connect(self):
+        super().connect()
+        print("Connected to SQLite3 at {}".format(self.database_file))
+
+    def disconnect(self):
+        super().disconnect()
+        print("Disconnected from SQLite3 at {}".format(self.database_file))
+```
+The `SQLite3DatabasePool` class initializes an SQLite3 database connection pool with the specified database file
+and maximum number of connections. The `__init__` method initializes the connection pool, and the `connect` method
+opens a new connection to the SQLite3 database. The `disconnect` method closes all existing connections in the
+pool.
+
+Next, create a simple web server application using Jolie:
+
+```python
+import jolie.http as http
+from jolie.core import Context, Request, Response
+import sqlite3
+
+app = http.Server(8080)
+context = Context()
+
+@app.route("/")
+def hello_world():
+    return "Hello, World!\n"
+
+@app.route("/db", methods=["GET", "POST"])
+def database():
+    if request.method == "POST":
+        connection = SQLite3DatabasePool(sqlite3.connect("data/sqlite3.db"))  # replace "data/sqlite3.db" with your
+database file path
+        cursor = connection.cursor()
+
+        # perform some database operations here
+
+        connection.close()
+    else:
+        response = {"error": "Invalid request method. Only POST is supported."}
+    return Response(response)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+```
+This example demonstrates how to use Jolie's `database` module to connect and perform database operations in a web
+server application. The `__init__` method initializes the SQLite3 database connection pool, and the `database`
+route handles incoming HTTP requests to interact with the SQLite3 database.
+
+In summary, Jolie uses a connection pooling mechanism for managing database connections, which helps optimize
+resource usage and improve performance. To use this feature in your Jolie applications, you can create and
+configure database connections using the `database` module.

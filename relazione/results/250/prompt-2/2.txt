@@ -1,0 +1,24 @@
+In Jolie, processes are the main execution units that can communicate with each other using various channels. They
+represent individual tasks or components that run independently within a system. A process typically consists of a
+stack of operations (instructions) and memory used by the running code. Processes can interact with each other
+through channel interfaces, which enable safe and efficient communication without the need for explicit
+synchronization.
+
+Sessions in Jolie are a special type of communication mechanism between processes. They allow multiple processes to
+engage in a coordinated interaction, similar to a conversation or dialogue. Sessions provide a more structured and
+controlled way of exchanging data and information between processes. This is useful for implementing complex
+systems that require coordination and synchronization among multiple components or tasks.
+
+In Jolie, sessions are defined using the `session` keyword in the process definition. Each session has its own
+unique identifier and can be used to exchange messages and data with other processes participating in the session.
+The communication within a session follows a specific pattern, typically involving sending requests and receiving
+responses from the partner process.
+
+To further elaborate on sessions, they provide an abstraction layer for managing inter-process communication (IPC).
+Instead of dealing with raw sockets or other low-level IPC mechanisms, Jolie allows developers to define sessions
+and use them for exchanging data between processes. This simplifies the development process and makes it easier to
+reason about the behavior of complex systems.
+
+Sessions can be used to implement various types of communication patterns, such as request/response,
+publish/subscribe, or message queuing. Additionally, Jolie provides built-in support for session persistence,
+ensuring that sessions remain available even in the event of process failures or crashes.

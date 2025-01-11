@@ -1,0 +1,62 @@
+Jolie, as a high-level, low-code web application framework for building scalable and maintainable web applications,
+provides built-in support for connecting to various databases. Jolie supports both relational and non-relational
+databases, such as PostgreSQL, MySQL, MongoDB, and Redis.
+
+To create a connection to a database in Jolie, you can use the `@database` annotation, which is placed on your
+application's `module`. This annotation allows you to specify the database type, URL, credentials, and other
+settings. Here's a practical example of how to connect to a relational database using PostgreSQL:
+
+```jolie
+// Import the Database module
+import database from 'database';
+
+// Define a new module with @database annotation
+module MyModule {
+  use database; // Use the database module for database operations
+
+  function helloWorld() {
+    // Connect to the PostgreSQL database using the provided URL and credentials
+    connection = database('postgresql://username:password@localhost/mydb', 'myschema');
+
+    // Perform database operations here
+  }
+}
+```
+
+Once you've established a connection, you can perform various database operations, such as querying data, inserting
+new records, updating existing ones, and deleting them. Jolie provides a simple and consistent API for interacting
+with databases, making it easy to write and manage database-driven applications.
+
+Here are some examples of how to use Jolie's database functionality:
+
+1. **Querying data**: You can fetch data from the database using `select` and `from` clauses, followed by a list of
+columns to retrieve. Here's an example of querying a table named "users" for all rows where the "username" column
+is equal to "john":
+```jolie
+// Select all users where username is 'john'
+users = connection.select('SELECT * FROM users WHERE username = "john";')
+```
+2. **Inserting new records**: To insert a new record into a table, you can use the `insert` method along with the
+`into` clause and a list of columns to insert. Here's an example of inserting a new user with the details provided
+in the code:
+```jolie
+// Insert a new user with the given details
+user = connection.insert('INSERT INTO users(username, email) VALUES ($1, $2);', ['john', 'john@example.com'])
+```
+3. **Updating existing records**: To update an existing record, you can use the `update` method along with the
+`set` clause, a list of columns to update, and the primary key or unique identifier of the record. Here's an
+example of updating a user's email address:
+```jolie
+// Update a user with the given details
+user = connection.update('UPDATE users SET email = $1 WHERE id = $2;', ['newemail@example.com', 'id(1)'])
+```
+4. **Deleting records**: To delete records from a table, you can use the `delete` method along with the `from`
+clause and the primary key or unique identifier of the record. Here's an example of deleting a user with the given
+ID:
+```jolie
+// Delete a user with the given ID
+user = connection.delete('DELETE FROM users WHERE id = $1;', 'id(1)')
+```
+
+These examples demonstrate Jolie's powerful and expressive database API, which simplifies the process of connecting
+to databases, querying data, inserting new records, updating existing ones, and deleting them.

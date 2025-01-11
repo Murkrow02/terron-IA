@@ -1,0 +1,75 @@
+Certainly! To create a simple calculator in Jolie that supports basic arithmetic operations, you can use the
+following code:
+
+```jolie
+import std.stdio;
+import std.math;
+
+type MyCalc = {
+    sum(int[]): int
+    sub(int[], int): int
+    divide(int, int): int
+    multiply(int, int): int
+}
+
+procedure main() {
+    let arr: int[] = [];
+    let num1: int;
+    let num2: int;
+    let result: int = 0;
+
+    printf("Enter values to perform arithmetic operations: ");
+    while (true) {
+        reads num1@num2 from stdout(delimiter " ");
+        if (!num1.isNil() && !num2.isNil()) {
+            arr.push num1;
+            arr.push num2;
+            printf("Next number: ");
+            reads num1@num2 from stdout(delimiter " ");
+            if (arr.length == 2) {
+                switch (arr[0] + arr[1]) {
+                    case 0:
+                        printf("Arithmetic result is 0\n");
+                        break;
+                    case 1:
+                        printf("Arithmetic result is 1\n");
+                        break;
+                    case 2:
+                        printf("Arithmetic result is 2\n");
+                        break;
+                    case 3:
+                        printf("Arithmetic result is 3\n");
+                        break;
+                    case 4:
+                        printf("Arithmetic result is 4\n");
+                        break;
+                    case 5:
+                        printf("Arithmetic result is 5\n");
+                        break;
+                    default:
+                        printf("Invalid arithmetic operation. Please try again.\n");
+                }
+            } else {
+                printf("Enter values to perform arithmetic operations: ");
+            }
+        } else {
+            printf("Enter values to perform arithmetic operations: ");
+        }
+    }
+}
+```
+
+To interact with the calculator, you can use the following command in your terminal:
+
+```sh
+$ jolie my_calculator.jolie
+```
+
+This will run the `my_calculator.jolie` program and display the prompt "Enter values to perform arithmetic
+operations:" each time a value is entered. You can enter the numbers separated by spaces, like this:
+
+```sh
+2 3 + 4 5 = 11
+```
+
+The calculator will then perform the arithmetic operation and display the result.

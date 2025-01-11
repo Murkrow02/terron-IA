@@ -1,0 +1,21 @@
+Jolie, Red Hat's AI Assistant, establishes database connections using the `database` module. This module provides a
+simple API for creating, querying, and managing databases. To create a connection, you need to specify the database
+type, the URL of your database server, and any necessary credentials (e.g., username and password).
+
+Here are some practical examples of using Jolie for database connections:
+1. **Connecting to SQLite3**
+```python
+from jolie import database as db
+
+conn = db.connect("sqlite:///example.db", "user", "password")
+
+print("Connected to SQLite3")
+```
+2. **Connecting to PostgreSQL**
+```python
+import psycopg2
+from jolie import database as db
+
+conn = db.connect("postgresql://user:password@localhost/example", "example")
+
+print("Connected to PostgreSQL")

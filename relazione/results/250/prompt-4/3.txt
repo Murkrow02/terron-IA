@@ -1,0 +1,87 @@
+Certainly! Here's an example of how to create a simple Jolie program that sends and receives "Hello World" messages
+between two processes:
+
+Program 1 (Client):
+```jolie
+import com.redhat.jolie.process;
+import com.redhat.jolie.system.*;
+
+// Create a new process with the name "client"
+process Client = Process.launch(ClientModule.module());
+
+// Define a function to send a message to the other process
+func sendMessage {
+    // Get the address of the other process
+    Address remoteAddress = Context.get("other_process_address");
+
+    // Send the "Hello World" message to the other process
+    Context.write("Hello World", remoteAddress);
+}
+
+// Define a function to receive messages from the other process
+func receiveMessage {
+    // Wait for a message from the other process
+    Context.waitForRead("message_queue");
+
+    // Read the message and print it out
+    String receivedMessage = Context.readText();
+    System.out.println(receivedMessage);
+}
+
+// Start the Client process
+Client.onStart(event -> {
+    // Send a "Hello World" message to the other process
+    sendMessage();
+});
+
+Client.onStop(event -> {
+    // Receive any messages sent by the other process before stopping the Client process
+    receiveMessage();
+});
+```
+
+Program 2 (Server):
+```jolie
+import com.redhat.jolie.process;
+import com.redhat.jolie.system.*;
+
+// Create a new process with the name "server"
+process Server = Process.launch(ServerModule.module());
+
+// Define a function to receive messages from the Client process
+func receiveMessageFromClient {
+    // Wait for a message from the Client process
+    Context.waitForRead("message_queue");
+
+    // Read the message and print it out
+    String receivedMessage = Context.readText();
+    System.out.println(receivedMessage);
+}
+
+func startServer() {
+    // Start listening for messages from the Client process
+    Server.sendAddress(Address("other_process_address"));
+    Server.start();
+}
+
+// Start the Server process
+startServer();
+```
+
+In this example, the `Client` process sends a "Hello World" message to the `Server` process using the `sendMessage`
+function. The `Server` process listens for messages on the `message_queue` and prints out any received messages
+using the `receiveMessageFromClient` function. To use these programs, you will need to replace
+`"other_process_address"` with the address of the other process.
+
+Here's a summary of the key steps:
+
+1. Create a new `Client` and `Server` process using Process.launch().
+2. Define functions for sending messages and receiving messages in both processes.
+3. Set up the address for the other process in the `Server` process.
+4. Start the `Client` process and send a "Hello World" message to the `Server` process.
+5. Start the `Server` process and wait for incoming messages from the `Client` process.
+6. Print out any received messages from the `Server` process.
+
+This example demonstrates how to create a simple communication channel between two Jolie processes using the
+`Address` and `Context` classes. You can further customize the code to implement more complex communication
+patterns and protocols.

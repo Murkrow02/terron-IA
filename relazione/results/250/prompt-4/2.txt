@@ -1,0 +1,77 @@
+To create a simple communication channel between two Jolie services, follow these steps:
+
+1. Create a `Jolie` instance in your first service. You can use the following code as a starting point:
+```jolie
+import jolie.runtime.Runtime;
+import jolie.runtime.ThreadLocalRuntime;
+
+// Initialize the runtime and start the local thread
+Runtime.initialize(System.in, System.out);
+ThreadLocalRuntime.start();
+```
+2. In your second service, create a `Jolie` instance with the same configuration as the first one.
+3. Design a simple communication protocol using Jolie's built-in message types and channels. Here's an example:
+```jolie
+// Create a new channel for communication
+Channel<String> channel = Runtime.create("MyChannel", MessageType.STRING);
+
+// Send a "Hello World" message to the first service
+channel.send(new Message("Hello World"));
+```
+4. In your first service, listen for incoming messages on the `MessageType.STRING` channel:
+```jolie
+// Create a new channel listener
+ChannelListener<String> listener = Runtime.create("MyChannel", MessageType.STRING);
+
+// Register the listener with the runtime
+Runtime.register(listener);
+
+// Receive incoming messages on the channel
+while (true) {
+    String message = awaitMessage();
+    if (message != null) {
+        // Process the received message
+        System.out.println("Received: " + message);
+    } else {
+        break;
+    }
+}
+```
+5. In your second service, send messages to the first one using the `send` method on the created channel:
+```jolie
+// Send a "Hello World" message
+channel.send(new Message("Hello World"));
+```
+6. To receive messages from the first service, implement the `MessageType.STRING` interface in your second service
+and register it with the runtime:
+
+```jolie
+import jolie.runtime.Message;
+import jolie.runtime.Runtime;
+import jolie.runtime.ThreadLocalRuntime;
+
+// Create a new channel listener
+ChannelListener<String> listener = Runtime.create("MyChannel", MessageType.STRING);
+
+// Register the listener with the runtime
+Runtime.register(listener);
+
+class MyChannel implements Channel<String> {
+    @Override
+    public String receive(Message message) {
+        // Handle incoming messages from the first service
+        System.out.println("Received: " + message.content());
+        return null;
+    }
+}
+```
+7. Finally, run both services in separate threads using Jolie's built-in threading support:
+
+```jolie
+// Run the first service on a new thread
+Runtime.start("MyService");
+
+// Run the second service on another new thread
+Runtime.start("MySecondService");
+```
+Now, you should be able to send "Hello World" messages from one service to another using the `MyChannel` interface.

@@ -1,0 +1,28 @@
+In Jolie, both `process` and `session` concepts are related to communication and interaction between components or
+services. However, they serve different purposes and have distinct characteristics:
+
+- **Processes** in Jolie refer to the runtime environment where components or services execute. A process can be
+thought of as an isolated environment with its own resources and execution context. Processes communicate with each
+other through messages, which are sent and received at the network level. Each process has its own memory space and
+runs in a separate address space.
+
+- **Sessions** in Jolie represent the stateful communication between processes or services. A session is a
+communication channel that persists over time, allowing components to maintain their context and exchange data
+consistently. Sessions are designed to provide a higher level of interaction and coordination between different
+components compared to simple process-to-process communication.
+
+To expand on sessions in Jolie, they offer several features that make it easier for developers to create complex
+applications:
+
+1. **Decoupling**: Sessions decouple the individual components by allowing them to communicate asynchronously and
+independently. This enables components to focus on their specific tasks without being tied to their counterparts'
+behavior or state.
+2. **Persistence**: Sessions maintain a history of exchanges between components, which can be used for state
+management, caching, and session recovery. This feature is essential for building scalable and resilient
+applications where maintaining context is important.
+3. **Interoperability**: Sessions enable communication between different components or services running in separate
+processes or containers. This interoperability allows developers to create complex systems using various
+technologies and frameworks.
+4. **Security**: Sessions provide mechanisms for securing the communication between components, such as
+authentication, encryption, and access control. These features ensure that data exchanged through sessions remains
+confidential and is only accessible to authorized parties.

@@ -1,0 +1,89 @@
+Certainly! Here's the code for a simple Jolie program that demonstrates communication between two instances using a
+RESTful API:
+
+```jolie
+import io.grpc.stub.StreamingRpcCall;
+import jolie.core.Message;
+import jolie.runtime.Environment;
+import jolie.runtime.Stdint;
+import jolie.util.ExceptionUtil;
+import jolie.x.protobuf.rpc.HelloRequest;
+import jolie.x.protobuf.rpc.HelloResponse;
+import jolie.x.protobuf.transport.grpc.GrpcTransport;
+
+public class HelloService {
+  public static void main(String[] args) throws Exception {
+    Environment env = Environment.newInstance();
+    HelloRequest request = new HelloRequest().setValue("Hello World");
+    StreamingRpcCall<HelloResponse> call = env.service(HelloService.class).hello(env.context(), request);
+
+    while (true) {
+      Message message = call.next();
+      if (message == null) {
+        System.out.println("The other side has closed the connection.");
+        break;
+      }
+
+      switch (message.getType()) {
+        case HelloRequest.MessageType.REQUEST:
+          request = (HelloRequest) message.getData();
+          System.out.println("Received 'Hello World' from: " + request.getValue());
+          break;
+        case HelloResponse.MessageType.RESPONSE:
+          message = ((HelloResponse) message.getData()).getBody();
+          if (message == null) {
+            // This should never happen, but just in case...
+            System.out.println("Invalid response.");
+            break;
+          }
+
+          String greeting = message.getBody().getValue();
+          System.out.println("Received: " + greeting);
+          break;
+        default:
+          ExceptionUtil.handleException(message.getCause());
+      }
+    }
+
+    env.shutdown();
+  }
+}
+```
+
+This code uses the `HelloService` class to implement a simple RESTful API for sending and receiving "Hello World"
+messages between two instances of your Jolie program. The first instance sends the message using the `hello`
+method, while the second instance listens for incoming requests on the specified port (e.g., 8080).
+
+To run this code, ensure you have the necessary dependencies installed:
+
+1. Java 8 or later
+2. Protocol Buffers (optional, but recommended for debugging)
+
+You can build the project and start the Jolie runtime by executing the following commands in the terminal:
+
+```sh
+mvn clean package
+java -jar target/jolie-runtime-{version}.jar
+```
+
+Now, you can run the two instances of the Jolie program separately using the following command for each instance:
+
+```sh
+java -cp target/jolie-runtime-{version}.jar:path_to_your_jolie_project/HelloService hello
+```
+
+Replace `target/jolie-runtime-{version}.jar` and `path_to_your_jolie_project/HelloService` with the appropriate
+paths and version numbers.
+
+Once both instances are running, you can send an "Hello World" message from one instance to the other by executing
+the following command in the terminal:
+
+```sh
+echo 'Hello World' | nc localhost 8080
+```
+
+This will print the message to the console and exit. The second instance should then print "Received: Hello World"
+to its console.
+
+Keep in mind that this is a basic example and you can further customize the communication protocol to suit your
+specific needs.

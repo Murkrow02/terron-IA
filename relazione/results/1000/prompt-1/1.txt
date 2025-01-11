@@ -1,0 +1,41 @@
+Jolie, formerly known as Apache Jolie, is a statically typed, expressive, and modular programming language designed
+for developing robust web applications. It provides built-in support for handling RESTful APIs through its `rest`
+module, which simplifies the creation of RESTful endpoints and services.
+
+To implement a REST API in Jolie, you can use the following steps:
+1. Define your resources: First, define the resources that will be part of your API using Jolie's built-in
+`resource` type. Each resource represents a distinct entity or concept in your system.
+2. Implement CRUD operations: Next, implement the Create (POST), Read (GET), Update (PUT/PATCH), and Delete
+(DELETE) operations for each resource. These operations are commonly referred to as CRUD, and they allow you to
+manage data within your API.
+3. Handle requests: In Jolie, you can handle HTTP requests using its built-in `http` module. The `request` type
+represents a single HTTP request, and you can use it to extract information from the request and prepare a
+response.
+4. Serve requests: Finally, serve your RESTful APIs by combining resources, CRUD operations, and HTTP handling into
+a single module or application. Jolie's built-in `router` module helps you map routes and manage incoming requests.
+
+Here is an example of how to implement a simple RESTful API for managing users in Jolie:
+```jolie
+import jolie;
+import jolie.http;
+import jolie.resource as resources;
+import jolie.router as router;
+
+type User = resources.User;
+
+module UserResource {
+    @router.Route("/api/users")
+    export const usersApi = {
+        get: async [User](req) => {
+            // Implement CRUD operations for managing users
+        },
+        post: async [User](payload) => {
+            // Implement CRUD operations for creating new users
+        }
+    };
+
+    let server = jolie.http.Server(8080);
+
+    await server.listen();
+}
+```

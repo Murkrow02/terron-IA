@@ -1,0 +1,75 @@
+Here's an example of how you can create a simple calculator in Jolie that supports basic arithmetic operations:
+
+```jolie
+// Calculator.js
+import jolie as j;
+
+class Calculator {
+  static getCalculator() {
+    return new Calculator();
+  }
+
+  constructor() {
+    this._operators = {
+      '+': 'add',
+      '-': 'subtract',
+      '*': 'multiply',
+      '/': 'divide'
+    };
+  }
+
+  static getResult(operator, arg1, arg2) {
+    switch (operator) {
+      case '+':
+        return +arg1 + +arg2;
+      case '-':
+        return +arg1 - +arg2;
+      case '*':
+        return +arg1 * +arg2;
+      case '/':
+        return +arg1 / +arg2;
+    }
+  }
+
+  static sendMessage(message, calculator) {
+    const operator = message[0];
+    const arg1 = message[1] || 0;
+    const arg2 = message[2] || 0;
+
+    jolie.print('Calculating: ' + operator + ' ' + arg1 + ' ' + arg2);
+
+    if (operator === '*' || operator === '/') {
+      jolie.print('Calculating the result...');
+
+      const result = Calculator.getResult(operator, arg1, arg2);
+      jolie.print('The result is: ' + result);
+    } else {
+      // Perform basic arithmetic operations
+      switch (operator) {
+        case '+':
+          calculator.sendMessage('Result:', Calculator.getResult('add', arg1, arg2));
+          break;
+        case '-':
+          calculator.sendMessage('Result:', Calculator.getResult('subtract', arg1, arg2));
+          break;
+        case '*':
+          calculator.sendMessage('Result:', Calculator.getResult('multiply', arg1, arg2));
+          break;
+        case '/':
+          calculator.sendMessage('Result:', Calculator.getResult('divide', arg1, arg2));
+          break;
+      }
+    }
+  }
+}
+```
+
+To interact with the calculator, you can use the following command in your terminal or chatbot:
+
+```jolie
+import calculator = require('./Calculator');
+calculator.getCalculator().sendMessage("+", 3, 4);
+```
+
+This will send a message to the calculator using the '+' operator and arguments 3 and 4. The calculator will then
+print the result back to the terminal or chatbot.

@@ -1,0 +1,21 @@
+Jolie, like other programming languages, has built-in support for handling database connections using the
+`jolie::Database` class. This class provides a convenient abstraction layer for connecting to various databases,
+including SQLite3 and MySQL. Here's how you can use it:
+
+First, let's assume that we have a simple SQLite3 database called `my_database.db`. We want to perform some
+operations on this database in our Jolie code:
+```jolie
+import jolie::sqlite3 as sql;
+// ...
+sql.connect("my_database.db", "user", "password"); // Connect to the SQLite3 database using the specified
+credentials
+try {
+  // Perform your SQL operations here, such as creating a table or inserting data
+} finally {
+  sql.disconnect(); // Disconnect from the SQLite3 database when done
+}
+```
+In this example, we use the `import` statement to import the `sqlite3` module, which provides access to SQLite3
+functions. We then specify the path of our database file and the credentials for connecting. The `try` and
+`finally` blocks are used to handle exceptional cases and ensure that we properly release the connection back to
+the pool when done.

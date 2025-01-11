@@ -1,0 +1,70 @@
+Jolie, a statically typed and expressive programming language developed by Red Hat, provides built-in support for
+connecting to various databases through its `jolie-db` package. This library enables developers to interact with
+relational databases using a simple and intuitive syntax.
+
+To establish a connection to a database, you need to import the required modules and use the `Database.connect`
+function. Here's an example of connecting to a SQLite database:
+```jolie
+import Database = jolie.core.Database;
+import SQLite3 = require('sqlite3');
+
+// Initialize a connection pool with a maximum size of 10 connections
+Database.Pool(10).connect((conn, e) => {
+  if (e !== null) return throwError(e);
+  // Use the connected SQLite3 instance to interact with the database
+  let db = new SQLite3(conn);
+  // Perform database operations here...
+});
+```
+In this example, we first import the `Database` module and the `sqlite3` module from Node.js. We then initialize a
+connection pool with a maximum size of 10 connections using the `Database.Pool` function. Finally, we create a new
+SQLite3 instance with the connected connection and use it to perform database operations.
+
+To interact with the database, you can define functions that accept a connection as an argument and return results
+as needed. For example, here's a function to query the database:
+```jolie
+import Database = jolie.core.Database;
+import SQLite3 = require('sqlite3');
+
+function query(conn, sql) {
+  let result = conn.query(sql);
+  if (result !== null && result.rows !== null) {
+    for (let row of result.rows) {
+      // Process the result rows here...
+    }
+  }
+  return result;
+}
+```
+In this example, we import the `Database` and `sqlite3` modules. We define a function called `query` that takes a
+connection object and a SQL statement as arguments. The `query` function returns a promise that resolves to an
+object containing the result rows if the query was successful. If there are any errors during the execution of the
+SQL statement, the function throws an error.
+
+To use Jolie's database support in your application, you need to add the following dependencies to your
+`package.json` file:
+```json
+{
+  "dependencies": {
+    "jolie": "^0.26.1",
+    "sqlite3": "^3.0.4"
+  }
+}
+```
+Then, you can import the required modules and use the `Database.connect` function to establish a connection to a
+database:
+```jolie
+import SQLite3 = require('sqlite3');
+import Database = jolie.core.Database;
+
+// Initialize a connection pool with a maximum size of 10 connections
+Database.Pool(10).connect((conn, e) => {
+  if (e !== null) return throwError(e);
+  // Use the connected SQLite3 instance to interact with the database
+  let db = new SQLite3(conn);
+  // Perform database operations here...
+});
+```
+As you can see, Jolie's database support makes it easy to interact with various relational databases using a simple
+and intuitive syntax. By importing the required modules and using the `Database.connect` function, you can
+establish a connection to a database and perform database operations with ease.

@@ -1,0 +1,61 @@
+Certainly! To create a simple communication channel between two Jolie programs, you can use the `jolie_stream`
+library. Here's an example of how you might implement it:
+
+1. First, create a new Jolie module for your sender program:
+```jolie
+module my_sender {
+  import stream = jolie_core.Stream;
+
+  function main() {
+    // Initialize the sender stream
+    let stream = Stream(0);
+    stream.add_on_message = message => {
+      // Send an "Hello World" message to the receiver
+      write("Received: ", message.payload);
+    };
+
+    // Start the sender
+    send(stream, "Hello World");
+  }
+}
+```
+In this example, `main()` creates a new stream and sets up an event handler that sends the response back through
+the same stream. The `write()` function is used to print out the received message.
+
+2. Next, create a new Jolie module for your receiver program:
+```jolie
+module my_receiver {
+  import stream = jolie_core.Stream;
+  import socket = jolie_core.SocketIO;
+
+  function main() {
+    // Initialize the receiver socket
+    let socket = SocketIO("localhost", 1234);
+
+    // Set up an event listener for incoming messages
+    socket.on_message = message => {
+      // Receive and print out the "Hello World" message from the sender
+      write(message.payload, "Received: ");
+    };
+
+    // Start the receiver
+    receive();
+  }
+}
+```
+In this example, `main()` initializes an event listener for incoming messages using the `on_message` event. The
+socket is connected to the server on port 1234 and starts listening for incoming messages.
+
+3. Finally, compile and run the sender program:
+```sh
+joliec my_sender.jolie
+./my_sender
+```
+4. Compile and run the receiver program:
+```sh
+joliec my_receiver.jolie
+./my_receiver
+```
+
+Now, you should be able to send an "Hello World" message from the sender program to the receiver program and
+receive a response on the output stream.

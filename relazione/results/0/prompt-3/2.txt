@@ -1,0 +1,54 @@
+Jolie, the open-source web application framework for Rust, utilizes the "client-server" pattern for database
+connections. This means that the application (client) makes a request to the database server to perform operations
+like querying or updating data. Jolie provides a low-level `Pool` type for managing database connections and a
+higher-level `Database` trait for simplifying database interactions.
+
+Here's a basic example of how to use Jolie's `Pool` type to create a connection pool for a SQLite database:
+
+```rust
+use jolie::{ConnectionPool, Database};
+
+#
+struct User {
+    id: u32,
+    name: String,
+}
+
+impl Database for User {
+    fn connect(&self) -> Result<ConnectionPool<User>, SQLiteError> {
+        let database_path = "users.db";
+        let connection_pool = ConnectionPool::new(database_path).map_err(|e| e)?;
+
+        Ok(connection_pool)
+    }
+
+    fn execute(&self, query: &str, args: &[&str]) -> Result<u32, SQLiteError> {
+        let connection_pool = self.connect().unwrap();
+        let mut cursor = connection_pool.borrow_mut().query(query).expect("Failed to query the database");
+        let result = cursor.execute_all(&args);
+        cursor.close();
+        Ok(result)
+    }
+}
+
+fn main() {
+    let user = User{ id: 1, name: "John Doe".to_string() };
+
+    match user.database().connect() {
+        Ok(_) => println!("Connected to the database successfully."),
+        Err(e) => eprintln!("Failed to connect to the database: {}", e),
+    }
+
+    match user.database().execute("SELECT * FROM users") {
+        Ok(result) => println!("Executed the query successfully: {}", result),
+        Err(e) => eprintln!("Failed to execute the query: {}", e),
+    }
+}
+```
+
+In this example, we define a simple `User` struct and implement the `Database` trait for it. The `Database` trait
+provides methods for connecting to the database and executing queries. We then create a connection pool for SQLite
+using Jolie's `ConnectionPool` type and use it to interact with the database.
+
+To learn more about Jolie's database support and its higher-level `Database` trait, you can visit the official
+Jolie documentation at <https://jolie-rs.org/docs/database/>.

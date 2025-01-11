@@ -1,0 +1,63 @@
+To implement simple communication between Jolie components using a socket, follow these steps:
+1. Define a socket component in your Jolie program as follows:
+```jolie
+import socket;
+
+component Main {
+    input _socket = socket.create("localhost", "5000");
+}
+```
+This component creates an anonymous socket connection to the default host (localhost) on port 5000.
+2. Define a second component that will listen for incoming messages and respond accordingly:
+```jolie
+component Receiver {
+    input _socket = socket.create("localhost", "5000");
+    output _response;
+
+    event _message = { message: str };
+}
+```
+3. Start the Receiver component first, then start the Main component:
+```jolie
+component Main {
+    input _socket = socket.create("localhost", "5000");
+
+    when (on_start) {
+        _socket = socket.connect();
+    }
+}
+```
+4. In the Main component, send a message to the Receiver component:
+```jolie
+component Main {
+    input _socket = socket.create("localhost", "5000");
+
+    when (on_start) {
+        _socket = socket.connect();
+        print(s"Hello World!");
+        _socket.write({ message: "Hello from Main!" });
+    }
+}
+```
+5. In the Receiver component, handle the incoming message and respond accordingly:
+```jolie
+component Receiver {
+    input _socket = socket.create("localhost", "5000");
+    output _response;
+
+    event _message = { message: str };
+
+    when (on_start) {
+        _socket = socket.listen();
+    }
+
+    when (on_message, _message) {
+        print(s"Got the message '$_message' from Main!");
+        _response = {"message": "Hello back from Receiver!"};
+        _socket.write(_response);
+    }
+}
+```
+This example demonstrates how to create a simple socket communication system between two Jolie components, with one
+sending a "Hello World" message and the other responding accordingly. You can further customize and expand this
+setup to meet your specific needs.

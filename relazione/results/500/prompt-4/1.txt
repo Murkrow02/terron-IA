@@ -1,0 +1,98 @@
+Here is an example of how you can create two Jolie programs that communicate with each other:
+
+**program1.jolie:**
+```jolie
+import System;
+import net.connection;
+
+import std.stdio;
+import std.net.socket;
+
+module main {
+    procedure hello(input msg) {
+        println("Received: $msg");
+    }
+
+    procedure main() {
+        // Create a TCP/IP server on port 8080
+        net.server srv = createServer(8080);
+
+        // Start the server and wait for a connection
+        while (srv.status != "Stopped") {
+            println("Server is running...");
+        }
+
+        // Define a remote function that takes an input message
+        rpc Hello = new Hello();
+
+        // Register the remote function with the server
+        srv.addService(Hello);
+
+        // Start the server again after the initial connection
+        srv.start();
+    }
+}
+```
+
+**program2.jolie:**
+```jolie
+import System;
+import net.connection;
+
+import std.stdio;
+import std.net.socket;
+
+module main {
+    procedure hello(input msg) {
+        println("Received: $msg");
+    }
+
+    procedure main() {
+        // Create a TCP/IP client on port 8080
+        net.client clnt = createClient();
+
+        // Set the remote address and port for the client
+        setRemoteAddress(clnt, "127.0.0.1", 8080);
+
+        // Define a remote function that returns an output message
+        rpc GetMessage = new GetMessage();
+
+        // Register the remote function with the client
+        clnt.addService(GetMessage);
+
+        // Connect to the server and wait for a response
+        while (true) {
+            println("Connecting to server...");
+
+            socket sock = connect(clnt);
+
+            if (sock == null) {
+                break;
+            }
+
+            println("Connected to server.");
+
+            // Send an "Hello World" message to the server
+            sendMessage(sock, "Hello World!");
+
+            // Wait for a response from the server
+            msg = receiveMessage(sock);
+
+            if (msg != null) {
+                println("Received: $msg");
+            } else {
+                break;
+            }
+        }
+    }
+}
+```
+
+These examples demonstrate how you can create two Jolie programs that communicate with each other using TCP/IP
+sockets. The `program1` program creates a server and listens for incoming connections, while the `program2` program
+creates a client that connects to the server and sends an "Hello World" message. The server then responds with its
+own message, allowing the two programs to communicate with each other.
+
+Keep in mind that these examples are for educational purposes only and should be tested thoroughly before running
+in a production environment. Additionally, you may need to adjust the remote addresses and ports used by each
+program depending on your network setup and requirements.

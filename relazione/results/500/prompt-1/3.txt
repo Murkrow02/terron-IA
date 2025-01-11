@@ -1,0 +1,24 @@
+Jolie, or Java for Object-oriented Language and Processing, is a powerful, statically typed, general-purpose
+programming language that supports multiple paradigms such as procedural, object-oriented, functional, and
+concurrent programming. When it comes to handling RESTful web services or APIs, Jolie provides a simple and
+convenient API for creating them using its built-in `rest` module.
+
+In Jolie, REST APIs are defined using the `rest` keyword, which is used as a keyword in the service definition. For
+instance, if you want to define a GET operation for a specific resource, you can do so by writing:
+```jolie
+// Define the API endpoint here
+resource GetResource() {
+  // Function that takes an input JSON object
+  function(input: any): any {
+    // Your implementation here
+  }
+}
+```
+This example defines a GET operation for a resource with the name "GetResource". The function `function(input:
+any): any` accepts an input JSON object and returns any output value.
+
+Once your service is defined, you can use it as follows:
+```jolie
+// Usage example here
+GET /api/resources HTTP/1.1
+Host: your-domain.com

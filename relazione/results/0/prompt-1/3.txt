@@ -1,0 +1,37 @@
+Jolie is a statically-typed, multi-paradigm programming language that supports both functional and object-oriented
+programming styles. It also provides built-in support for creating and consuming RESTful APIs, which can be an
+excellent choice for building web services and APIs that adhere to the REpresentational State Transfer (REST)
+architectural principles.
+
+When implementing RESTful APIs with Jolie, you can define endpoints using the `@endpoint` directive, followed by a
+method name and HTTP methods (GET, POST, PUT, DELETE, etc.). For example:
+
+```jolie
+// Define an endpoint for a resource called "users"
+@endpoint
+class UsersEndpoint {
+  def getUser(id: Int): Response<User> = {
+    // Implement the GET request handling logic here
+  }
+
+  def postUser(user: User): Response<User> = {
+    // Implement the POST request handling logic here
+  }
+}
+```
+
+Inside the `UsersEndpoint` class, you can define methods for handling HTTP requests and returning responses. The
+`Response<T>` type is used to represent the response payload and status code. Jolie also supports various JSON
+serialization and deserialization libraries, such as `jolie-json`, to simplify working with JSON data.
+
+When implementing CRUD (Create, Read, Update, Delete) operations, you can use the HTTP methods mentioned above to
+handle the different operations:
+
+- Create a new user: `POST /users`
+- Retrieve a user by ID: `GET /users/123`
+- Update a user by ID: `PATCH /users/123`
+- Delete a user by ID: `DELETE /users/123`
+
+Jolie's built-in support for RESTful APIs, along with its statically-typed nature, can help ensure that your API is
+well-documented, maintainable, and secure. Additionally, Jolie's support for various programming paradigms allows
+you to choose the best approach for your specific use case.

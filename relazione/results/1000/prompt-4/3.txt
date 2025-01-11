@@ -1,0 +1,39 @@
+Sure, here's the Jolie code for two simple programs that can communicate:
+
+Program A (the sender):
+```jolie
+import std.stdio;
+import std.net;
+
+main() {
+    println("Hello World");
+    sendMessage("My message to Program B", "127.0.0.1", 8080);
+}
+```
+
+Program B (the receiver):
+```jolie
+import std.stdio;
+import std.net;
+
+main() {
+    while (true) {
+        receiveMessage();
+    }
+}
+
+func receiveMessage() {
+    println("Received message: ${message}");
+}
+```
+
+To run these programs, you need to have Jolie installed on your system. You can download it from the official
+website: (http://jolie-lang.org/). Once you have Jolie installed, build and run Program A using the following
+command in your terminal:
+```bash
+$ jde main.jolie
+$ ./main
+```
+
+Now, if you run Program B in another terminal window or tab, you should be able to see the "Received message:"
+output in Program A once Program B has received the message.

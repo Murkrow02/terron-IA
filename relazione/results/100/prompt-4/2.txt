@@ -1,0 +1,91 @@
+Certainly! Here's an example of how you can create two Jolie programs that exchange messages:
+
+Jolie Program (Client):
+```jolie
+// Define a module for the client
+module Client {
+  // Define a function to send a message
+  function sendMessage(message: string) {
+    // Connect to the server using the 'server' port
+    use(Network.TCP.Server)(18080)
+      .bind("localhost", "127.0.0.1")
+      .onReady() {
+        print("Server is ready on port 18080")
+      }
+
+    // Send the message to the server
+    use(Network.TCP.Client)(18080)
+      .connect("localhost", "127.0.0.1")
+      .send(message)
+  }
+
+  main() {
+    print("Client is starting...")
+    sendMessage("Hello World!")
+  }
+}
+```
+Jolie Program (Server):
+```jolie
+// Define a module for the server
+module Server {
+  // Define a function to receive incoming messages
+  function receiveIncoming(client: Client) {
+    // Listen for incoming messages from the client
+    use(Network.TCP.Client)(18080)
+      .bind("localhost", "127.0.0.1")
+      .onReady() {
+        print("Server is ready on port 18080")
+
+        // Start listening for incoming messages
+        use(Network.TCP.Client)(18080)
+          .connect("localhost", "127.0.0.1")
+          .listen()
+      }
+
+    // Receive the message from the client and print it
+    use(Network.TCP.Client)(18080)
+      .receive({
+        message: string {
+          // Parse the message and print it
+          print("Received message:", message)
+        },
+        error: Exception {} {
+          // Print an error message
+          print("Error received")
+        }
+      })
+  }
+
+  main() {
+    print("Server is starting...")
+    use(Network.TCP.Client)(18080)
+      .connect("localhost", "127.0.0.1")
+      .send("Hello World!")
+  }
+}
+```
+To use these Jolie programs, first make sure you have the necessary dependencies installed:
+
+```bash
+pip install jolie-cli
+```
+
+Next, compile and run the client program:
+
+```bash
+jolie-compile --output=client.jar Client.jolie
+java -jar client.jar
+```
+
+Compile and run the server program:
+
+```bash
+jolie-compile --output=server.jar Server.jolie
+java -jar server.jar
+```
+
+The `Client` program will send the "Hello World" message to the server, which will then print it back to the
+client. This example demonstrates how to create a simple communication between two Jolie programs using TCP
+connections. You can further extend this example to implement more advanced features like message formatting, error
+handling, and secure communication.
