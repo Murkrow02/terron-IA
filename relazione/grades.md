@@ -1,0 +1,31 @@
+DAVIDE:
+- Modello 0 iterazioni:
+    - Prompt 1: (1, 1, 1)
+    - Prompt 2: (1, 1, 1)
+    - Prompt 3: (0, 0, 0)
+    - Prompt 4: (1, 1, 1)
+    - Prompt 5: (1, 1, 1)
+- Modello 100 iterazioni:
+    - Prompt 1: (1, 1, 1)
+    - Prompt 2: (1, 1, 1)
+    - Prompt 3: (0, 1, 1)
+    - Prompt 4: (1, 1, 1)
+    - Prompt 5: (1, 1, 1)
+- Modello 250 iterazioni:
+    - Prompt 1: (1, 0 (allucinato su rust???), 1)
+    - Prompt 2: (1, 1, 1)
+    - Prompt 3: (0, 1, 1)
+    - Prompt 4: (1, 1, 1)
+    - Prompt 5: (1, 1, 1)
+- Modello 500 iterazioni:
+    - Prompt 1: (1, 1, 1)
+    - Prompt 2: (1, 2, 1)
+    - Prompt 3: (1, 1, 1)
+    - Prompt 4: (1, 1, 1)
+    - Prompt 5: (3, 1, 3)
+- Modello 1000 iterazioni:
+    - Prompt 1: (1, 1, 0 (peggio delle altre mamma mia))
+    - Prompt 2: (1, 1, 1)
+    - Prompt 3: (1, 1, 1)
+    - Prompt 4: (1, 1, 1)
+    - Prompt 5: (3, 2, 2 (per via della creazione interfaccia prima, anche se sbagliata))
