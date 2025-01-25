@@ -1,3 +1,0 @@
-| MAIZ | PEDO |
-|--|--|
-|asd|asd|
