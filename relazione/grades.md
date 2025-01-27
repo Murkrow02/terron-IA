@@ -1,4 +1,4 @@
-DAVIDE:
+## DAVIDE:
 - Modello 0 iterazioni:
     - Prompt 1: (1, 1, 1)
     - Prompt 2: (1, 1, 1)
@@ -136,3 +136,34 @@ MURK:
         1: 2.5 (servizio + sintassi meh)
         2: 2 (interfaccia operazioni)
         3: 2 (interfaccia operazioni)
+## Valerio
+- Modello 0 iterazioni:
+    - Prompt 1: (1, 0.8, 1)
+    - Prompt 2: (2, 1.5, 3)
+    - Prompt 3: (0.8, 0.8, 0.8)
+    - Prompt 4: (1, 1, 1)
+    - Prompt 5: (1.5, 1, 1)
+- Modello 100 iterazioni:
+    - Prompt 1: (1, 2, 0.8)
+    - Prompt 2: (1.5, 2.5, 1)
+    - Prompt 3: (0.8, 1, 1)
+    - Prompt 4: (0.8, 1.2, 1)
+    - Prompt 5: (1, 1, 1)
+- Modello 250 iterazioni:
+    - Prompt 1: (1.5, 0.8, 0.8)
+    - Prompt 2: (2, 1, 1)
+    - Prompt 3: (0.8, 1, 1)
+    - Prompt 4: (1, 1, 1)
+    - Prompt 5: (1.2, 1, 1)
+- Modello 500 iterazioni:
+    - Prompt 1: (1, 0.8, 0.8)
+    - Prompt 2: (2, 1, 0 (IL BRO SI È LITTERALLY SCORDATO I PROCESSI))
+    - Prompt 3: (1, 0.8, 0.8)
+    - Prompt 4: (1, 1, 0.8)
+    - Prompt 5: (2, 1, 2)
+- Modello 1000 iterazioni:
+    - Prompt 1: (0.8, 1, 0.8)
+    - Prompt 2: (1.5, 3, 2.5)
+    - Prompt 3: (0.5, 0.5, 1)
+    - Prompt 4: (0.8, 1, 1)
+    - Prompt 5: (3, 2, 3)
