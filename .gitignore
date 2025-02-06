@@ -9,3 +9,12 @@ venv
 HF_TOKEN
 
 taxonomy/.github/
+
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.synctex.gz
+.DS_Store
+*.out
+*.toc
