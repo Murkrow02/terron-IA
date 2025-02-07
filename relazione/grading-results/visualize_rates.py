@@ -29,6 +29,7 @@ def plot_histograms(data, title):
     plt.figure(figsize=(10, 6))
     plt.bar(range(len(data)), data, tick_label=[f"Prompt-{i+1}" for i in range(len(data))])
     plt.title("Grades for " + title)
+    plt.ylim(0, 2.5)
     plt.ylabel('Grade Average')
     plt.xticks(rotation=45)
     plt.show()
