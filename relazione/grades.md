@@ -136,6 +136,13 @@ MURK:
         1: 2.5 (servizio + sintassi meh)
         2: 2 (interfaccia operazioni)
         3: 2 (interfaccia operazioni)
+- Modello 15000 iterazioni:
+    - Prompt 1: (3, 3, 3.2)
+    - Prompt 2: (2, 1.8, 1.5)
+    - Prompt 3: (2, 2.2, 3.5)
+    - Prompt 4: (3.5, 3, 2.5)
+    - Prompt 5: (3, 2.8, 3.2)
+
 ## Valerio
 - Modello 0 iterazioni:
     - Prompt 1: (1, 0.8, 1)
