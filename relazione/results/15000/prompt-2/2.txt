@@ -1,0 +1,17 @@
+In Jolie, both processes and sessions are fundamental concepts that enable communication and coordination between different components of a distributed system. However, they serve distinct purposes.
+
+A process is an instance of a Jolie program that runs independently and can perform computations and interact with other processes or sessions. It has its own memory space, and it can be started, stopped, and restarted as needed. Processes are the building blocks of more complex systems, where multiple instances of a Jolie program can be executed concurrently to solve larger problems.
+
+On the other hand, a session is a communication channel between two processes or between a process and an external entity (such as a user or another system). Sessions enable the exchange of messages and synchronization between components, allowing them to coordinate their actions and collaborate on tasks. Sessions are more interactive and dynamic than processes, as they can be established and terminated on demand, and they can handle multiple requests concurrently.
+
+In Jolie, sessions are defined using the `session` keyword, followed by the name of the session and the communication protocol used. For example:
+```jolie
+session MySession {
+  // ...
+}
+```
+The `MySession` session can then be used to communicate with other processes or external entities using the defined protocol.
+
+Sessions in Jolie support various synchronization mechanisms, such as message passing, shared variables, and condition variables, allowing components to coordinate their actions and collaborate on tasks. They also provide features like message filtering, message ordering, and message grouping, making it easier to design complex systems that require fine-grained control over communication between components.
+
+In summary, processes and sessions in Jolie are both essential for building distributed systems, but they serve different purposes. Processes are the building blocks of a system, while sessions provide the communication channels that enable components to interact and coordinate their actions. Understanding the differences between processes and sessions is crucial for designing and implementing effective Jolie systems.

@@ -1,0 +1,58 @@
+Jolie, as a service-oriented programming language, supports various types of databases through its built-in database drivers. These drivers enable Jolie services to interact with databases using standard SQL queries and transactions. Here's an overview of how Jolie handles database connections:
+
+1. Connection pooling: Jolie supports connection pooling, which means that multiple connections can be reused instead of creating a new one for each request. This improves performance and reduces resource usage.
+2. Connection management: Jolie provides a simple and intuitive way to manage database connections using its built-in `DatabaseConnection` type. This type allows you to create, open, and close connections as needed.
+3. Transactions: Jolie supports transactions, which enable you to perform multiple database operations as a single unit of work. If any operation fails, the entire transaction is rolled back, ensuring data consistency.
+
+Now let's look at some practical examples of using Jolie with databases:
+
+1. Connecting to a SQLite database:
+```jolie
+import SQLite;
+
+service SQLiteExample {
+  DatabaseConnection db = new SQLiteConnection("file:example.db");
+  // Perform database operations here
+}
+```
+
+2. Connecting to a MySQL database:
+```jolie
+import MySQL;
+
+service MySQLExample {
+  DatabaseConnection db = new MySQLConnection("host", "username", "password", "database");
+  // Perform database operations here
+}
+```
+
+3. Using transactions:
+```jolie
+import SQLite;
+
+service SQLiteTransactionExample {
+  DatabaseConnection db = new SQLiteConnection("file:example.db");
+
+  operation openDatabase() {
+    db.open("sqlite3", "example.db", "test");
+  }
+
+  operation insertData() {
+    db.execute("INSERT INTO table (id, name) VALUES (1, 'John')");
+  }
+
+  operation commit() {
+    db.beginTransaction();
+    db.execute("SELECT * FROM table");
+    db.commit();
+  }
+
+  operation rollback() {
+    db.rollback();
+  }
+}
+```
+
+In summary, Jolie provides a simple and efficient way to handle database connections using its built-in database drivers. With its connection pooling, transaction support, and connection management features, Jolie makes it easy to build robust and scalable database-driven services.<|endoftext|> 
+
+To learn more about Jolie's database support, you can consult the official documentation at <https://jolie-lang.org/docs/latest/database.html>.

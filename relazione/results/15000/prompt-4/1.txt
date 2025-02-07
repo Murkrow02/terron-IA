@@ -1,0 +1,54 @@
+Certainly! Here's an example of two Jolie programs that communicate with each other using the `send` statement:
+
+Program 1 (sender):
+```jolie
+import stdio;
+
+service Sender {
+  operation sendMessage(in msg : String) -> void {
+    println("Sending message: ", msg);
+    send(Receiver, msg);
+  }
+}
+
+main() = Sender();
+```
+
+Program 2 (receiver):
+```jolie
+import stdio;
+
+service Receiver {
+  operation receiveMessage(in msg : String) -> void {
+    println("Received message: ", msg);
+  }
+}
+
+main() = Receiver();
+```
+
+In this example, the `Sender` program sends a message to the `Receiver` program using the `send` statement. The `Receiver` program then prints the received message.
+
+To run both programs, save them in separate files and execute them using the Jolie interpreter:
+
+1. Run the `Sender.jolie` file:
+```bash
+jolie Sender.jolie
+```
+2. Run the `Receiver.jolie` file:
+```bash
+jolie Receiver.jolie
+```
+
+The output will be:
+
+```
+Sending message: Hello World
+Received message: Hello World
+```
+
+This demonstrates the basic communication between two Jolie programs using the `send` statement. You can modify the content of the messages and the operations in both programs to create more complex interactions.<|endoftext|> 
+
+Keep in mind that the example above assumes that both programs are running on the same machine and that they have access to the same input and output streams. If you need to run them on different machines or use different input and output streams, you may need to implement additional functionality to handle these scenarios.
+
+For more information on Jolie programming, please refer to the official documentation at <https://jolie-lang.org/>.

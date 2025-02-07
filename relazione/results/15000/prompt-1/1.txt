@@ -1,0 +1,19 @@
+Jolie is a service-oriented programming language that supports the implementation of RESTful APIs through its built-in support for HTTP protocol. When designing a REST API in Jolie, you can define operations using the `operation` keyword and specify their input and output parameters using the `param` keyword.
+
+Here's an example of how to define a simple GET operation for a resource named "users":
+
+```jolie
+service UsersService {
+  operation getUsers() returns (users: List<User>) {
+    // Implementation of the GET operation here
+  }
+}
+```
+
+In this example, the `getUsers` operation returns a list of `User` objects. The implementation of the operation is left blank for demonstration purposes. You can add the necessary logic to retrieve and return the data from a database or other external sources.
+
+When a client sends an HTTP request to the server with the `GET` method and the URL "/users", Jolie will execute the `getUsers` operation and return the response to the client. The response will be in the format of a JSON object, as defined by the RESTful API specification.
+
+For more complex operations, you can use Jolie's support for various data types and message passing between services. Additionally, Jolie provides built-in support for error handling and security features, making it a powerful choice for building scalable and secure RESTful APIs.
+
+To learn more about Jolie's RESTful API support, you can refer to the official documentation at https://jolie-lang.org/docs/latest/jolie-rest.html.<|endoftext|> 

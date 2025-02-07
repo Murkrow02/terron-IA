@@ -1,0 +1,68 @@
+Here's an example of a simple calculator service in Jolie that supports basic arithmetic operations:
+
+```jolie
+service Calculator {
+  operation add(int a, int b) returns int {
+    return a + b;
+  }
+
+  operation subtract(int a, int b) returns int {
+    return a - b;
+  }
+
+  operation divide(int a, int b) returns int {
+    if (b != 0) {
+      return a / b;
+    } else {
+      throw new DivisionByZeroException();
+    }
+  }
+
+  operation multiply(int a, int b) returns int {
+    return a * b;
+  }
+}
+```
+
+To interact with this calculator service, you can use the following Jolie code:
+
+```jolie
+service Client {
+  operation callCalculator(in int a, in int b) returns int {
+    let result = Calculator.add(a, b);
+    return result;
+  }
+
+  operation callCalculatorSubtract(in int a, in int b) returns int {
+    let result = Calculator.subtract(a, b);
+    return result;
+  }
+
+  operation callCalculatorDivide(in int a, in int b) returns int {
+    if (b != 0) {
+      let result = Calculator.divide(a, b);
+      return result;
+    } else {
+      throw new DivisionByZeroException();
+    }
+  }
+
+  operation callCalculatorMultiply(in int a, in int b) returns int {
+    let result = Calculator.multiply(a, b);
+    return result;
+  }
+}
+```
+
+This client service provides methods to call the calculator service with different arithmetic operations. The `callCalculator` method takes two integers as arguments and returns their sum. The `callCalculatorSubtract` method takes two integers as arguments and returns their difference. The `callCalculatorDivide` method takes two integers as arguments and throws a DivisionByZeroException if the denominator is zero. The `callCalculatorMultiply` method takes two integers as arguments and returns their product.
+
+To use this client service, you can compile and run it in Jolie:
+
+```bash
+jolie --compile Client.jolie
+jolie Client
+```
+
+This will create an executable file called `Client.exe` that you can run to interact with the calculator service. The client service will listen for incoming requests on port 8080 by default. You can change the port number by modifying the `port` parameter in the `jolie` command.
+
+Keep in mind that this is a basic example, and you can extend the calculator service to support more complex operations or additional features if needed.

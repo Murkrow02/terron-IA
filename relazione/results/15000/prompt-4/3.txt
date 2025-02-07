@@ -1,0 +1,33 @@
+Certainly! Here's a simple example of two Jolie programs communicating with each other:
+
+Program 1 (Client):
+```jolie
+import stdio;
+
+service Client {
+  operation main() {
+    println("Hello World!");
+    send "Hello World" to other;
+  }
+}
+```
+
+Program 2 (Server):
+```jolie
+import stdio;
+
+service Server {
+  operation main() {
+    receive "Hello World" from client;
+    println("Received 'Hello World' from client.");
+  }
+}
+```
+
+To run these programs, save them in separate Jolie files (e.g., `client.jolie` and `server.jolie`) and execute them using the Jolie interpreter. For example:
+
+1. Run `jolie client.jolie` to execute the Client program.
+2. Run `jolie server.jolie` to execute the Server program.
+3. The Client program will send "Hello World" to the Server program, and the Server program will print "Received 'Hello World' from client."
+
+This example demonstrates a simple "Hello World" message exchange between two Jolie programs. You can modify the code to implement more complex communication scenarios. Let me know if you have any questions or need further assistance!<|endoftext|> 

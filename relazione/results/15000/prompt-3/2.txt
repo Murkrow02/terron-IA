@@ -1,0 +1,78 @@
+Jolie, as a service-oriented programming language, supports various database connection types through its built-in libraries. The most common databases supported by Jolie are SQLite, MySQL, and PostgreSQL. In this answer, I will provide an overview of how to establish a connection to these databases using Jolie.
+
+First, let's discuss SQLite. SQLite is a simple and lightweight database that can be embedded into an application. To connect to an SQLite database in Jolie, you need to import the SQLite library and create a new connection object. Here's an example:
+
+```jolie
+import SQLite;
+
+service SQLiteExample {
+  connection c = new SQLiteConnection("file:///database.db");
+  // ...
+}
+```
+
+In this example, the `new SQLiteConnection()` function establishes a connection to the SQLite database located at `file:///database.db`.
+
+Next, let's look at MySQL and PostgreSQL. Both of these databases require a more complex setup due to their additional features and configurations. For MySQL, you need to import the MySQL library and configure the connection settings in your Jolie service. Here's an example:
+
+```jolie
+import MySQL;
+
+service MySQLExample {
+  connection c = new MySQLConnection("host=localhost dbname=mydb user=myuser password=mypassword");
+  // ...
+}
+```
+
+In this example, the `new MySQLConnection()` function establishes a connection to the MySQL database with the specified host, database name, user, and password.
+
+For PostgreSQL, you need to import the PostgreSQL library and configure the connection settings in your Jolie service. Here's an example:
+
+```jolie
+import PostgreSQL;
+
+service PostgreSQLExample {
+  connection c = new PostgreSQLConnection("host=localhost dbname=mydb user=myuser password=mypassword");
+  // ...
+}
+```
+
+In this example, the `new PostgreSQLConnection()` function establishes a connection to the PostgreSQL database with the specified host, database name, user, and password.
+
+Once you have connected to your desired database, you can perform various operations using Jolie's built-in libraries. For instance, you can create tables, insert data, query data, and update data. Here are some practical examples:
+
+```jolie
+service SQLiteExample {
+  connection c = new SQLiteConnection("file:///database.db");
+
+  operation insertData() {
+    c.execute("INSERT INTO table_name VALUES (?)", [1, "Value 1"]);
+  }
+
+  operation queryData() {
+    let result = c.execute("SELECT * FROM table_name");
+    let rows = result.fetchAll();
+    for (row in rows) {
+      println(row.column1, ":", row.column2);
+    }
+  }
+}
+
+service MySQLExample {
+  connection c = new MySQLConnection("host=localhost dbname=mydb user=myuser password=mypassword");
+
+  operation insertData() {
+    c.execute("INSERT INTO table_name VALUES (?)", [1, "Value 1"]);
+  }
+
+  operation queryData() {
+    let result = c.execute("SELECT * FROM table_name");
+    let rows = result.fetchAll();
+    for (row in rows) {
+      println(row.column1, ":", row.column2);
+    }
+  }
+}
+```
+
+In these examples, we have demonstrated how to connect to SQLite and MySQL databases using Jolie. You can modify the connection strings and operations according to your specific requirements. For more information on Jolie's database support, please refer to the official documentation at https://jolie-lang.org/docs/latest/index.html.

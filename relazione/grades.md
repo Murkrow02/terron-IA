@@ -167,3 +167,9 @@ MURK:
     - Prompt 3: (0.5, 0.5, 1)
     - Prompt 4: (0.8, 1, 1)
     - Prompt 5: (3, 2, 3)
+- Modello 15000 iterazioni:
+    - Prompt 1: (, , )
+    - Prompt 2: (, , )
+    - Prompt 3: (, , )
+    - Prompt 4: (, , )
+    - Prompt 5: (, , )

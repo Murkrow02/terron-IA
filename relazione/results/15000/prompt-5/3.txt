@@ -1,0 +1,146 @@
+Here is the code for a simple calculator in Jolie that supports basic arithmetic operations:
+
+```jolie
+interface Calculator {
+  operation add(int a, int b): int;
+  operation subtract(int a, int b): int;
+  operation divide(int a, int b): int;
+  operation multiply(int a, int b): int;
+}
+
+component CalculatorComponent {
+  private var calculator: Calculator = new Calculator();
+
+  operation getCalculator() -> Calculator {
+    return calculator;
+  }
+
+  operation add(int a, int b) -> int {
+    return calculator.add(a, b);
+  }
+
+  operation subtract(int a, int b) -> int {
+    return calculator.subtract(a, b);
+  }
+
+  operation divide(int a, int b) -> int {
+    return calculator.divide(a, b);
+  }
+
+  operation multiply(int a, int b) -> int {
+    return calculator.multiply(a, b);
+  }
+}
+```
+
+Now, here is how you can try to communicate with this calculator using Jolie's `send` and `receive` statements:
+
+```jolie
+component ClientComponent {
+  private var calculator: CalculatorComponent = new CalculatorComponent();
+
+  operation getCalculator() -> CalculatorComponent {
+    return calculator;
+  }
+
+  operation add(int a, int b) -> int {
+    var result = calculator.getCalculator().add(a, b);
+    return result;
+  }
+
+  operation subtract(int a, int b) -> int {
+    var result = calculator.getCalculator().subtract(a, b);
+    return result;
+  }
+
+  operation divide(int a, int b) -> int {
+    var result = calculator.getCalculator().divide(a, b);
+    return result;
+  }
+
+  operation multiply(int a, int b) -> int {
+    var result = calculator.getCalculator().multiply(a, b);
+    return result;
+  }
+}
+
+component MainComponent {
+  private var client: ClientComponent = new ClientComponent();
+
+  operation main() -> void {
+    var a = 3;
+    var b = 5;
+
+    var result = client.add(a, b);
+    println("Sum: ", result);
+
+    result = client.subtract(a, b);
+    println("Difference: ", result);
+
+    result = client.divide(a, b);
+    println("Fraction: ", result);
+
+    result = client.multiply(a, b);
+    println("Product: ", result);
+  }
+}
+```
+
+In this example, the `ClientComponent` holds a reference to the calculator component and provides methods to perform arithmetic operations using the calculator. The `MainComponent` uses the `ClientComponent` to interact with the calculator and prints the results.
+
+To use this calculator in a Jolie service, you would need to define a service that imports the `CalculatorComponent` and uses its methods. For example:
+
+```jolie
+service CalculatorService {
+  import CalculatorComponent;
+
+  operation getCalculator() -> CalculatorComponent {
+    return new CalculatorComponent();
+  }
+
+  operation add(int a, int b) -> int {
+    return getCalculator().add(a, b);
+  }
+
+  operation subtract(int a, int b) -> int {
+    return getCalculator().subtract(a, b);
+  }
+
+  operation divide(int a, int b) -> int {
+    return getCalculator().divide(a, b);
+  }
+
+  operation multiply(int a, int b) -> int {
+    return getCalculator().multiply(a, b);
+  }
+}
+```
+
+This service can then be used to interact with the calculator as follows:
+
+```jolie
+service ClientService {
+  import CalculatorService;
+
+  operation main() -> void {
+    var client = CalculatorService.getCalculator();
+
+    var a = 3;
+    var b = 5;
+
+    var result = client.add(a, b);
+    println("Sum: ", result);
+
+    result = client.subtract(a, b);
+    println("Difference: ", result);
+
+    result = client.divide(a, b);
+    println("Fraction: ", result);
+
+    result = client.multiply(a, b);
+    println("Product: ", result);
+  }
+}
+```
+
+This example demonstrates how to create a Jolie service that interacts with a calculator component using its methods. The `CalculatorService` imports the `CalculatorComponent`, and the `ClientService` uses it to perform arithmetic operations. The results are printed to the console for demonstration purposes. You can modify this example to suit your specific needs.

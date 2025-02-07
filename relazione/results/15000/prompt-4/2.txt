@@ -1,0 +1,47 @@
+Certainly! Here's a simple example of two Jolie programs that communicate with each other using the `send` statement to send an "Hello World" message:
+
+Program 1 (Client):
+```jolie
+import stdlib;
+
+service Client {
+  on init() {
+    send("Hello World", "Server");
+  }
+}
+```
+
+Program 2 (Server):
+```jolie
+import stdlib;
+
+service Server {
+  on init() {
+    receive "Hello World" from "Client";
+    send "Hello Client!";
+  }
+}
+```
+
+In this example, the `Client` program sends a message "Hello World" to the `Server`. The `Server` program then receives the message and sends a response "Hello Client!". This is a simple example of how two Jolie programs can communicate with each other. You can modify the content of the messages as needed for your specific use case.
+
+To run these programs, save them in separate files and then use the Jolie interpreter to execute them. For example, to run the `Client` program, use the following command:
+
+```bash
+jolie Client.jolie
+```
+
+To run the `Server` program, use the following command:
+
+```bash
+jolie Server.jolie
+```
+
+This will start a new Jolie process for each program, and they will communicate with each other using the `send` and `receive` statements. The output will be:
+
+```
+Client: Hello World
+Server: Hello Client!
+```
+
+This is just a simple example, but you can extend it to include more complex communication patterns and data exchange between the programs. Let me know if you have any questions or need further assistance!<|endoftext|> 

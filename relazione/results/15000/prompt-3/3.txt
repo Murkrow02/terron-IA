@@ -1,0 +1,64 @@
+Jolie, as a service-oriented programming language, supports database connections through its built-in database module. This module allows developers to interact with various databases, such as MySQL, PostgreSQL, and SQLite, using SQL statements.
+
+To establish a connection to a database, you need to define a database service and provide its connection details in the `connection` field of the service definition. Here's an example for SQLite:
+
+```jolie
+service SQLiteDatabase {
+  connection {
+    url = "sqlite:///database.db";
+    driver = "org.sqlite.JDBC";
+    user = "username";
+    password = "password";
+  }
+
+  operation query(string query) returns (string result) {
+    // Your query here
+  }
+}
+```
+
+Once the connection is established, you can use the `query` operation to execute SQL statements and retrieve results. Here's an example of how to query a table:
+
+```jolie
+service SQLiteDatabase {
+  connection {
+    url = "sqlite:///database.db";
+    driver = "org.sqlite.JDBC";
+    user = "username";
+    password = "password";
+  }
+
+  operation query(string query) returns (string result) {
+    // Your query here
+  }
+
+  operation insert(string name, string email) {
+    query = "INSERT INTO users (name, email) VALUES (?, ?);";
+    result = query(name + " " + email);
+  }
+}
+```
+
+In this example, the `insert` operation is defined to insert a new user into the `users` table. The `query` operation is used to execute the SQL statement and return the result.
+
+To use the database connection in your Jolie services, you need to import the database module and use the `Database` class to create a new instance of the database service. Here's an example:
+
+```jolie
+import database;
+
+service Main {
+  operation main() {
+    let db = new Database("sqlite:///database.db");
+    let userService = new SQLiteDatabase("sqlite:///database.db");
+
+    // Use the database connection to interact with the database
+    // ...
+  }
+}
+```
+
+In this example, the `Database` class is imported and a new instance of the `SQLiteDatabase` service is created using the connection details provided in the `connection` field of the service definition. The `main` operation initializes the database connection and creates an instance of the `SQLiteDatabase` service. You can then use this instance to interact with the database as needed.
+
+By using Jolie's built-in database module, you can easily establish and manage database connections in your service-oriented applications. The module provides a convenient way to interact with various databases using SQL statements, making it an essential tool for building robust and scalable applications.<|endoftext|> 
+
+For more information on Jolie's database module, please refer to the official documentation at https://jolie-lang.org/docs/database.html.

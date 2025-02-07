@@ -1,0 +1,17 @@
+In Jolie, both processes and sessions are fundamental concepts that enable communication and coordination between different components of a distributed system. However, they serve distinct purposes.
+
+A process is an instance of a service or a component that executes a set of actions and can interact with other processes through messages. Processes can be started, stopped, and managed independently, and they can communicate with each other using message passing.
+
+On the other hand, a session is a communication channel between two processes that enables them to exchange messages synchronously. Sessions are established when two processes agree on a shared context and exchange messages through this context. Once the session is closed, no further messages can be sent or received.
+
+Sessions provide a higher level of abstraction compared to message passing between processes, as they allow for more structured communication and coordination between components. They enable the creation of complex workflows and the management of state information in a distributed system.
+
+In summary, processes are instances of services or components that can interact with each other through messages, while sessions are communication channels between two processes that enable synchronous communication and coordination. Sessions provide a higher level of abstraction for managing complex workflows and state information in a distributed system.
+
+To further elaborate on sessions, consider the following example:
+
+Suppose we have two processes, Process A and Process B, that need to collaborate on a task. Process A generates data and sends it to Process B through a message passing channel. Process B receives the data, processes it, and sends the result back to Process A. This communication can be implemented using multiple message passing channels between the processes.
+
+Now, imagine that we want to make this communication more structured and manageable. We can create a session between Process A and Process B, which acts as a single communication channel for exchanging data and coordinating the task. Process A and Process B agree on a shared context for the session, and they exchange messages through this context. This allows them to maintain state information and manage the workflow more effectively.
+
+In this example, the session provides a higher level of abstraction for managing the communication between Process A and Process B, making it easier to design and implement complex workflows in a distributed system.

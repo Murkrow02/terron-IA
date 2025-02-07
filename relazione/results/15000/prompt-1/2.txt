@@ -1,0 +1,29 @@
+Jolie is a service-oriented programming language that supports the implementation of RESTful APIs. The language provides built-in support for handling HTTP requests and responses through its `http` module. This module enables developers to define endpoints, handle request methods (GET, POST, PUT, DELETE), and define response status codes and headers.
+
+To implement a RESTful API in Jolie, you can define a service with an endpoint that listens for incoming requests and processes them accordingly. Here's an example of how to define a simple GET endpoint:
+
+```jolie
+service MyService {
+  endpoint GET /myEndpoint {
+    response int result = 200;
+    response body "Hello World!";
+  }
+}
+```
+
+In this example, the `GET` endpoint returns a status code of `200` and a response body of `"Hello World!"`. You can also define other endpoints for different HTTP methods and handle their responses accordingly.
+
+Jolie also supports error handling, allowing you to define custom error messages and status codes. For instance, you can define an error message for a `404` error:
+
+```jolie
+service MyService {
+  endpoint GET /myEndpoint {
+    response int result = 404;
+    response body "Resource not found.";
+  }
+}
+```
+
+In summary, Jolie provides a straightforward way to implement RESTful APIs by leveraging its built-in support for HTTP requests and responses. Developers can define endpoints, handle request methods, and define response status codes and headers. Error handling is also supported, allowing for custom error messages and status codes.<|endoftext|> 
+
+To learn more about Jolie and its features, you can visit the official documentation at <https://jolie-lang.org/>.

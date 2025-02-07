@@ -1,0 +1,15 @@
+Jolie, as a service-oriented programming language, supports the implementation of RESTful APIs through its built-in HTTP client and server components. When designing a REST API in Jolie, you can define the API's endpoints using the `service` keyword followed by the desired HTTP method (GET, POST, PUT, DELETE) and the corresponding URL path.
+
+For instance, to define a simple GET endpoint for retrieving a list of items, you can use the following code:
+
+```jolie
+service ItemsService {
+  operation getItems() returns Item[] {
+    // Implementation of the GET operation here
+  }
+}
+```
+
+Jolie also supports various data types and message formats, such as JSON and XML, to ensure seamless communication between different services and clients. Additionally, Jolie provides built-in support for error handling and security features, making it an ideal choice for developing robust and secure REST APIs.
+
+For more information on implementing REST APIs in Jolie, you can refer to the official documentation or consult the Jolie community resources.

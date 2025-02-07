@@ -1,0 +1,66 @@
+Here is an example of how you can implement a simple calculator service in Jolie that supports basic arithmetic operations:
+
+```jolie
+service Calculator {
+  operation add(int a, int b) returns int {
+    return a + b;
+  }
+
+  operation subtract(int a, int b) returns int {
+    return a - b;
+  }
+
+  operation divide(int a, int b) returns int {
+    if (b != 0) {
+      return a / b;
+    } else {
+      return throw new DivisionByZeroException();
+    }
+  }
+
+  operation multiply(int a, int b) returns int {
+    return a * b;
+  }
+
+  operation getResult(int op, int arg1, int arg2) returns int {
+    switch (op) {
+      case ADD:
+        return add(arg1, arg2);
+      case SUB:
+        return subtract(arg1, arg2);
+      case DIV:
+        return divide(arg1, arg2);
+      case MUL:
+        return multiply(arg1, arg2);
+      default:
+        return throw new ArgumentError("Invalid operation: " + op);
+    }
+  }
+}
+
+interface CalculatorClient {
+  operation callCalculator(Calculator calculator, int op, int arg1, int arg2) returns int {
+    return calculator.getResult(op, arg1, arg2);
+  }
+}
+```
+
+Now, here is how you can use this calculator service from another service or a client:
+
+```jolie
+service Main {
+  import CalculatorClient;
+
+  operation main() returns int {
+    Calculator calculator = new Calculator();
+    int result = callCalculator(calculator, ADD, 3, 5); // Add 3 and 5
+    return result;
+  }
+}
+```
+
+In this example, the `CalculatorClient` interface defines a `callCalculator` operation that takes a calculator reference, an operation code (ADD, SUB, DIV, or MUL), and two arguments as parameters. The `main` operation in the `Main` service uses this interface to call the calculator service and get the result of a given arithmetic operation.
+
+To use this calculator service in a Jolie application, you would need to import the `CalculatorClient` interface and define a service that imports it and uses the `callCalculator` operation as shown above. Make sure to replace the `Calculator` service with your own implementation.
+
+Keep in mind that this is just an example, and you can extend the calculator service to support more complex operations or additional features as needed.
