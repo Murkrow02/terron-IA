@@ -274,9 +274,13 @@ This not only improved the efficiency of the model development cycle but also em
 The 15k iteration cap was chosen because the training loss after this number was starting to grow again.\\
 We did the same grading as before for this new model, and got these results:
 \begin{center}
-    \includegraphics[width=1\textwidth]{img/plots/performance-comparison.png}
+    \includegraphics[width=0.8\textwidth]{img/plots/15k-mean-performance-comparison.png}
 \end{center}
-
+\begin{center}
+    \includegraphics[width=0.8\textwidth]{img/plots/15k-performance-comparison.png}
+\end{center}
+It is pretty clear that with more iterations - and with more computing power - you can achieve better results.\\
+Of course this goes beyond our initial goal, but we wanted to see how the tool would perform with more power.
 
 \section{Trying to visualize the attention mechanism}
 In the context of transformers and attention mechanisms, attention refers to how the model decides which parts of the input sequence to focus on when making predictions. It's a key feature of models like GPT-2, BERT, and others, enabling them to understand relationships between words (or tokens) in a sentence, regardless of their position.\\
