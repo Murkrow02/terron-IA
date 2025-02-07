@@ -29,6 +29,12 @@
     - Prompt 3: (1, 1, 1)
     - Prompt 4: (1, 1, 1)
     - Prompt 5: (3, 2, 2 (per via della creazione interfaccia prima, anche se sbagliata))
+- Modello 15000 iterazioni:
+    - Prompt 1: (3, 2, 3)
+    - Prompt 2: (2, 1, 1)
+    - Prompt 3: (2, 2, 3)
+    - Prompt 4: (3, 2, 2)
+    - Prompt 5: (2, 2, 3)
 
 MURK:
 - Modello 0 iterazioni:
