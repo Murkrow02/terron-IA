@@ -126,8 +126,8 @@ One of the key advantages of the GGUF format, when paired with the Llama CPP run
 This optimized execution on Apple Silicon enables efficient use of consumer hardware, making it possible to run the fine-tuned model with minimal latency and power consumption, even on relatively modest devices.\vspace{14pt}\\
 LAB enables practical fine-tuning of LLMs on consumer hardware by leveraging SDG, model quantization, LoRA, and QLoRA. These techniques collectively reduce memory requirements, computational overhead, and data dependency, making LLM fine-tuning and inference accessible beyond high-performance data centers.
 
-\section{Our Work}
-Our main goal was to fine-tune a Large Language Model (LLM) to help us write Jolie\footnote{https://www.jolie-lang.org/} code on consumer hardware (our PCs). We started by looking for tools that would help us achieve this task. We found IBM's InstructLAB\footnote{https://instructlab.ai/}, which is still in the early stages of development.\vspace{14pt}\\
+\section{Our Case Study}
+Our main goal was to fine-tune a Large Language Model (LLM) using consumer hardware. We chose to focus on creating a model which could help us write Jolie\footnote{https://www.jolie-lang.org/} code. We started by looking for tools that would help us achieve this task. We found IBM's InstructLAB\footnote{https://instructlab.ai/}, which is still in the early stages of development.\vspace{14pt}\\
 After an initial phase of studying the tool's documentation, we began by installing the tool.
 
 \subsection{Installing ILAB}
@@ -193,10 +193,108 @@ Once the model is being served, you can chat with it using the following command
     \texttt{ilab model chat}
 \end{center}
 
-\section{Our case study}
-ciao
+\section{Evaluation of the models}
+Once we got all the different models ready, we moved on to compare them to see how they perform as the iteration count increases. We opted for a straightforward method, which can be summarized with:
+\begin{itemize}
+    \item We prepared five different text prompts, with different domain coverage (theorical, technical, hybrid and coding aspects of the language)
+    \item For every model -- even the base one -- we asked the same prompt three times and saved their responses
+    \item All of us gave a grade from 0 to 5 to every response
+\end{itemize}
+After this process, we took all the data and merged them into different plots, to show the behaviour of the models and their perfomance.
+
+\subsection{Prompts}
+\textbf{Prompt 1}\\
+How does Jolie handle REST API's? Can you explain how does the language work when implementing them?\vspace{14pt}\\
+\textbf{Prompt 2}\\
+What's the difference between processes and sessions in Jolie? Can you expand a bit more on the sessions?\vspace{14pt}\\
+\textbf{Prompt 3}\\
+How does Jolie handle database connections? Can you explain to me how that works and give me some practical examples on how to use them?\vspace{14pt}\\
+\textbf{Prompt 4}\\
+Can you give me the code for two Jolie programs that communicate with eachother. I want to send an "Hello World" message from one to the other.\vspace{14pt}\\
+\textbf{Prompt 5}\\
+Help me write the code for a calculator in Jolie. I want my calculator to be able to do basic functions, like sum, subtraction, divide, multiply. Give me the code for the Calculator and the code to try and communicate with it.
+
+\subsection{Results}
+The process will be the same for every plot. We took every grade we gave for the prompt and made an average.
+\begin{center}
+    \centering
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/plots/model-0-grades.png}
+    \end{minipage} 
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/plots/model-100-grades.png}
+    \end{minipage}
+    
+    \vspace{1em}
+
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/plots/model-250-grades.png}
+    \end{minipage} 
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/plots/model-500-grades.png}
+    \end{minipage}
+
+    \vspace{2em}
+    
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/plots/model-1000-grades.png}
+    \end{minipage} 
+    \hfill
+    \begin{minipage}{0.49\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img/plots/mean-performance-comparison.png}
+    \end{minipage}
+
+    \vspace{2em}
+
+    \begin{center}
+        \includegraphics[width=1\textwidth]{img/plots/performance-comparison.png}
+    \end{center}
+\end{center}
+The first five plots represent the performance of the models based on the given prompt.\\
+We expected a linear growth, but we can clearly see a drop of precision with the 250 iteration model.\\
+We can observe an overall improvement by looking at the mean performance plot, where the linear progression can be seen.\\
+The last plot shows a comparison between all the prompts across the different models.
+
+\section{Bonus: a new model with 15K iterations}
+In the ILAB documentation, we encountered a particularly valuable resource: a Colab Notebook designed to facilitate the demonstration of the model fine-tuning process. This notebook provided a clear, step-by-step illustration of the underlying operations that occur when the command:
+\begin{center}
+    \texttt{ilab model train}
+\end{center}
+is executed. The practical utility of this resource cannot be overstated, as it allowed us to gain a deeper understanding of the internal workings of the tool, particularly during the training phase. Observing the process in action enabled us to better comprehend the intricacies of model refinement, including the impact of different hyperparameters and the iterative nature of the training process.\vspace{14pt}\\
+Moreover, leveraging this notebook proved instrumental in enhancing the quality and precision of our model. By executing the fine-tuning process on a more powerful GPU (an Nvidia T4 provided by Google), we were able to accelerate the training significantly.\\
+This not only improved the efficiency of the model development cycle but also empowered us to perform more extensive training, ultimately achieving a model with 15,000 iterations.\vspace{14pt}\\
+The 15k iteration cap was chosen because the training loss after this number was starting to grow again.\\
+We did the same grading as before for this new model, and got these results:
+\begin{center}
+    \includegraphics[width=1\textwidth]{img/plots/performance-comparison.png}
+\end{center}
+
 
 \section{Trying to visualize the attention mechanism}
+In the context of transformers and attention mechanisms, attention refers to how the model decides which parts of the input sequence to focus on when making predictions. It's a key feature of models like GPT-2, BERT, and others, enabling them to understand relationships between words (or tokens) in a sentence, regardless of their position.\\
+In more technical terms, attention allows the model to weigh the importance of different words in a sequence relative to each other.\\
+For example, in the sentence "The cat sat on the mat," when predicting the word "sat," the model may focus on "cat" because they are strongly related, while ignoring less relevant words like "on" or "the."\vspace{14pt}\\
+It could have been interesting to measure the attention maps of our models while performing inference, in order to see if the model is allucinating or understands the concept of what he is asked.\\
+Using the \texttt{shap} library we were able to measure the attention on a standard not quantized LLM (like GPT2). When we tried to do the same with our models, we encountered some issues.\vspace{14pt}\\
+Measuring (or "reading out") attention weights in a transformer is normally done by having the model output its intermediate activations. In full-precision models, this is straightforward, but many quantization methods - especially those implemented for inference efficiency like bitsandbytes' 4-bit (like ours) or 8-bit quantization - fuse operations and replace standard linear layers with custom kernels that do not necessarily expose the intermediate attention matrices.\vspace{14pt}\\
+In other words, while the overall architecture (and even its outputs) remains the same, the very purpose of quantization is to optimize the forward pass (both speed - and memory-wise) by ``compressing'' the weights and often fusing computations. This usually means that the intermediate values (such as the un-normalized attention scores) aren’t available in an easy-to-extract form.\\
+While it isn’t theoretically ``impossible'' to measure attention on a quantized model, the way current quantization libraries (such as bitsandbytes) are implemented means that the necessary intermediate activations (the attention weights) are typically not available. 
+To make it work you’ll likely need to either work with a full-precision model (not our case) or design a custom solution that "dequantizes" or bypasses the fused operations at the point where attention is computed (what we tried).\vspace{14pt}\\
+Assuming you can load a full-precision copy of your model - even if you originally used bitsandbytes to run inference with quantized weights - you can run a "full-model" forward pass and then apply SHAP on that version. In practice, this means \textbf{dequantizing a quantized model}.\\
+Bitsandbytes also provides a method such as \texttt{model.dequantize()} that converts the quantized weights back to full precision. If you use that method, you obtain a dequantized model whose architecture mirrors that of the original model. In this full-precision copy, you can enable \texttt{output\_attentions} and then compute SHAP explanations over the attention outputs.\vspace{14pt}\\
+Unfortunately, we are not able to use a machine with that much GPU VRAM, so while trying to make it work we encountered different \texttt{Out of Memory} errors, which blocked us from going forward.\vspace{14pt}\\
+With more powerful machines it could have been theorically possible to plot attentions maps!
+
+\section{Conclusions}
+ciao
 
 \pagebreak
 
