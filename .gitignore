@@ -18,3 +18,4 @@ taxonomy/.github/
 .DS_Store
 *.out
 *.toc
+*.blg

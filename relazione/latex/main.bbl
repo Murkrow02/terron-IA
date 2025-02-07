@@ -1,0 +1,12 @@
+\begin{thebibliography}{1}
+
+\bibitem{sudalairaj2024lablargescalealignmentchatbots}
+S.~Sudalairaj, A.~Bhandwaldar, A.~Pareja, K.~Xu, D.~D. Cox, and A.~Srivastava, ``Lab: Large-scale alignment for chatbots,'' 2024.
+
+\bibitem{hu2021loralowrankadaptationlarge}
+E.~J. Hu, Y.~Shen, P.~Wallis, Z.~Allen-Zhu, Y.~Li, S.~Wang, L.~Wang, and W.~Chen, ``Lora: Low-rank adaptation of large language models,'' 2021.
+
+\bibitem{dettmers2023qloraefficientfinetuningquantized}
+T.~Dettmers, A.~Pagnoni, A.~Holtzman, and L.~Zettlemoyer, ``Qlora: Efficient finetuning of quantized llms,'' 2023.
+
+\end{thebibliography}
