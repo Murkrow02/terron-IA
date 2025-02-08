@@ -7,7 +7,7 @@
 \bibliographystyle{ieeetr}
 \setcitestyle{super,open={[},close={]}}
 
-\title{Title}
+\title{Fine-Tuning Large Language Models on Consumer Hardware Using ILAB}
 \author{Marco Coppola,\\
 Valerio Pio De Nicola,\\
 Davide De Rosa \\ \\
@@ -19,7 +19,7 @@ University of Bologna}
 \maketitle
 
 \section{Introduction}
-per la fine
+Large Language Models (LLMs) have revolutionized the field of Natural Language Processing (NLP) by demonstrating remarkable capabilities across a wide range of tasks. However, training and fine-tuning these models often require extensive computational resources, making them inaccessible to researchers and developers with limited hardware capabilities. In this study, we explore the feasibility of fine-tuning LLMs on consumer hardware using ILAB, an open-source framework designed to optimize instruction tuning through synthetic data generation and efficient training techniques. Our objective is to assess the effectiveness of this approach and provide insights into its practical implementation. Specifically, we investigate the role of model quantization, low-rank adaptation, and synthetic dataset generation in enabling large-scale model customization with constrained computational resources.
 
 \section{InstructLab}
 \subsection{Introduction to LAB}
@@ -51,7 +51,7 @@ LAB is a structured framework designed to enhance instruction tuning through a c
     \item \textbf{Taxonomy-Guided Synthetic Data Generator}: this component facilitates data curation by organizing instructions into a structured taxonomy. It also plays a crucial role in guiding the synthetic data generation process, ensuring both high diversity and quality in the instruction-tuning dataset. By leveraging a well-defined taxonomy, LAB aims to improve the comprehensiveness and relevance of the generated data.
     \item \textbf{Multi-Phased Instruction-Tuning with Replay Buffers}: to maintain training stability and mitigate issues such as catastrophic forgetting, LAB employs a multi-stage tuning approach. The use of replay buffers allows the model to retain previously learned information while adapting to new instructions, thereby improving overall alignment performance.
 \end{itemize}
-Together, these components form an end-to-end pipeline for aligning a pre-trained LLM, as illustrated in Figure~\ref{fig:ilab}. This approach balances synthetic data diversity with training stability, making it a scalable and effective method for large-scale instruction tuning.\\
+Together, these components form an end-to-end pipeline for aligning a pre-trained LLM, as illustrated in Figure~\ref{fig:ilab}. This approach balances synthetic data diversity with training stability, making it a scalable and effective method for large-scale instruction tuning.
 \begin{figure}
     \centering
     \includegraphics[width=1\textwidth]{img/figure1.png}
@@ -117,14 +117,15 @@ By combining these methods, ILAB creates a highly efficient fine-tuning pipeline
     \item LoRA then enables efficient fine-tuning without modifying the entire model, and
     \item QLoRA further optimizes this by applying quantization to the base model while keeping adapter layers in higher precision.
 \end{itemize}
-This synergy allows consumer hardware, such as NVIDIA RTX-series GPUs, to fine-tune large-scale LLMs that would otherwise require enterprise-level infrastructure.
+This synergy allows consumer hardware, such as NVIDIA RTX-series GPUs or Apple Silicon chips, to fine-tune large-scale LLMs that would otherwise require enterprise-level infrastructure.
 
 \subsection{Output Model: GGUF Format with Llama CPP Runner}\label{gguf}
 After fine-tuning the large language model (LLM) using the ILAB framework, the resulting model is saved in the GGUF (GPT-Generated Unified Format) format.\\
 GGUF is a highly efficient format designed for easy deployment and fast inference, ensuring that the model can be loaded and run with minimal overhead on a variety of hardware configurations. This format is particularly well-suited for use with the Llama CPP runner, which is a lightweight inference engine designed for high-performance model execution.\\
-One of the key advantages of the GGUF format, when paired with the Llama CPP runner, is its seamless compatibility with Apple's hardware ecosystem. Apple Silicon (M1, M2, and future generations) is considered a first-class citizen in this setup, benefiting from optimized performance through the use of several native technologies, including ARM NEON, Accelerate, and Metal frameworks.\\
-This optimized execution on Apple Silicon enables efficient use of consumer hardware, making it possible to run the fine-tuned model with minimal latency and power consumption, even on relatively modest devices.\vspace{14pt}\\
-LAB enables practical fine-tuning of LLMs on consumer hardware by leveraging SDG, model quantization, LoRA, and QLoRA. These techniques collectively reduce memory requirements, computational overhead, and data dependency, making LLM fine-tuning and inference accessible beyond high-performance data centers.
+One of the key advantages of the GGUF format, when paired with the Llama CPP runner\footnote{https://github.com/ggerganov/llama.cpp}, is its seamless compatibility with Apple's hardware ecosystem. Apple Silicon (M1, M2, and future generations) is considered a first-class citizen in this setup, benefiting from optimized performance through the use of several native technologies, including ARM NEON, Accelerate, and Metal frameworks.\\
+This optimized execution on Apple Silicon enables efficient use of consumer hardware, making it possible to run the fine-tuned model with minimal latency and power consumption, even on relatively modest devices.
+
+\pagebreak
 
 \section{Our Case Study}
 Our main goal was to fine-tune a Large Language Model (LLM) using consumer hardware. We chose to focus on creating a model which could help us write Jolie\footnote{https://www.jolie-lang.org/} code. We started by looking for tools that would help us achieve this task. We found IBM's InstructLAB\footnote{https://instructlab.ai/}, which is still in the early stages of development.\vspace{14pt}\\
@@ -165,7 +166,6 @@ To generate the datasets, we used the following command:
 \begin{center}
     \texttt{ilab data generate --pipeline simple}
 \end{center}
-The "simple" flag for the pipeline is used for training on Apple machines.\vspace{14pt}\\
 We can now move on to the training phase.
 
 \subsection{Training the Base Model}
@@ -173,8 +173,8 @@ Once the datasets were ready, we used the following command to start training th
 \begin{center}
     \texttt{ilab model train --pipeline simple --local --num-epochs * --iters * --optimize-memory}
 \end{center}
-We ran this command multiple times to create several models with different iteration counts. We chose not to change the number of epochs — always set to 1 — because the process was somewhat buggy. For our case study, we settled on 100, 250, 500, and 1000 iterations.\vspace{14pt}\\
-Once all the models were created and ready to use, the final step was to convert them to \textit{.gguf} format to quantize them.
+We ran this command multiple times to create several models with different iteration counts. We chose not to change the number of epochs — always set to 1 — because the process was somewhat \textit{buggy}. For our case study, we settled on 100, 250, 500, and 1000 iterations.\vspace{14pt}\\
+Once all the models were created and ready to use, the final step was to convert them to \textit{.gguf} from \textit{safetensors} format to quantize them.
 
 \subsection{Model Quantization}
 This step was necessary in order to \textit{serve} the models, as there is currently no way to run safetensors files on Apple machines. The only available runner is \textbf{LLama.cpp}, which requires a .gguf file [\ref{gguf}]. For each conversion, we used the following command:
@@ -196,13 +196,13 @@ Once the model is being served, you can chat with it using the following command
 \section{Evaluation of the models}
 Once we got all the different models ready, we moved on to compare them to see how they perform as the iteration count increases. We opted for a straightforward method, which can be summarized with:
 \begin{itemize}
-    \item We prepared five different text prompts, with different domain coverage (theorical, technical, hybrid and coding aspects of the language)
+    \item We prepared five different text prompts [\ref{prompts}], with different domain coverage (theorical, technical, hybrid and coding aspects of the language)
     \item For every model -- even the base one -- we asked the same prompt three times and saved their responses
     \item All of us gave a grade from 0 to 5 to every response
 \end{itemize}
 After this process, we took all the data and merged them into different plots, to show the behaviour of the models and their perfomance.
 
-\subsection{Prompts}
+\subsection{Prompts}\label{prompts}
 \textbf{Prompt 1}\\
 How does Jolie handle REST API's? Can you explain how does the language work when implementing them?\vspace{14pt}\\
 \textbf{Prompt 2}\\
@@ -286,7 +286,7 @@ Of course this goes beyond our initial goal, but we wanted to see how the tool w
 In the context of transformers and attention mechanisms, attention refers to how the model decides which parts of the input sequence to focus on when making predictions. It's a key feature of models like GPT-2, BERT, and others, enabling them to understand relationships between words (or tokens) in a sentence, regardless of their position.\\
 In more technical terms, attention allows the model to weigh the importance of different words in a sequence relative to each other.\\
 For example, in the sentence "The cat sat on the mat," when predicting the word "sat," the model may focus on "cat" because they are strongly related, while ignoring less relevant words like "on" or "the."\vspace{14pt}\\
-It could have been interesting to measure the attention maps of our models while performing inference, in order to see if the model is allucinating or understands the concept of what he is asked.\\
+It could have been interesting to measure the attention maps of our models while performing inference, in order to see if the model is hallucinating or understands the concept of what he is asked.\\
 Using the \texttt{shap} library we were able to measure the attention on a standard not quantized LLM (like GPT2). When we tried to do the same with our models, we encountered some issues.\vspace{14pt}\\
 Measuring (or "reading out") attention weights in a transformer is normally done by having the model output its intermediate activations. In full-precision models, this is straightforward, but many quantization methods - especially those implemented for inference efficiency like bitsandbytes' 4-bit (like ours) or 8-bit quantization - fuse operations and replace standard linear layers with custom kernels that do not necessarily expose the intermediate attention matrices.\vspace{14pt}\\
 In other words, while the overall architecture (and even its outputs) remains the same, the very purpose of quantization is to optimize the forward pass (both speed - and memory-wise) by ``compressing'' the weights and often fusing computations. This usually means that the intermediate values (such as the un-normalized attention scores) aren’t available in an easy-to-extract form.\\
@@ -297,8 +297,16 @@ Bitsandbytes also provides a method such as \texttt{model.dequantize()} that con
 Unfortunately, we are not able to use a machine with that much GPU VRAM, so while trying to make it work we encountered different \texttt{Out of Memory} errors, which blocked us from going forward.\vspace{14pt}\\
 With more powerful machines it could have been theorically possible to plot attentions maps!
 
+\section{Future work}
+While our results demonstrate the feasibility of fine-tuning LLMs on consumer hardware, several areas remain open for further research and improvement.\\
+First, starting with a stronger base model — one that is both open-source and optimized for coding tasks — could significantly enhance performance. Additionally, employing more powerful consumer hardware, such as higher-end Apple Silicon chips or consumer-grade GPUs with increased VRAM, would reduce training time and allow for more iterations, improving model refinement.\vspace{14pt}\\
+Another crucial avenue for future work is improving the taxonomy used for instruction tuning. The current taxonomy is relatively limited, and expanding it with a broader set of high-quality examples and additional categories would substantially enhance the model's capabilities.\vspace{14pt}\\
+As ILAB is still in an early development phase, we anticipate that future iterations of the tool will introduce optimizations, making it possible to achieve superior results even with the same hardware.\vspace{14pt}\\
+Finally, a more in-depth exploration of visualization techniques for model attention mechanisms could provide deeper insights into how fine-tuned models process information. Overcoming the challenges associated with quantized models’ attention weight extraction would be a valuable step in this direction.
+
 \section{Conclusions}
-ciao
+This work demonstrates that fine-tuning large language models using consumer hardware is feasible when leveraging optimized training techniques such as model quantization, low-rank adaptation, and taxonomy-driven synthetic data generation.\\
+By utilizing ILAB, we were able to develop and evaluate a model trained with minimal computational resources, highlighting both the potential and current limitations of this approach. While challenges remain — particularly in terms of hardware constraints and dataset quality — our findings suggest that future advancements in instruction tuning frameworks and hardware capabilities will further bridge the gap between high-performance model training and accessibility for a broader audience.
 
 \pagebreak
 
